@@ -12,7 +12,13 @@
     path: "{{ home }}/.zshrc"
   register: zshrc_stat
 
-- name: Back up zshrc
+- name: Backup ohmz org zshrc
+  ansible.builtin.copy: 
+    src: "{{ home }}/.zshrc" 
+    dest: "{{ home }}/.zshrc.org"
+  when: oh_my_zsh_stat.stat.exists == false && zshrc_stat.state.exists 
+
+- name: Backup zshrc
   ansible.builtin.copy: 
     src: "{{ home }}/.zshrc" 
     dest: "{{ home }}/.zshrc.bak"

@@ -2,8 +2,12 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
 plugins=(
+  zsh-256color
   git
+  dotenv
   docker
+  zsh-autosuggestions
+  zsh-vi-mode
 )
 
 source "{{ my_dir_dotfiles }}/roles/zsh/files/alias.zsh"

@@ -14,7 +14,7 @@
     repo: 'git@github.com:waiq/dotfiles.git'
     dest: "{{ my_dir_dotfiles }}"
     update: yes
-    # version: "wip-ansible"
+    version: "wip-ansible"
     
 - name: Set dotfiles github name
   community.general.git_config:
@@ -29,5 +29,3 @@
     repo: "{{ my_dir_dotfiles }}"
     scope: local
     value: '<>'
-
-
