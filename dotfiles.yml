@@ -1,0 +1,26 @@
+- name: Set up local workstation
+  hosts: local
+  roles:
+    - role: setup
+      tags:
+        setup
+    - role: fonts
+      tags:
+        fonts
+    - role: apt
+      tags:
+        - apt
+    - role: neovim
+      tags: 
+      - neovim
+    - role: tmux
+      tags: 
+      - tmux
+    - role: git
+      tags: 
+      - git
+    - role: zsh
+      tags:
+      - zsh
+
+

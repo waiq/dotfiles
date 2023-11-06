@@ -27,6 +27,7 @@ local servers = {
 	"phpactor",
 	"bashls",
 	"sqlls",
+	"spectral",
 }
 
 for _, lsp in ipairs(servers) do

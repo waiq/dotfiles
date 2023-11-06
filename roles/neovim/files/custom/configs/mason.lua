@@ -20,5 +20,7 @@ return {
 		"java-debug-adapter",
 		"java-test",
 		"jdtls",
+		"vacuum",
+		"spectral-language-server",
 	},
 }

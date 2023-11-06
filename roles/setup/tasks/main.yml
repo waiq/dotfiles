@@ -1,0 +1,33 @@
+- name: Create folder
+  file:
+    path: "{{item}}"
+    state: directory
+  loop:
+    - "{{ my_dir }}"
+    - "{{ my_dir_bin }}"
+    - "{{ my_dir_notes }}"
+    - "{{ my_dir_dotfiles }}"
+    - "{{ dir_dev }}"
+
+- name: Checkout dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:waiq/dotfiles.git'
+    dest: "{{ my_dir_dotfiles }}"
+    update: yes
+    # version: "wip-ansible"
+    
+- name: Set dotfiles github name
+  community.general.git_config:
+    name: user.name
+    repo: "{{ my_dir_dotfiles }}"
+    scope: local
+    value: 'waiq'
+
+- name: Set dotfiles github email
+  community.general.git_config:
+    name: user.email
+    repo: "{{ my_dir_dotfiles }}"
+    scope: local
+    value: '<>'
+
+
