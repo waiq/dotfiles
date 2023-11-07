@@ -1,4 +1,4 @@
-- name: Create folder
+- name: Create folders
   file:
     path: "{{item}}"
     state: directory
@@ -7,6 +7,8 @@
     - "{{ my_dir_bin }}"
     - "{{ my_dir_notes }}"
     - "{{ my_dir_dotfiles }}"
+    - "{{ my_dir_env }}"
+    - "{{ my_dir_env_d }}"
     - "{{ dir_dev }}"
 
 - name: Checkout dotfiles
@@ -29,3 +31,9 @@
     repo: "{{ my_dir_dotfiles }}"
     scope: local
     value: '<>'
+
+- name: Link load_env.sh
+  ansible.builtin.file:
+    src: "{{ my_dir_dotfiles }}/roles/setup/files/env/load_env.sh"
+    dest: "{{ my_dir_env }}/load_env.sh"
+    state: link

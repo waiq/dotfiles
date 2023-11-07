@@ -10,8 +10,6 @@ plugins=(
   zsh-vi-mode
 )
 
-source "{{ my_dir_dotfiles }}/roles/zsh/files/alias.zsh"
-source "{{ my_dir_dotfiles }}/roles/zsh/files/path.zsh"
-source "{{ my_dir_dotfiles }}/roles/zsh/files/env.zsh"
+source "{{ my_dir_env }}/load_env.sh
 
 source $ZSH/oh-my-zsh.sh

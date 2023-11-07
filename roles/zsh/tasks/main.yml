@@ -32,5 +32,5 @@
 
 - name: Make sure zshrc is up to date
   ansible.builtin.template:
-    src: "{{ my_dir_dotfiles }}/roles/zsh/template/zshrc.j2"
+    src: "{{ my_dir_dotfiles }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
