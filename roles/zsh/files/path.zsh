@@ -5,5 +5,4 @@ export PATH="$PATH":"$HOME/.my/bin"
 export GOPATH="$HOME/bin/go"
 export PATH="$PATH":"$GOPATH/bin/"
 
-export ORGPATH="$HOME/Dropbox/my-orgs/"
 

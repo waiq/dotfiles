@@ -8,7 +8,6 @@ packages:
   - wget
   - htop
   - jq
-  - git
   - ripgrep
   - libfuse2 
   - meld

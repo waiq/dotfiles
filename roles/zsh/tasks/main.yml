@@ -1,3 +1,11 @@
+-name: Install zsh
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+  become: yes
+  become_user: root
+  become_method: sudo
+
 - name: Check for oh-my-zsh installation
   ansible.builtin.stat: 
     path: "{{ home }}/.oh-my-zsh"

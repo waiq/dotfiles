@@ -1,4 +1,4 @@
-- name: Download neovim
+- name: Install neovim
   ansible.builtin.get_url:
     url: "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
     dest: "{{ my_dir_bin }}/nvim"
@@ -16,3 +16,13 @@
     src: "{{ my_dir_dotfiles }}/roles/neovim/files/custom"
     dest: "{{ dir_config }}/nvim/lua/custom"
     state: link
+
+- name: Link neovim env.d files
+  ansible.builtin.file:
+    src: "{{ my_dir_dotfiles }}/roles/nvim/files/env.d/{{ item }}"
+    dest: "{{ my_dir_env_d }}/{{ item }}"
+    state: link
+  loop:
+    - "10-nvim.sh"
+
+
