@@ -1,0 +1,10 @@
+---
+- name: "Install dotfiles"
+  hosts: local
+  vars: 
+    install:
+      git_pull: true
+  vars_files:
+    ./vars/main.yml
+  roles:
+    - role: ./roles/setup

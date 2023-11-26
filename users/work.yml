@@ -1,0 +1,12 @@
+---
+- name: Set up local workstation
+  hosts: local
+  vars_files:
+    ./common/vars.yml
+  roles:
+    - role: apt
+    - role: fonts
+    - role: neovim
+    - role: tmux
+    - role: git
+    - role: zsh

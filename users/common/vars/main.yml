@@ -1,0 +1,9 @@
+---
+- name: Load variables
+  include_vars:
+    ../../../core/vars/main.yml
+
+  user:
+    dirs:
+      config: "{{ home }}/.config"
+      dev: "{{ home }}/dev"

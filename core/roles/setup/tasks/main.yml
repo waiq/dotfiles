@@ -1,0 +1,69 @@
+---
+- name: Create folders
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ my }}"
+    - "{{ core.dirs.bin }}"
+    - "{{ core.dirs.dotfiles }}"
+    - "{{ core.dirs.rc}}"
+    - "{{ core.dirs.rc_d }}"
+
+- name: Checkout dotfiles
+  ansible.builtin.git:
+    repo: "git@github.com:waiq/dotfiles.git"
+    dest: "{{ core.dirs.dotfiles }}"
+    update: yes
+    version: "wip-ansible"
+  when: install.git_pull == true
+
+- name: Set dotfiles github name
+  community.general.git_config:
+    name: user.name
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "{{ core.git.name }}"
+
+- name: Set dotfiles github email
+  community.general.git_config:
+    name: user.email
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "<>"
+
+- name: Link rc.sh
+  ansible.builtin.file:
+    src: "{{ core.dirs.dotfiles }}/core//roles/setup/files/rc/rc.sh"
+    dest: "{{ core.dirs.rc }}/rc.sh"
+    state: link
+
+- name: Setup rc
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/rc/1-dotfiles-env.j2"
+    dest: "{{ core.dirs.rc_d }}/1-dotfiles-env.sh"
+
+- name: Setup dotrun completions
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/rc/1-dotfiles-dotrun-completions.j2"
+    dest: "{{ core.dirs.rc_d }}/1-dotfiles-dotrun-completions.sh"
+
+- name: Setup bin file dotlist
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotlist.j2"
+    dest: "{{ core.dirs.bin }}/dotlist"
+
+- name: Set execution mode on dotlist
+  ansible.builtin.file: 
+    dest: "{{ core.dirs.bin }}/dotlist"
+    mode: a+x
+
+- name: Setup bin file dotrun
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotrun.j2"
+    dest: "{{ core.dirs.bin }}/dotrun"
+
+- name: Set execution mode on dotrun
+  ansible.builtin.file: 
+    dest: "{{ core.dirs.bin }}/dotrun"
+    mode: a+x

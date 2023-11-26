@@ -1,0 +1,18 @@
+---
+home: "{{ ansible_env.HOME }}"
+my: "{{ home }}/.my"
+
+core:
+  dirs:
+    bin: "{{ my }}/bin"
+    dotfiles: "{{ my }}/dotfiles"
+    users: "{{ my }}/dotfiles/users"
+    core: "{{ my }}/core"
+
+    rc: "{{ my }}/rc"
+    rc_d: "{{ my }}/rc/rc.d"
+
+  files:
+    inventory: "{{ my }}/dotfiles/core/inventory"
+  git:
+    name: "dotfiles"

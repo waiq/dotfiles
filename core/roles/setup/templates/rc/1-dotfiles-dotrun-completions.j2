@@ -1,0 +1,53 @@
+CURRENT_SHELL=$(ps h -p $$ | awk '{print $5}')
+
+_list_roles() {
+  local roles=""
+  for path in "$(find {{ core.dirs.users }} -name roles -type d)" ; do
+    local count=0
+    for d in $path/* ; do
+      if [ $count -eq 0 ]; then
+        roles+="$(basename "$d")"
+      else
+        roles+=" $(basename "$d")"
+      fi
+      ((count++))
+    done
+  done
+  echo $roles
+}
+
+_list_tasks() {
+  echo "not implimented"
+}
+
+_list_tags() {
+  echo "not implimented"
+}
+
+_dotrun_completions() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  # local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  local flag="${COMP_WORDS[1]}"
+  local opts="--help --verbose --roles --tags --tasks"
+
+ 	if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
+ 		COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+ 		return 0
+ 	fi
+
+  case "${flag}" in
+    -r | --roles ) 
+      COMPREPLY=( $(compgen -W "$(_list_roles)" -- "$cur"))
+    ;;
+    -t | --tags )
+      COMPREPLY=( $(compgen -W "$(_list_tags)" -- "$cur"))
+    ;;
+    --tasks ) 
+      COMPREPLY=( $(compgen -W "$(_list_tasks)" -- "$cur"))
+    ;;
+    *)
+      echo "${flag}"
+  esac
+}
+
+complete -F _dotrun_completions dotrun
