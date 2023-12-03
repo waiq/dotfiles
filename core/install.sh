@@ -10,6 +10,7 @@ verbose_mode=false
 # ansible config files
 install_yml="$(dirname "$0")/install.yml"
 inventory="$(dirname "$0")/inventory"
+requirements="$(dirname "$0")/requirements.yml"
 
 if ! [ -x "$(command -v ansible)" ]; then
   sudo apt install ansible "$anible_verison" -y
@@ -26,7 +27,7 @@ if ! [ -x "$(command -v ansible-galaxy)" ]; then
 fi
 
 # install community
-ansible-galaxy collection install community.general
+ansible-galaxy install -r $requirements
 
 if ! [ -f "$install_yml" ]; then
   echo "install.yml not found"
