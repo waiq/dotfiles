@@ -1,19 +1,34 @@
-CURRENT_SHELL=$(ps h -p $$ | awk '{print $5}')
+#!/bin/bash
+
+_exists() {
+    local value=${1}
+    shift
+    local list=(${@})
+    for i in ${list[@]} ; do
+      if [[ -z $i ]]; then
+        continue
+      fi 
+      if [[ $i == ${value} ]]; then
+        return 0
+      fi
+    done
+  return 1
+}
 
 _list_roles() {
-  local roles=""
+  local cur=(${@})
+  local roles=()
   for path in "$(find {{ core.dirs.users }} -name roles -type d)" ; do
-    local count=0
     for d in $path/* ; do
-      if [ $count -eq 0 ]; then
-        roles+="$(basename "$d")"
-      else
-        roles+=" $(basename "$d")"
+      name="$(basename "$d")"
+      _exists "${name}" "${cur[@]}"
+      if [[ $? -eq 0 ]]; then
+        continue
       fi
-      ((count++))
+      roles+=("$name")
     done
   done
-  echo $roles
+  echo "${roles[*]}"
 }
 
 _list_tasks() {
@@ -26,7 +41,6 @@ _list_tags() {
 
 _dotrun_completions() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
-  # local prev="${COMP_WORDS[COMP_CWORD-1]}"
   local flag="${COMP_WORDS[1]}"
   local opts="--help --verbose --roles --tags --tasks"
 
@@ -37,7 +51,7 @@ _dotrun_completions() {
 
   case "${flag}" in
     -r | --roles ) 
-      COMPREPLY=( $(compgen -W "$(_list_roles)" -- "$cur"))
+      COMPREPLY=( $(compgen -W "$(_list_roles ${COMP_WORDS[@]:2})" -- "$cur"))
     ;;
     -t | --tags )
       COMPREPLY=( $(compgen -W "$(_list_tags)" -- "$cur"))

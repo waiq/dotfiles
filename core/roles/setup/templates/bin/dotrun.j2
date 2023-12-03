@@ -52,15 +52,15 @@ handle_options() {
         ;;
       -r | --roles)
         shift
-        run_roles "$@"
+        run_roles "${@}"
         exit 0
         ;;
       -t | --tags)
-        run_tags "$0"
+        run_tags "${0}"
         exit 0
         ;;
       --tasks)
-        run_tasks "$0"
+        run_tasks "${0}"
         exit 0
         ;;
       *)
@@ -74,7 +74,5 @@ handle_options() {
   usage
 }
 
-complete -F _dorun_completions dorun
-
 # Main script execution
-handle_options "$@"
+handle_options "${@}"
