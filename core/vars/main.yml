@@ -9,8 +9,8 @@ core:
     users: "{{ my }}/dotfiles/users"
     core: "{{ my }}/core"
 
-    rc: "{{ my }}/rc"
-    rc_d: "{{ my }}/rc/rc.d"
+    init: "{{ my }}/init"
+    init_d: "{{ my }}/init/init.d"
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
