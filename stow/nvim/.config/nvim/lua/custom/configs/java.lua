@@ -5,6 +5,17 @@ if not jdtls_ok then
 end
 
 local mason_registry = require("mason-registry")
+
+if not mason_registry.is_installed("java-debug-adapter") then
+  vim.notify("java-debug-adapter not found, install with `:Mason install java-debug-adapter`")
+  return
+end
+
+if not mason_registry.is_installed("java-test") then
+  vim.notify("java-test not found, install with `:Mason install java-test`")
+  return
+end
+
 local lspconfig = require("plugins.configs.lspconfig")
 
 -- Installation location of jdtls by nvim-lsp-installer
