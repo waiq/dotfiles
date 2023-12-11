@@ -12,7 +12,7 @@ local plugins = {
 	},
 	{
 		"nvim-orgmode/orgmode",
-		dependencies = {'akinsho/org-bullets.nvim'},
+		dependencies = { "akinsho/org-bullets.nvim" },
 		lazy = false,
 		config = function()
 			require("custom.configs.orgmode")

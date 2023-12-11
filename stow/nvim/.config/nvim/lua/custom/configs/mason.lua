@@ -1,5 +1,7 @@
 return {
 	ensure_installed = {
+		"lua-language-server",
+		"stylua",
 		"codespell",
 		"bash-language-server",
 		"bash-debug-adapter",

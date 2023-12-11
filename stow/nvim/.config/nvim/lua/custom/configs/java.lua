@@ -12,15 +12,29 @@ local jdtls_path = mason_registry.get_package("jdtls"):get_install_path()
 local launcher = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 local lombok = vim.fn.glob(jdtls_path .. "/lombok.jar")
 
--- Setup debug and test
-local java_debug_path = mason_registry.get_package("java-debug-adapter"):get_install_path()
-local java_test_path = mason_registry.get_package("java-test"):get_install_path()
 local bundles = {}
+
+-- Setup debug
+local java_debug_path = mason_registry.get_package("java-debug-adapter"):get_install_path()
 vim.list_extend(
 	bundles,
-	vim.split(vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar"), "\n")
+	vim.split(vim.fn.glob(java_debug_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", 1), "\n")
 )
-vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar"), "\n"))
+-- Setup test
+local java_test_path = mason_registry.get_package("java-test"):get_install_path()
+vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1), "\n"))
+
+-- note: how to fix java_test Mason Issue 
+-- clone https://github.com/microsoft/vscode-java-test into the mason install java-test path
+-- run: 
+-- npm i
+-- npm run build-plugin
+--
+-- backup existing extension folder
+--
+-- run:
+-- ln -s ./vscode-java-test extension
+--
 
 -- Data directory - change it to your liking
 local home = os.getenv("HOME")
@@ -36,6 +50,7 @@ if vim.fn.has("mac") == 1 then
 	os_config = jdtls_path .. "/" .. "config_mac"
 end
 
+-- setup project root
 local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 if root_dir == "" then
@@ -48,7 +63,7 @@ local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 local on_attach = function(client, bufnr)
-	lspconfig.on_attach(client,bufnr)
+	lspconfig.on_attach(client, bufnr)
 
 	vim.lsp.codelens.refresh()
 	jdtls.setup_dap({ hotcodereplace = "auto" })
@@ -80,12 +95,17 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		pattern = { "*.java" },
 		callback = function()
+			-- auto command to refresh the code lens whenever a Java file is saved.
 			local _, _ = pcall(vim.lsp.codelens.refresh)
 		end,
 	})
 end
 
 local config = {
+
+	-- The command that starts the language server
+	-- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
+	--
 	cmd = {
 		"java",
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
@@ -108,10 +128,16 @@ local config = {
 		workspace_dir,
 	},
 
-	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+	-- This is the default if not provided, you can remove it. Or adjust as needed.
+	-- One dedicated LSP server & client will be started per unique root_dir
+	root_dir = root_dir,
+
 	capabilities = lspconfig.capabilities,
 	on_attach = on_attach,
 
+	-- Here you can configure eclipse.jdt.ls specific settings
+	-- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
+	-- for a list of options
 	settings = {
 		java = {
 			autobuild = { enabled = false },
@@ -138,6 +164,7 @@ local config = {
 			eclipse = {
 				downloadSources = true,
 			},
+
 			configuration = {
 				updateBuildConfiguration = "interactive",
 				-- NOTE: Add the available runtimes here
@@ -191,6 +218,14 @@ local config = {
 			-- },
 		},
 	},
+
+	-- Language server `initializationOptions`
+	-- You need to extend the `bundles` with paths to jar files
+	-- if you want to use additional eclipse.jdt.ls plugins.
+	--
+	-- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
+	--
+	-- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
 	init_options = {
 		bundles = bundles,
 		extendedClientCapabilities = extendedClientCapabilities,
@@ -199,8 +234,10 @@ local config = {
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "java" },
-	desc = 'Setup jdtls',
+	desc = "Setup jdtls",
 	callback = function()
+		-- This starts a new client & server,
+		-- or attaches to an existing client & server depending on the `root_dir`.
 		jdtls.start_or_attach(config)
 	end,
 })

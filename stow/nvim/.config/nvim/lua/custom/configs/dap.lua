@@ -28,6 +28,7 @@ local mason_registry = require("mason-registry")
 
 --]=====]
 
+-- PHP debugging
 local php_debug_adapter_install_path = mason_registry.get_package("php-debug-adapter"):get_install_path()
 local php_debug_launcher = vim.fn.glob(php_debug_adapter_install_path .. "/extension/out/phpDebug.js")
 
@@ -38,7 +39,6 @@ dap.adapters.php = {
 	args = { php_debug_launcher },
 }
 
--- PHP debugging
 dap.configurations.php = {
 	{
 		type = "php",
@@ -63,29 +63,29 @@ local bash_debug_adapter_install_path = mason_registry.get_package("bash-debug-a
 local bash_debug_launcher = vim.fn.glob(bash_debug_adapter_install_path .. "/bash-debug-adapter")
 
 dap.adapters.bashdb = {
-  type = 'executable';
-  command = bash_debug_launcher;
-  name = 'bashdb';
+	type = "executable",
+	command = bash_debug_launcher,
+	name = "bashdb",
 }
 
 dap.configurations.sh = {
-  {
-    type = 'bashdb';
-    request = 'launch';
-    name = "Launch file";
-    showDebugOutput = true;
-    pathBashdb = vim.fn.glob(bash_debug_adapter_install_path .. '/extension/bashdb_dir/bashdb');
-    pathBashdbLib = vim.fn.glob(bash_debug_adapter_install_path .. '/extension/bashdb_dir');
-    trace = true;
-    file = "${file}";
-    program = "${file}";
-    cwd = '${workspaceFolder}';
-    pathCat = "cat";
-    pathBash = "/bin/bash";
-    pathMkfifo = "mkfifo";
-    pathPkill = "pkill";
-    args = {};
-    env = {};
-    terminalKind = "integrated";
-  }
+	{
+		type = "bashdb",
+		request = "launch",
+		name = "Launch file",
+		showDebugOutput = true,
+		pathBashdb = vim.fn.glob(bash_debug_adapter_install_path .. "/extension/bashdb_dir/bashdb"),
+		pathBashdbLib = vim.fn.glob(bash_debug_adapter_install_path .. "/extension/bashdb_dir"),
+		trace = true,
+		file = "${file}",
+		program = "${file}",
+		cwd = "${workspaceFolder}",
+		pathCat = "cat",
+		pathBash = "/bin/bash",
+		pathMkfifo = "mkfifo",
+		pathPkill = "pkill",
+		args = {},
+		env = {},
+		terminalKind = "integrated",
+	},
 }
