@@ -26,11 +26,10 @@ usage() {
  echo " --tasks          List tasks"
 }
 
-ansible_playbook_command="ansible-playbook -i {{ core.files.inventory }}"
-
 run_roles() {
-  echo "$@"
+  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.roles }} --ask-become-pass -t ${@}" 
 }
+
 run_tags() {
   echo "not implimented"
 }

@@ -1,11 +1,8 @@
 #!/bin/bash
-#
+
 set -e
 
 ansible_version="2.14.2"
-
-# Default variable values
-verbose_mode=false
 
 # ansible config files
 install_yml="$(dirname "$0")/install.yml"
@@ -79,4 +76,5 @@ handle_options() {
 # Main script execution
 handle_options "$@"
 
-eval "$ansible_playbook_command"
+eval "$ansible_playbook_command -t setup"
+eval "$ansible_playbook_command -t update"

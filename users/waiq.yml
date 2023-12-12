@@ -9,7 +9,7 @@
         apt
     - role: fonts
       tags:
-        fonts
+      fonts
     - role: neovim
       tags: 
         neovim

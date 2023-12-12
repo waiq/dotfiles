@@ -3,16 +3,26 @@ home: "{{ ansible_env.HOME }}"
 my: "{{ home }}/.my"
 
 core:
+  version: "wip_ansibale"
+
+  settings:
+    host: "localhost"
+
   dirs:
     bin: "{{ my }}/bin"
     dotfiles: "{{ my }}/dotfiles"
     users: "{{ my }}/dotfiles/users"
+
+    vars: "{{ my }}/dotfiles/core/vars"
     core: "{{ my }}/core"
 
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
 
+    cashe: "{{ home }}/.cashe/my"
+
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
+    roles: "{{ home }}/.cashe/my/roles.yml"
   git:
     name: "dotfiles"

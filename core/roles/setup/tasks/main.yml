@@ -9,13 +9,14 @@
     - "{{ core.dirs.dotfiles }}"
     - "{{ core.dirs.init}}"
     - "{{ core.dirs.init_d }}"
+    - "{{ core.dirs.cashe }}"
 
 - name: Checkout dotfiles
   ansible.builtin.git:
     repo: "git@github.com:waiq/dotfiles.git"
     dest: "{{ core.dirs.dotfiles }}"
     update: yes
-    version: "wip-ansible"
+    version: "{{ core.version }}"
   when: install.git_pull == true
 
 - name: Set dotfiles github name

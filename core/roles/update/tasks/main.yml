@@ -1,0 +1,48 @@
+---
+- name: Find roles folders
+  ansible.builtin.find:
+    paths: "{{ core.dirs.users }}/roles"
+    file_type: directory
+    recurse: no
+  register: d_roles
+
+- name: Find core variables
+  ansible.builtin.find:
+    paths: "{{ core.dirs.vars }}"
+    file_type: file
+    recurse: no
+  register: f_core_vars
+
+- name: Find users variables
+  ansible.builtin.find:
+    paths: "{{ core.dirs.users }}/common/vars"
+    file_type: file
+    recurse: no
+  register: f_users_vars
+
+- name: Set all core variable files
+  ansible.builtin.set_fact: 
+    vars_files: "{{ vars_files | default([]) + [item.path] }}"
+  with_items:
+    "{{ f_core_vars.files }}"
+
+- name: Set all users variable files
+  ansible.builtin.set_fact: 
+    vars_files: "{{ vars_files | default([]) + [item.path] }}"
+  with_items:
+    "{{ f_users_vars.files }}"
+
+- name: Find all roles
+  ansible.builtin.set_fact: 
+    vars_roles: "{{ vars_roles | default([]) + [{'role': item.path, 'tags': item.path | basename}] }}"
+  with_items:
+    "{{ d_roles.files }}"
+
+- name: Create registry
+  ansible.builtin.set_fact: 
+    r_yml: [{'name':'Update tags','hosts': local,'vars_files':"{{ vars_files }}",'roles':"{{ vars_roles }}"}]
+
+- name: Write back to a file
+  copy:
+    content: "{{ r_yml | to_nice_yaml(sort_keys=False) }}"
+    dest: "{{ core.files.roles }}"

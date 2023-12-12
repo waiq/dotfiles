@@ -34,5 +34,5 @@
 
 - name: Make sure gitconfig is up to date
   ansible.builtin.template:
-    src: "{{ my.dir.dotfiles }}/roles/git/templates/gitconfig.j2"
+    src: "{{ core.dirs.users}}/roles/git/templates/gitconfig.j2"
     dest: "{{ home }}/.gitconfig"
