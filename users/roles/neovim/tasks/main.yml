@@ -15,14 +15,14 @@
 
 - name: Link custom folder
   ansible.builtin.file:
-    src: "{{ core.dirs.dotfiles }}/roles/neovim/files/custom"
-    dest: "{{ user.config }}/nvim/lua/custom"
+    src: "{{ core.dirs.users }}/roles/neovim/files/custom"
+    dest: "{{ user.dirs.config }}/nvim/lua/custom"
     state: link
 
-- name: Link neovim env.d files
+- name: Link neovim init_d files
   ansible.builtin.file:
-    src: "{{ core.dirs.dotfiles }}/roles/nvim/files/env.d/{{ item }}"
-    dest: "{{ core.dirs.env_d }}/{{ item }}"
+    src: "{{ core.dirs.users }}/roles/neovim/files/init_d/{{ item }}"
+    dest: "{{ core.dirs.init_d }}/{{ item }}"
     state: link
   loop:
     - "10-nvim.sh"

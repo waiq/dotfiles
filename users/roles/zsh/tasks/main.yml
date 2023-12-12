@@ -1,5 +1,4 @@
 ---
-
 - name: Install zsh
   ansible.builtin.apt:
     name: zsh
@@ -42,5 +41,5 @@
 
 - name: Make sure zshrc is up to date
   ansible.builtin.template:
-    src: "{{ my_dir_dotfiles }}/roles/zsh/templates/zshrc.j2"
+    src: "{{ core.dirs.users }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
