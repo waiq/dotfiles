@@ -12,7 +12,7 @@ local plugins = {
 	},
 	{
 		"nvim-orgmode/orgmode",
-		dependencies = {'akinsho/org-bullets.nvim'},
+		dependencies = { "akinsho/org-bullets.nvim" },
 		lazy = false,
 		config = function()
 			require("custom.configs.orgmode")
@@ -35,11 +35,22 @@ local plugins = {
 		},
 	},
 	{
+		"stevearc/oil.nvim",
+		lazy = false,
+		opts = {},
+		-- Optional dependencies
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("custom.configs.oil")
+		end,
+	},
+	{
 		"mfussenegger/nvim-dap",
 		config = function()
 			require("custom.configs.dap")
 		end,
 	},
+
 	{
 		-- dont use the dap or lspconfig,
 		-- use the jdtls own setup
@@ -65,9 +76,6 @@ local plugins = {
 	},
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = {
-			"jose-elias-alvarez/null-ls.nvim",
-		},
 		config = function()
 			require("plugins.configs.lspconfig")
 			require("custom.configs.lspconfig")

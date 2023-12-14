@@ -1,7 +1,8 @@
 return {
 	ensure_installed = {
+		"lua-language-server",
+		"stylua",
 		"codespell",
-    "beautysh",
 		"bash-language-server",
 		"bash-debug-adapter",
 		"html-lsp",
@@ -21,7 +22,5 @@ return {
 		"java-debug-adapter",
 		"java-test",
 		"jdtls",
-		"vacuum",
-		"spectral-language-server",
 	},
 }

@@ -11,7 +11,6 @@ local sources = {
 	formatting.goimports,
 	formatting.golines,
 	formatting.google_java_format,
-  formatting.beautysh,
 
 	lint.codespell,
 }
