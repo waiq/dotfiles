@@ -21,21 +21,29 @@ usage() {
  echo "Options:"
  echo " -h, --help       Display this help message"
  echo " -v, --verbose    Enable verbose mode"
- echo " -r, --roles      List roles"
- echo " -t, --tags       List tags"
- echo " --tasks          List tasks"
+ echo " -u, --update     Update/regenerate tags"
+ echo " -r, --roles      run roles"
+ echo " -t, --tags       run tags"
+ echo " --tasks          run tasks"
 }
 
 run_roles() {
   eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.roles }} --ask-become-pass -t ${@}" 
+  return $?
+}
+
+run_update() {
+  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.commands }} -t update" 
 }
 
 run_tags() {
   echo "not implimented"
+  return 1
 }
 
 run_tasks() {
   echo "not implimented"
+  return 1
 }
 
 # Function to handle options and arguments
@@ -49,18 +57,23 @@ handle_options() {
       -v | --verbose)
         verbose_mode=true
         ;;
+	  -u | --update)
+        shift
+		run_update "${@}"
+		exit ?$
+		;;
       -r | --roles)
         shift
         run_roles "${@}"
-        exit 0
+		exit ?$
         ;;
       -t | --tags)
         run_tags "${0}"
-        exit 0
+		exit ?$
         ;;
       --tasks)
         run_tasks "${0}"
-        exit 0
+		exit ?$
         ;;
       *)
         echo "Invalid option: $1" >&2

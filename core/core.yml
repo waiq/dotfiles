@@ -1,5 +1,5 @@
 ---
-- name: "Install dotfiles"
+- name: "Core commands"
   hosts: local
   vars: 
     install:

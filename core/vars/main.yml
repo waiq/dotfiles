@@ -23,6 +23,8 @@ core:
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
+    commands: "{{ my }}/dotfiles/core/core.yml"
+
     roles: "{{ home }}/.cashe/my/roles.yml"
   git:
     name: "dotfiles"

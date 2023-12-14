@@ -5,7 +5,7 @@ set -e
 ansible_version="2.14.2"
 
 # ansible config files
-install_yml="$(dirname "$0")/install.yml"
+install_yml="$(dirname "$0")/core.yml"
 inventory="$(dirname "$0")/inventory"
 requirements="$(dirname "$0")/requirements.yml"
 
@@ -77,4 +77,3 @@ handle_options() {
 handle_options "$@"
 
 eval "$ansible_playbook_command -t setup"
-eval "$ansible_playbook_command -t update"
