@@ -35,11 +35,22 @@ local plugins = {
 		},
 	},
 	{
+		"stevearc/oil.nvim",
+		lazy = false,
+		opts = {},
+		-- Optional dependencies
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("custom.configs.oil")
+		end,
+	},
+	{
 		"mfussenegger/nvim-dap",
 		config = function()
 			require("custom.configs.dap")
 		end,
 	},
+
 	{
 		-- dont use the dap or lspconfig,
 		-- use the jdtls own setup

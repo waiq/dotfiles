@@ -33,6 +33,12 @@ M.general = {
 	},
 }
 
+M.oil = {
+  n = {
+	["-"] = {"<CMD>Oil<CR>", "Open parent directory"},
+  },
+}
+
 M.harpoon = {
 	n = {
 		["<leader>aa"] = {
