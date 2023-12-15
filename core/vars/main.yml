@@ -19,12 +19,15 @@ core:
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
 
-    cashe: "{{ home }}/.cashe/my"
+    cache: "{{ home }}/.cache/my"
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
     commands: "{{ my }}/dotfiles/core/core.yml"
+    init: "{{ my }}/init/init.sh"
 
-    roles: "{{ home }}/.cashe/my/roles.yml"
+    generated:
+      tags: "{{ home }}/.cache/my/tags.yml"
+
   git:
     name: "dotfiles"

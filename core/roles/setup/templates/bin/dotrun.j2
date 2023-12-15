@@ -28,12 +28,13 @@ usage() {
 }
 
 run_roles() {
-  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.roles }} --ask-become-pass -t ${@}" 
+  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.generated.tags }} --ask-become-pass -t ${@}" 
   return $?
 }
 
 run_update() {
   eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.commands }} -t update" 
+  return $?
 }
 
 run_tags() {
@@ -60,20 +61,20 @@ handle_options() {
 	  -u | --update)
         shift
 		run_update "${@}"
-		exit ?$
+		exit $?
 		;;
       -r | --roles)
         shift
         run_roles "${@}"
-		exit ?$
+		exit $?
         ;;
       -t | --tags)
         run_tags "${0}"
-		exit ?$
+		exit $?
         ;;
       --tasks)
         run_tasks "${0}"
-		exit ?$
+		exit $?
         ;;
       *)
         echo "Invalid option: $1" >&2

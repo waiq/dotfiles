@@ -45,4 +45,4 @@
 - name: Write back to a file
   copy:
     content: "{{ r_yml | to_nice_yaml(sort_keys=False) }}"
-    dest: "{{ core.files.roles }}"
+    dest: "{{ core.files.generated.tags }}"

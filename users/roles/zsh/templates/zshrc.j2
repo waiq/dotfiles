@@ -12,3 +12,9 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# my dotfiles stuff
+autoload bashcompinit
+bashcompinit
+
+source "{{ core.files.init }}"

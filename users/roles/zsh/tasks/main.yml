@@ -25,7 +25,7 @@
   ansible.builtin.copy: 
     src: "{{ home }}/.zshrc" 
     dest: "{{ home }}/.zshrc.org"
-  when: oh_my_zsh_stat.stat.exists == false && zshrc_stat.state.exists 
+  when: oh_my_zsh_stat.stat.exists == false and zshrc_stat.state.exists 
 
 - name: Backup zshrc
   ansible.builtin.copy: 

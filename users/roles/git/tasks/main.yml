@@ -1,5 +1,4 @@
 ---
-
 - name: Install git
   ansible.builtin.apt:
     name: git
@@ -7,13 +6,6 @@
   become: yes
   become_user: root
   become_method: sudo
-
-- name: Link global gitignore file
-  ansible.builtin.file:
-    src: "{{ core.dirs.dotfiles }}/roles/git/files/gitignore.global"
-    dest: "{{ home }}/.gitignore"
-    state: link
-    force: yes
 
 - name: Check if gitconfig exists
   ansible.builtin.stat:

@@ -26,5 +26,3 @@
     state: link
   loop:
     - "10-nvim.sh"
-
-

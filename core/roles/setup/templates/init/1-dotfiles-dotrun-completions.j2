@@ -42,7 +42,7 @@ _list_tags() {
 _dotrun_completions() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local flag="${COMP_WORDS[1]}"
-  local opts="--help --verbose --roles --tags --tasks"
+  local opts="--help --verbose --roles --tags --tasks --update"
 
  	if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
  		COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
