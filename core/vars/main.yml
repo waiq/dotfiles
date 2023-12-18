@@ -3,7 +3,7 @@ home: "{{ ansible_env.HOME }}"
 my: "{{ home }}/.my"
 
 core:
-  version: "wip_ansibale"
+  version: "wip-ansible"
 
   settings:
     host: "localhost"
