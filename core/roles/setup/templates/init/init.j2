@@ -1,13 +1,18 @@
 #!/bin/bash
 
-# shellcheck disable=SC1090
-for i in "{{ core.dirs.init_d }}"/*; do 
-  source "$i";
-done
+local init_d={{ core.dirs.init_d }}
+local local_d={{ core.dirs.local_d }}
 
-# shellcheck disable=SC1090
-for i in "{{ core.dirs.local_d }}"/*; do 
-  source "$i";
-done
+if [ -n "$(ls -A $init_d)" ]; then
+  # shellcheck disable=SC1090
+  for i in $init_d/*; do 
+	source "$i";
+  done
+fi 
 
-
+if [ -n "$(ls -A $local_d)" ]; then
+  # shellcheck disable=SC1090
+  for i in $local_d/*; do 
+	source "$i";
+  done
+fi

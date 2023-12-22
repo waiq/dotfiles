@@ -43,3 +43,24 @@
   ansible.builtin.template:
     src: "{{ core.dirs.users }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
+
+# install plugins
+- name: Install plugins 256color
+  ansible.builtin.git:
+    repo: https://github.com/chrissicool/zsh-256color.git
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-256color"
+    update: yes
+
+- name: Install plugins zsh-autosuggestions
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions    
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    update: yes
+
+- name: Install plugins zsh-vi-mode
+  ansible.builtin.git:
+    repo: https://github.com/jeffreytse/zsh-vi-mode
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-vi-mode"
+    update: yes
+
+
