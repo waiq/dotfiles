@@ -1,4 +1,11 @@
 ---
+- name: Install tmux
+  ansible.builtin.apt:
+    name: tmux
+    state: present
+  become: yes
+  become_user: root
+  become_method: sudo
 
 - name: Install tmux plugin manager
   ansible.builtin.git:
