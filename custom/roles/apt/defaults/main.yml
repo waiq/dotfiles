@@ -2,6 +2,7 @@
 
 packages:
   - ansible
+  - libgtk-4-dev
   - wl-clipboard
   - build-essential
   - stow
