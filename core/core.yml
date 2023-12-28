@@ -9,5 +9,5 @@
   roles:
     - role: ./roles/setup
       tags: setup
-    - role: ./roles/update
-      tags: update
+    - role: ./roles/update_tags
+      tags: update-tags

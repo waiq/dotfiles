@@ -33,7 +33,7 @@ run_roles() {
 }
 
 run_update() {
-  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.commands }} -t update" 
+  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.commands }} -t update-tags" 
   return $?
 }
 

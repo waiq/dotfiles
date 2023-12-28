@@ -1,0 +1,23 @@
+# Use the official Ubuntu base image
+FROM ubuntu:24.04
+
+# This is my desired location
+ENV TZ=America/New_York
+
+# Avoid interactive prompts during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package lists and install basic packages
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+	apt-get -y install sudo 
+
+RUN apt-get install -y git 
+
+VOLUME /app/data
+
+# Set the working directory
+WORKDIR /app
+
+# Specify the default command to run when the container starts
+CMD ["bash"]
