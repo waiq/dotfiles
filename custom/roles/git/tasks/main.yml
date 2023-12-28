@@ -28,3 +28,16 @@
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/git/templates/gitconfig.j2"
     dest: "{{ home }}/.gitconfig"
+
+
+- name: Get informations about current custom.d files
+  ansible.builtin.stat: 
+    path: "{{ core.dirs.custom_d }}/10-git.sh"
+  register: custom_file
+
+- name: Copy git custom.d file
+  ansible.builtin.copy:
+    src: "{{ core.dirs.custom }}/roles/git/files/custom.d/10-git.sh"
+    dest: "{{ core.dirs.custom_d }}/10-git.sh"
+  when: custom_file.stat.exists == false
+

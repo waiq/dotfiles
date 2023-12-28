@@ -1,3 +1,0 @@
-git:
-  user: "{{ (lookup('ansible.builtin.env', 'GIT_AUTHOR_NAME')|default) }}"
-
