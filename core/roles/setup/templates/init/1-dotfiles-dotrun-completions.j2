@@ -18,7 +18,7 @@ _exists() {
 _list_roles() {
   local cur=(${@})
   local roles=()
-  for path in "$(find {{ core.dirs.users }} -name roles -type d)" ; do
+  for path in "$(find {{ core.dirs.custom }} -name roles -type d)" ; do
     for d in $path/* ; do
       name="$(basename "$d")"
       _exists "${name}" "${cur[@]}"

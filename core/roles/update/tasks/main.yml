@@ -1,7 +1,7 @@
 ---
 - name: Find roles folders
   ansible.builtin.find:
-    paths: "{{ core.dirs.users }}/roles"
+    paths: "{{ core.dirs.custom }}/roles"
     file_type: directory
     recurse: no
   register: d_roles
@@ -13,12 +13,12 @@
     recurse: no
   register: f_core_vars
 
-- name: Find users variables
+- name: Find custom variables
   ansible.builtin.find:
-    paths: "{{ core.dirs.users }}/common/vars"
+    paths: "{{ core.dirs.custom }}/common/vars"
     file_type: file
     recurse: no
-  register: f_users_vars
+  register: f_custom_vars
 
 - name: Set all core variable files
   ansible.builtin.set_fact: 
@@ -26,11 +26,11 @@
   with_items:
     "{{ f_core_vars.files }}"
 
-- name: Set all users variable files
+- name: Set all custom variable files
   ansible.builtin.set_fact: 
     vars_files: "{{ vars_files | default([]) + [item.path] }}"
   with_items:
-    "{{ f_users_vars.files }}"
+    "{{ f_custom_vars.files }}"
 
 - name: Find all roles
   ansible.builtin.set_fact: 

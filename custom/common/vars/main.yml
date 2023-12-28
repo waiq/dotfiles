@@ -3,7 +3,7 @@
   include_vars:
     ../../../core/vars/main.yml
 
-  user:
+  custom:
     dirs:
       config: "{{ home }}/.config"
       dev: "{{ home }}/dev"

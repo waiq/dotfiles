@@ -9,7 +9,7 @@
     - "{{ core.dirs.dotfiles }}"
     - "{{ core.dirs.init}}"
     - "{{ core.dirs.init_d }}"
-    - "{{ core.dirs.local_d }}"
+    - "{{ core.dirs.custom_d }}"
     - "{{ core.dirs.cache }}"
 
 - name: Checkout dotfiles

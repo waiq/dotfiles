@@ -11,14 +11,14 @@ core:
   dirs:
     bin: "{{ my }}/bin"
     dotfiles: "{{ my }}/dotfiles"
-    users: "{{ my }}/dotfiles/users"
+    custom: "{{ my }}/dotfiles/custom"
 
     vars: "{{ my }}/dotfiles/core/vars"
     core: "{{ my }}/core"
 
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
-    local_d: "{{ my }}/init/local.d"
+    custom_d: "{{ my }}/init/custom.d"
 
     cache: "{{ home }}/.cache/my"
 

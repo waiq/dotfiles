@@ -41,7 +41,7 @@
 
 - name: Make sure zshrc is up to date
   ansible.builtin.template:
-    src: "{{ core.dirs.users }}/roles/zsh/templates/zshrc.j2"
+    src: "{{ core.dirs.custom }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
 
 # install plugins

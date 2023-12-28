@@ -9,22 +9,22 @@
 - name: Install NVChad
   ansible.builtin.git:
     repo: 'https://github.com/NvChad/NvChad'
-    dest: "{{ user.dirs.config }}/nvim"
+    dest: "{{ custom.dirs.config }}/nvim"
     depth: 1
     update: no
 
 - name: Link custom folder
   ansible.builtin.file:
-    src: "{{ core.dirs.users }}/roles/neovim/files/custom"
-    dest: "{{ user.dirs.config }}/nvim/lua/custom"
+    src: "{{ core.dirs.custom }}/roles/neovim/files/custom"
+    dest: "{{ custom.dirs.config }}/nvim/lua/custom"
     state: link
 
 - name: Create neovim init_d files
   ansible.builtin.template:
-    src: "{{ core.dirs.users }}/roles/neovim/templates/init_d/10-nvim.j2"
+    src: "{{ core.dirs.custom }}/roles/neovim/templates/init_d/10-nvim.j2"
     dest: "{{ core.dirs.init_d }}/10-nvim.sh"
 
-- name: Create neovim local_d files
+- name: Create neovim custom_d files
   ansible.builtin.template:
-    src: "{{ core.dirs.users }}/roles/neovim/templates/local_d/10-nvim.j2"
-    dest: "{{ core.dirs.local_d }}/10-nvim.sh"
+    src: "{{ core.dirs.custom }}/roles/neovim/templates/custom_d/10-nvim.j2"
+    dest: "{{ core.dirs.custom_d }}/10-nvim.sh"
