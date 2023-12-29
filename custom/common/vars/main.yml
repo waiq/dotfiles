@@ -7,3 +7,4 @@
     dirs:
       config: "{{ home }}/.config"
       dev: "{{ home }}/dev"
+

@@ -6,6 +6,7 @@
   loop:
     - "{{ my }}"
     - "{{ core.dirs.bin }}"
+    - "{{ core.dirs.local }}"
     - "{{ core.dirs.dotfiles }}"
     - "{{ core.dirs.init}}"
     - "{{ core.dirs.init_d }}"

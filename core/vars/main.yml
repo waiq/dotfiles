@@ -10,6 +10,8 @@ core:
 
   dirs:
     bin: "{{ my }}/bin"
+    local: "{{ my }}/local"
+
     dotfiles: "{{ my }}/dotfiles"
     custom: "{{ my }}/dotfiles/custom"
 
