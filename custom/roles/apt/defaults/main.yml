@@ -1,6 +1,7 @@
 --- 
 
 packages:
+  - aptitude
   - ansible
   - libgtk-4-dev
   - wl-clipboard

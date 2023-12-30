@@ -1,5 +1,5 @@
+
 local null_ls = require("null-ls")
-local autoformatting = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local formatting = null_ls.builtins.formatting
 local lint = null_ls.builtins.diagnostics
