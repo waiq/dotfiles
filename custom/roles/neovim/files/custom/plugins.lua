@@ -80,6 +80,7 @@ local plugins = {
 	},
 	{
 		"nvimtools/none-ls.nvim",
+		lazy = false,
 		config = function()
 			require("custom.configs.null-ls")
 		end,

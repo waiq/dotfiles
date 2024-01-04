@@ -9,7 +9,7 @@ return {
 		"css-lsp",
 		"gopls",
 		"golines",
-		"goimports",
+		"goimports-reviser",
 		"prettier",
 		"sqlls",
 		"phpactor",

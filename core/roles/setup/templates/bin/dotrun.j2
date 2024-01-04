@@ -33,17 +33,17 @@ run_roles() {
 }
 
 run_update() {
-  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.commands }} -t update-tags" 
+  eval "ansible-playbook -i {{ core.files.inventory }} {{ core.files.roles }} -t update-tags" 
   return $?
 }
 
 run_tags() {
-  echo "not implimented"
+  echo "not implemented"
   return 1
 }
 
 run_tasks() {
-  echo "not implimented"
+  echo "not implemented"
   return 1
 }
 
@@ -53,7 +53,7 @@ handle_options() {
     case $1 in
       -h | --help)
         usage
-        exit 0
+        return 0
         ;;
       -v | --verbose)
         verbose_mode=true
@@ -61,25 +61,25 @@ handle_options() {
 	  -u | --update)
         shift
 		run_update "${@}"
-		exit $?
+		return $?
 		;;
       -r | --roles)
         shift
         run_roles "${@}"
-		exit $?
+		return $?
         ;;
       -t | --tags)
         run_tags "${0}"
-		exit $?
+		return $?
         ;;
       --tasks)
         run_tasks "${0}"
-		exit $?
+		return $?
         ;;
       *)
         echo "Invalid option: $1" >&2
         usage
-        exit 1
+        return 1
         ;;
     esac
     shift
@@ -89,3 +89,13 @@ handle_options() {
 
 # Main script execution
 handle_options "${@}"
+local retvalue=$?
+
+if [ $retvalue -ne 0 ]; then
+  exit $?
+fi
+
+source {{ core.files.init }}
+
+
+

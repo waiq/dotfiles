@@ -26,7 +26,7 @@ core:
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
-    commands: "{{ my }}/dotfiles/core/core.yml"
+    roles: "{{ my }}/dotfiles/core/core.yml"
     init: "{{ my }}/init/init.sh"
 
     generated:
