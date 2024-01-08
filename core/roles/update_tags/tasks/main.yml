@@ -40,7 +40,7 @@
 
 - name: Create registry
   ansible.builtin.set_fact: 
-    r_yml: [{'name':'Update tags','hosts': local,'vars_files':"{{ vars_files }}",'roles':"{{ vars_roles }}"}]
+    r_yml: [{'hosts': local,'vars_files':"{{ vars_files }}",'roles':"{{ vars_roles }}"}]
 
 - name: Write back to a file
   copy:

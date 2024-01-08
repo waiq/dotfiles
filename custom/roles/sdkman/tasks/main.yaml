@@ -1,0 +1,27 @@
+---
+- name: Check for sdkman installation
+  ansible.builtin.stat:
+    path: "{{ home }}/.sdkman"
+  register: sdkman_stat
+
+- name: Installing SDK Man
+  become: no
+  ansible.builtin.shell: "curl -s 'https://get.sdkman.io' | bash"
+  args:
+    executable: /bin/bash
+  when: sdkman_stat.stat.exists == false
+
+- name: Setup init for sdkman
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/sdkman/templates/init_d/10-sdkman.j2"
+    dest: "{{ core.dirs.init_d }}/10-sdkman.sh"
+
+- name: Installing Java
+  ansible.builtin.shell: source "{{ core.dirs.init_d }}/10-sdkman.sh" && sdk install java {{ item }}
+  become: no
+  args:
+    executable: /bin/bash
+  loop:
+    - "21.ea.35-open"
+    - "17.0.2-open"
+    - "11.0.12-open"

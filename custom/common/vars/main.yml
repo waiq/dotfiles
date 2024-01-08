@@ -1,10 +1,7 @@
 ---
-- name: Load variables
-  include_vars:
-    ../../../core/vars/main.yml
+include_vars: ../../../core/vars/main.yml
 
-  custom:
-    dirs:
-      config: "{{ home }}/.config"
-      dev: "{{ home }}/dev"
-
+custom:
+  dirs:
+    config: "{{ home }}/.config"
+    dev: "{{ home }}/dev"
