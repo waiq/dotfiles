@@ -1,5 +1,4 @@
 ---
-
 - name: Remove old golang installation
   ansible.builtin.file:
     path: "{{ core.dirs.local}}/go"
@@ -20,5 +19,3 @@
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/golang/templates/init_d/10-golang.j2"
     dest: "{{ core.dirs.init_d }}/10-golang.sh"
-
-
