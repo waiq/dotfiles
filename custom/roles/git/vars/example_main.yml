@@ -1,0 +1,7 @@
+---
+# rename to main.yml
+
+custom:
+  git:
+    name: ""
+    email: ""

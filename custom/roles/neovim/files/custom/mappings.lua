@@ -34,9 +34,9 @@ M.general = {
 }
 
 M.oil = {
-  n = {
-	["-"] = {"<CMD>Oil<CR>", "Open parent directory"},
-  },
+	n = {
+		["-"] = { "<CMD>Oil<CR>", "Open parent directory" },
+	},
 }
 
 M.harpoon = {
@@ -57,6 +57,7 @@ M.harpoon = {
 }
 
 M.dap = {
+	plugin = true,
 	n = {
 		["<leader>dc"] = {
 			function()
@@ -143,6 +144,24 @@ M.dap = {
 			function()
 				require("dapui").toggle()
 			end,
+		},
+	},
+}
+
+M.dap_go = {
+	plugin = true,
+	n = {
+		["<leader>dgt"] = {
+			function()
+				require("dap-go").debug_test()
+			end,
+			"debug go test",
+		},
+		["<leader>dgl"] = {
+			function()
+				require("dap-go").debug_last()
+			end,
+			"Debug lastg go test",
 		},
 	},
 }

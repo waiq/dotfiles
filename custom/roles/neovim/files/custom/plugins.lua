@@ -21,11 +21,11 @@ local plugins = {
 	{
 		"nvim-tree/nvim-tree.lua",
 		opts = {
-		  actions = {
-			open_file = {
-			  resize_window = false,
+			actions = {
+				open_file = {
+					resize_window = false,
+				},
 			},
-		  },
 		},
 	},
 	{
@@ -58,6 +58,17 @@ local plugins = {
 		"mfussenegger/nvim-dap",
 		config = function()
 			require("custom.configs.dap")
+			require("core.utils").load_mappings("dap")
+		end,
+	},
+
+	{
+		"leoluz/nvim-dap-go",
+		ft = "go",
+		dependencies = "mfussenegger/nvim-dap",
+		config = function(_, opts)
+			require("dap-go").setup(opts)
+			require("core.utils").load_mappings("dap_go")
 		end,
 	},
 

@@ -13,31 +13,18 @@
   register: gitconfig_stat
 
 - name: Back up gitconfig
-  ansible.builtin.copy: 
-    src: "{{ home }}/.gitconfig" 
+  ansible.builtin.copy:
+    src: "{{ home }}/.gitconfig"
     dest: "{{ home }}/.gitconfig.bak"
   when: gitconfig_stat.stat.exists
 
 - name: Remove old gitconfig
   ansible.builtin.file:
     path: "{{ home }}/.gitconfig"
-    state: absent 
+    state: absent
   when: gitconfig_stat.stat.exists
 
 - name: Make sure gitconfig is up to date
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/git/templates/gitconfig.j2"
     dest: "{{ home }}/.gitconfig"
-
-
-- name: Get informations about current custom.d files
-  ansible.builtin.stat: 
-    path: "{{ core.dirs.custom_d }}/10-git.sh"
-  register: custom_file
-
-- name: Copy git custom.d file
-  ansible.builtin.copy:
-    src: "{{ core.dirs.custom }}/roles/git/files/custom.d/10-git.sh"
-    dest: "{{ core.dirs.custom_d }}/10-git.sh"
-  when: custom_file.stat.exists == false
-
