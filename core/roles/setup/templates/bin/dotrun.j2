@@ -37,6 +37,12 @@ run_default() {
   return $?
 }
 
+run_add_role() {
+  name=$1
+  eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t add_role --extra-vars \"{\"add_role\": { \"name\": $name }}"\" 
+  return $?
+}
+
 # Function to handle options and arguments
 handle_options() {
 
@@ -59,6 +65,11 @@ handle_options() {
         run_tags "${@}"
 		return $?
         ;;
+	  -a | --add)
+		shift
+		run_add_role "${@}"
+		return $?
+		;;
       -d | --default)
 		shift
         run_default "${@}"

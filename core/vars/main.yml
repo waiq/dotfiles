@@ -15,8 +15,8 @@ core:
     custom_roles: "{{ my }}/dotfiles/custom/roles"
 
     vars: "{{ my }}/dotfiles/core/vars"
-    core: "{{ my }}/core"
-    core_roles: "{{ my }}/core/roles"
+    core: "{{ my }}/dotfiles/core"
+    core_roles: "{{ my }}/dotfiles/core/roles"
 
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
