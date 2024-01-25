@@ -1,0 +1,75 @@
+---
+- name: Create folders
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ my }}"
+    - "{{ core.dirs.bin }}"
+    - "{{ core.dirs.local }}"
+    - "{{ core.dirs.dotfiles }}"
+    - "{{ core.dirs.init}}"
+    - "{{ core.dirs.init_d }}"
+    - "{{ core.dirs.custom_d }}"
+
+- name: Checkout dotfiles
+  ansible.builtin.git:
+    repo: "{{ core.git.repository }}"
+    dest: "{{ core.dirs.dotfiles }}"
+    update: yes
+    version: "{{ core.git.version }}"
+  when: install.git_pull == true
+
+- name: Set dotfiles github name
+  community.general.git_config:
+    name: user.name
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "{{ core.git.name }}"
+
+- name: Set dotfiles github email
+  community.general.git_config:
+    name: user.email
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "<>"
+
+- name: Setup init.sh
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/init.j2"
+    dest: "{{ core.dirs.init }}/init.sh"
+
+- name: Set permissions on init.sh
+  ansible.builtin.file:
+    dest: "{{ core.dirs.init }}/init.sh"
+    mode: u=rwx,g=rx,o=rx
+
+- name: Setup init folder
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-env.j2"
+    dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
+
+- name: Set execution mode on dotrun
+  ansible.builtin.file:
+    dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
+    mode: u=rw,g=r,o=r
+
+- name: Setup dotrun completions
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-dotrun-completions.j2"
+    dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
+
+- name: Set execution mode on dotrun
+  ansible.builtin.file:
+    dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
+    mode: u=rw,g=r,o=r
+
+- name: Setup bin file dotrun
+  ansible.builtin.template:
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotrun.j2"
+    dest: "{{ core.dirs.bin }}/dotrun"
+
+- name: Set execution mode on dotrun
+  ansible.builtin.file:
+    dest: "{{ core.dirs.bin }}/dotrun"
+    mode: a+x

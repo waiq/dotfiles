@@ -1,0 +1,96 @@
+#!/bin/bash
+
+set -e
+
+# Default variable values
+verbose_mode=false
+
+if ! [ -x "$(command -v ansible)" ]; then
+  echo "ansible not found"
+  exit 1;
+fi
+
+if ! [ -x "$(command -v ansible-playbook)" ]; then
+  echo "ansible-playbook not found"
+  exit 1;
+fi
+
+# Function to display script usage
+usage() {
+ echo "Usage: $0 [OPTIONS]"
+ echo "Options:"
+ echo " -h, --help       Display this help message"
+ echo " -v, --verbose    Enable verbose mode"
+ echo " -t, --tags       run tag"
+ echo " -d, --default    run all default roles"
+}
+
+ansible_command="ansible-playbook -i {{ core.files.inventory }} {{ core.files.main }} --ask-become-pass"
+
+run_tags() {
+  eval "ANSIBLE_ROLES_PATH={{core.dirs.custom_roles}}:{{core.dirs.core_roles}} ${ansible_command} -t ${@}" 
+  return $?
+}
+
+run_default() {
+  eval "ANSIBLE_ROLES_PATH={{core.dirs.custom_roles}}:{{core.dirs.core_roles}} ${ansible_command}" 
+  return $?
+<<<<<<< HEAD
+=======
+}
+
+run_add_role() {
+  name=$1
+  eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t add_role --extra-vars \"{\"add_role\": { \"name\": $name }}"\" 
+  return $?
+>>>>>>> backup
+}
+
+# Function to handle options and arguments
+handle_options() {
+
+  if [ $# -eq 0 ]; then
+	run_default
+	return $?
+  fi
+
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -h | --help)
+        usage
+        return 0
+        ;;
+      -v | --verbose)
+        verbose_mode=true
+        ;;
+      -t | --tags)
+		shift
+        run_tags "${@}"
+		return $?
+        ;;
+<<<<<<< HEAD
+=======
+	  -a | --add)
+		shift
+		run_add_role "${@}"
+		return $?
+		;;
+>>>>>>> backup
+      -d | --default)
+		shift
+        run_default "${@}"
+		return $?
+        ;;
+      *)
+        echo "Invalid option: $1" >&2
+        usage
+        return 1
+        ;;
+    esac
+    shift
+  done
+}
+
+# Main script execution
+handle_options "${@}"
+exit $?

@@ -1,0 +1,22 @@
+--- 
+
+packages:
+  - aptitude
+  - ansible
+  - libgtk-4-dev
+  - wl-clipboard
+  - build-essential
+  - stow
+  - make
+  - curl
+  - wget
+  - htop
+  - jq
+  - ripgrep
+  - libfuse2 
+  - meld
+  - npm
+  - python3-venv
+  - composer
+remove_packages:
+  - gnome-shell-extension-ubuntu-dock

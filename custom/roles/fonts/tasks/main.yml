@@ -1,0 +1,26 @@
+---
+
+- name: Check fonts directory
+  ansible.builtin.stat:
+    path: "{{ home }}/.fonts"
+  register: p
+
+- name: Create fonts directory
+  ansible.builtin.file:
+    path: "{{ home }}/.fonts"
+    state: directory
+  when: p.stat.exists == false
+
+- name: Download fonts
+  ansible.builtin.unarchive:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip
+    dest: "{{ home }}/.fonts/"
+    remote_src: yes
+  when: p.stat.exists == false
+
+- name: Download fonts symbols
+  ansible.builtin.unarchive:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
+    dest: "{{ home }}/.fonts/"
+    remote_src: yes
+  when: p.stat.exists == false

@@ -1,0 +1,38 @@
+---
+home: "{{ ansible_env.HOME }}"
+my: "{{ home }}/.my"
+
+core:
+  settings:
+    host: "localhost"
+
+  dirs:
+    bin: "{{ my }}/bin"
+    local: "{{ my }}/local"
+
+    dotfiles: "{{ my }}/dotfiles"
+    custom: "{{ my }}/dotfiles/custom"
+    custom_roles: "{{ my }}/dotfiles/custom/roles"
+
+    vars: "{{ my }}/dotfiles/core/vars"
+    core: "{{ my }}/dotfiles/core"
+    core_roles: "{{ my }}/dotfiles/core/roles"
+
+    init: "{{ my }}/init"
+    init_d: "{{ my }}/init/init.d"
+    custom_d: "{{ my }}/init/custom.d"
+
+    cache: "{{ home }}/.cache/my"
+
+  files:
+    inventory: "{{ my }}/dotfiles/core/inventory"
+    main: "{{ my }}/dotfiles/core/main.yml"
+    init: "{{ my }}/init/init.sh"
+
+    generated:
+      tags: "{{ home }}/.cache/my/tags.yml"
+
+  git:
+    name: "dotfiles"
+    repository: "git@github.com:waiq/dotfiles.git"
+    version: "main"

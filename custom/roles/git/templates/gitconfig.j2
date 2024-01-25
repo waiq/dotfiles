@@ -1,0 +1,21 @@
+[user]
+  name = {{ custom.git.name }}
+  email = {{ custom.git.email }}
+
+[alias]
+  co = checkout
+  br = branch
+  ci = commit
+  st = status
+
+[core]
+  excludesFile = "{{ home }}/.gitignore"
+
+[diff]
+  tool = meld
+
+[difftool]
+  prompt = false
+
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"

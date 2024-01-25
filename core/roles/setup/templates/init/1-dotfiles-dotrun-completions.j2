@@ -1,0 +1,53 @@
+#!/bin/bash
+
+_exists() {
+    local value=${1}
+    shift
+    local list=(${@})
+    for i in ${list[@]} ; do
+      if [[ -z $i ]]; then
+        continue
+      fi 
+      if [[ $i == ${value} ]]; then
+        return 0
+      fi
+    done
+  return 1
+}
+
+_list_roles() {
+  local cur=(${@})
+  local roles=()
+  for path in "$(find {{ core.dirs.custom }} -name roles -type d)" ; do
+    for d in $path/* ; do
+      name="$(basename "$d")"
+      _exists "${name}" "${cur[@]}"
+      if [[ $? -eq 0 ]]; then
+        continue
+      fi
+      roles+=("$name")
+    done
+  done
+  echo "${roles[*]}"
+}
+
+_dotrun_completions() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local flag="${COMP_WORDS[1]}"
+  local opts="--help --verbose --tags --default"
+
+ 	if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
+ 		COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+ 		return 0
+ 	fi
+
+  case "${flag}" in
+    -t | --tags ) 
+      COMPREPLY=( $(compgen -W "$(_list_roles ${COMP_WORDS[@]:2})" -- "$cur"))
+    ;;
+    *)
+      echo "${flag}"
+  esac
+}
+
+complete -F _dotrun_completions dotrun

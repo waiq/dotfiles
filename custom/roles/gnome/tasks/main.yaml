@@ -1,0 +1,7 @@
+---
+# Gnome terminal theme
+- name: Install catppuccin theme for gnome terminal
+  ansible.builtin.raw: "curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.2.0/install.py | python3 -"
+# - name: Setup Gnome keyboard shortcuts
+# ansible.builtin.shell:
+# dconf load '/org/gnome/desktop/wm/keybindings/' < "{{ core.dirs.custom }}/roles/gnome/files/keyboard.dconf"

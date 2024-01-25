@@ -1,0 +1,9 @@
+---
+# rename to main.yml
+# don't forget to restart terminal after.
+# check that the global git config don't oberride the local
+
+custom:
+  git:
+    name: ""
+    email: ""

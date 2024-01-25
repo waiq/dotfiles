@@ -1,0 +1,20 @@
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+plugins=(
+  zsh-256color
+  git
+  dotenv
+  docker
+  zsh-autosuggestions
+  zsh-vi-mode
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# my dotfiles stuff
+autoload bashcompinit
+bashcompinit
+
+source "{{ core.files.init }}"
