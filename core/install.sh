@@ -5,7 +5,7 @@ set -e
 ansible_version="2.14.2"
 
 # ansible config files
-install_yml="$(dirname "$0")/core.yml"
+install_yml="$(dirname "$0")/main.yml"
 inventory="$(dirname "$0")/inventory"
 requirements="$(dirname "$0")/requirements.yml"
 
@@ -27,8 +27,8 @@ fi
 ansible-galaxy install -r $requirements
 
 if ! [ -f "$install_yml" ]; then
-  echo "install.yml not found"
-  exit 1
+ echo "install.yml not found"
+ exit 1
 fi
 
 if ! [ -f "$inventory" ]; then

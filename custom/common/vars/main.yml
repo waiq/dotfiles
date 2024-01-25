@@ -1,3 +1,0 @@
----
-include_vars:
-  - ../../../core/vars/main.yml

@@ -11,14 +11,13 @@
     - "{{ core.dirs.init}}"
     - "{{ core.dirs.init_d }}"
     - "{{ core.dirs.custom_d }}"
-    - "{{ core.dirs.cache }}"
 
 - name: Checkout dotfiles
   ansible.builtin.git:
-    repo: "git@github.com:waiq/dotfiles.git"
+    repo: "{{ core.git.repository }}"
     dest: "{{ core.dirs.dotfiles }}"
     update: yes
-    version: "{{ core.version }}"
+    version: "{{ core.git.version }}"
   when: install.git_pull == true
 
 - name: Set dotfiles github name
@@ -41,9 +40,9 @@
     dest: "{{ core.dirs.init }}/init.sh"
 
 - name: Set permissions on init.sh
-  ansible.builtin.file: 
+  ansible.builtin.file:
     dest: "{{ core.dirs.init }}/init.sh"
-    mode: u=rwx,g=rx,o=rx     
+    mode: u=rwx,g=rx,o=rx
 
 - name: Setup init folder
   ansible.builtin.template:
@@ -51,9 +50,9 @@
     dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
 
 - name: Set execution mode on dotrun
-  ansible.builtin.file: 
+  ansible.builtin.file:
     dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
-    mode: u=rw,g=r,o=r     
+    mode: u=rw,g=r,o=r
 
 - name: Setup dotrun completions
   ansible.builtin.template:
@@ -61,9 +60,9 @@
     dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
 
 - name: Set execution mode on dotrun
-  ansible.builtin.file: 
+  ansible.builtin.file:
     dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
-    mode: u=rw,g=r,o=r     
+    mode: u=rw,g=r,o=r
 
 - name: Setup bin file dotrun
   ansible.builtin.template:
@@ -71,6 +70,6 @@
     dest: "{{ core.dirs.bin }}/dotrun"
 
 - name: Set execution mode on dotrun
-  ansible.builtin.file: 
+  ansible.builtin.file:
     dest: "{{ core.dirs.bin }}/dotrun"
     mode: a+x
