@@ -1,1 +1,0 @@
-/home/martin.olofsson@fnox.it/.my/dotfiles/roles/setup/files/env/load_env.sh
