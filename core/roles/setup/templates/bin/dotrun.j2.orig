@@ -35,12 +35,15 @@ run_tags() {
 run_default() {
   eval "ANSIBLE_ROLES_PATH={{core.dirs.custom_roles}}:{{core.dirs.core_roles}} ${ansible_command}" 
   return $?
+<<<<<<< HEAD
+=======
 }
 
 run_add_role() {
   name=$1
   eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t add_role --extra-vars \"{\"add_role\": { \"name\": $name }}"\" 
   return $?
+>>>>>>> backup
 }
 
 # Function to handle options and arguments
@@ -65,11 +68,14 @@ handle_options() {
         run_tags "${@}"
 		return $?
         ;;
+<<<<<<< HEAD
+=======
 	  -a | --add)
 		shift
 		run_add_role "${@}"
 		return $?
 		;;
+>>>>>>> backup
       -d | --default)
 		shift
         run_default "${@}"
@@ -83,7 +89,6 @@ handle_options() {
     esac
     shift
   done
-  usage
 }
 
 # Main script execution

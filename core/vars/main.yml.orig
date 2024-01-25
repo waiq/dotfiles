@@ -15,24 +15,28 @@ core:
     custom_roles: "{{ my }}/dotfiles/custom/roles"
 
     vars: "{{ my }}/dotfiles/core/vars"
+<<<<<<< HEAD
+    core: "{{ my }}/core"
+    core_roles: "{{ my }}/core/roles"
+=======
     core: "{{ my }}/dotfiles/core"
     core_roles: "{{ my }}/dotfiles/core/roles"
+>>>>>>> backup
 
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
     custom_d: "{{ my }}/init/custom.d"
-
-    cache: "{{ home }}/.cache/my"
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"
     main: "{{ my }}/dotfiles/core/main.yml"
     init: "{{ my }}/init/init.sh"
 
-    generated:
-      tags: "{{ home }}/.cache/my/tags.yml"
-
   git:
     name: "dotfiles"
     repository: "git@github.com:waiq/dotfiles.git"
+<<<<<<< HEAD
+    version: "wip-ansible"
+=======
     version: "main"
+>>>>>>> backup
