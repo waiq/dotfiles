@@ -31,18 +31,10 @@ _list_roles() {
   echo "${roles[*]}"
 }
 
-_list_tasks() {
-  echo "not implimented"
-}
-
-_list_tags() {
-  echo "not implimented"
-}
-
 _dotrun_completions() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local flag="${COMP_WORDS[1]}"
-  local opts="--help --verbose --roles --tags --tasks --update"
+  local opts="--help --verbose --tags --default"
 
  	if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
  		COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
@@ -50,14 +42,8 @@ _dotrun_completions() {
  	fi
 
   case "${flag}" in
-    -r | --roles ) 
+    -t | --tags ) 
       COMPREPLY=( $(compgen -W "$(_list_roles ${COMP_WORDS[@]:2})" -- "$cur"))
-    ;;
-    -t | --tags )
-      COMPREPLY=( $(compgen -W "$(_list_tags)" -- "$cur"))
-    ;;
-    --tasks ) 
-      COMPREPLY=( $(compgen -W "$(_list_tasks)" -- "$cur"))
     ;;
     *)
       echo "${flag}"
