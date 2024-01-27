@@ -1,27 +1,4 @@
 ---
-- name: Upgrade apt
-  ansible.builtin.apt:
-    update_cache: yes
-    upgrade: yes
-  become: yes
-  become_user: root
-  become_method: sudo
-
-- name: Install apt packages
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    update_cache: yes
-  become: yes
-  become_user: root
-  become_method: sudo
-  loop: "{{ packages }}"
-
-- name: Remove apt packages
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    update_cache: yes
-    state: absent
-  become: yes
-  become_user: root
-  become_method: sudo
-  loop: "{{ remove_packages }}"
+- name: Ubuntu tasks
+  ansible.builtin.import_tasks: ubuntu.yml
+  when: ansible_os_family == 'Debian'

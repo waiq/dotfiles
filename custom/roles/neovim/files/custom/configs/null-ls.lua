@@ -12,6 +12,7 @@ local sources = {
 	formatting.golines,
 	formatting.google_java_format,
 
+	lint.ansiblelint,
 	lint.codespell,
 }
 

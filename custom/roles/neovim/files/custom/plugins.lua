@@ -62,8 +62,6 @@ local plugins = {
 		end,
 	},
 
-<<<<<<< HEAD:stow/nvim/.config/nvim/lua/custom/plugins.lua
-=======
 	{
 		"leoluz/nvim-dap-go",
 		ft = "go",
@@ -74,7 +72,6 @@ local plugins = {
 		end,
 	},
 
->>>>>>> wip-ansible:custom/roles/neovim/files/custom/plugins.lua
 	{
 		-- dont use the dap or lspconfig,
 		-- use the jdtls own setup

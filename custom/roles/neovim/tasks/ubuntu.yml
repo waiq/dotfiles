@@ -1,0 +1,30 @@
+---
+
+- name: Install neovim
+  ansible.builtin.get_url:
+    url: "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+    dest: "{{ core.dirs.bin }}/nvim"
+    mode: '0755'
+
+- name: Install NVChad
+  ansible.builtin.git:
+    repo: 'https://github.com/NvChad/NvChad'
+    dest: "{{ custom.dirs.config }}/nvim"
+    depth: 1
+    update: no
+
+- name: Link custom folder
+  ansible.builtin.file:
+    src: "{{ core.dirs.custom }}/roles/neovim/files/custom"
+    dest: "{{ custom.dirs.config }}/nvim/lua/custom"
+    state: link
+
+- name: Create neovim init_d files
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/neovim/templates/init_d/10-nvim.j2"
+    dest: "{{ core.dirs.init_d }}/10-nvim.sh"
+
+- name: Create neovim custom_d files
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/neovim/templates/custom_d/10-nvim.j2"
+    dest: "{{ core.dirs.custom_d }}/10-nvim.sh"

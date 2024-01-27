@@ -1,5 +1,12 @@
 ---
+# list of default roles
 default_roles:
   - apt
   - tmux
   - fonts
+
+# custom variables
+custom:
+  git:
+    name: ""
+    email: ""

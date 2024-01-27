@@ -1,0 +1,11 @@
+---
+- name: Install golang packages
+  ansible.builtin.command:
+    cmd: "go install {{ item.package }}"
+    creates: "{{ golang.dirs.bin }}/item.cmd"
+  register: go_install
+  changed_when: go_install.rc != 0
+  loop_control:
+    label: "{{ item.package }}"
+  loop: "{{ golang.packages }}"
+  when: golang.packages is defined

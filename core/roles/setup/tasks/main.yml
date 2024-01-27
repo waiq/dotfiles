@@ -1,24 +1,26 @@
 ---
 - name: Create folders
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: "0755"
   loop:
     - "{{ my }}"
     - "{{ core.dirs.bin }}"
     - "{{ core.dirs.local }}"
     - "{{ core.dirs.dotfiles }}"
-    - "{{ core.dirs.init}}"
+    - "{{ core.dirs.init }}"
     - "{{ core.dirs.init_d }}"
     - "{{ core.dirs.custom_d }}"
+    - "{{ core.dirs.cache }}"
 
 - name: Checkout dotfiles
   ansible.builtin.git:
     repo: "{{ core.git.repository }}"
     dest: "{{ core.dirs.dotfiles }}"
-    update: yes
+    update: true
     version: "{{ core.git.version }}"
-  when: install.git_pull == true
+  when: install.git_pull
 
 - name: Set dotfiles github name
   community.general.git_config:
@@ -38,38 +40,22 @@
   ansible.builtin.template:
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/init.j2"
     dest: "{{ core.dirs.init }}/init.sh"
-
-- name: Set permissions on init.sh
-  ansible.builtin.file:
-    dest: "{{ core.dirs.init }}/init.sh"
-    mode: u=rwx,g=rx,o=rx
+    mode: "0755"
 
 - name: Setup init folder
   ansible.builtin.template:
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-env.j2"
     dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
-
-- name: Set execution mode on dotrun
-  ansible.builtin.file:
-    dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
-    mode: u=rw,g=r,o=r
+    mode: "0755"
 
 - name: Setup dotrun completions
   ansible.builtin.template:
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-dotrun-completions.j2"
     dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
-
-- name: Set execution mode on dotrun
-  ansible.builtin.file:
-    dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
-    mode: u=rw,g=r,o=r
+    mode: "0755"
 
 - name: Setup bin file dotrun
   ansible.builtin.template:
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotrun.j2"
     dest: "{{ core.dirs.bin }}/dotrun"
-
-- name: Set execution mode on dotrun
-  ansible.builtin.file:
-    dest: "{{ core.dirs.bin }}/dotrun"
-    mode: a+x
+    mode: "0755"

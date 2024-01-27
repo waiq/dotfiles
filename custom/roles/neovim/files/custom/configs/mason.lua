@@ -1,6 +1,8 @@
 return {
 	ensure_installed = {
 		"lua-language-server",
+		"ansible-language-server",
+		"ansible-lint",
 		"stylua",
 		"codespell",
 		"bash-language-server",

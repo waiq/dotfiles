@@ -1,0 +1,32 @@
+---
+- name: Install git
+  ansible.builtin.apt:
+    name: git
+    state: present
+  become: true
+  become_user: root
+  become_method: ansible.builtin.sudo
+
+- name: Check if gitconfig exists
+  ansible.builtin.stat:
+    path: "{{ home }}/.gitconfig"
+  register: gitconfig_stat
+
+- name: Back up gitconfig
+  ansible.builtin.copy:
+    src: "{{ home }}/.gitconfig"
+    dest: "{{ home }}/.gitconfig.bak"
+    mode: "0644"
+  when: gitconfig_stat.stat.exists
+
+- name: Remove old gitconfig
+  ansible.builtin.file:
+    path: "{{ home }}/.gitconfig"
+    state: absent
+  when: gitconfig_stat.stat.exists
+
+- name: Make sure gitconfig is up to date
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/git/templates/gitconfig.j2"
+    dest: "{{ home }}/.gitconfig"
+    mode: "0644"

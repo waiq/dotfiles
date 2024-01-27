@@ -1,6 +1,7 @@
 ---
 - name: Check parameter
-  ansible.builtin.fail: msg="Missing role name"
+  ansible.builtin.fail:
+    msg: "Missing role name"
   when: add_role.name | length == 0
 
 - name: Set fact
@@ -17,7 +18,8 @@
     msg: "{{ new_roles_path }}"
 
 - name: Validate path
-  ansible.builtin.fail: msg="folder exists"
+  ansible.builtin.fail:
+    msg: "folder exists"
   when: p.stat.isdir is not undefined
 
 - name: Create path
@@ -42,8 +44,10 @@
   ansible.builtin.template:
     src: "{{ core.dirs.core_roles }}/add_role/templates/main.j2"
     dest: "{{ new_roles_path }}/tasks/main.yml"
+    mode: "0644"
 
 - name: Create ubuntu.yml
   ansible.builtin.template:
     src: "{{ core.dirs.core_roles }}/add_role/templates/ubuntu.j2"
     dest: "{{ new_roles_path }}/tasks/ubuntu.yml"
+    mode: "0644"

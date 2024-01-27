@@ -1,30 +1,4 @@
 ---
-- name: Install git
-  ansible.builtin.apt:
-    name: git
-    state: present
-  become: yes
-  become_user: root
-  become_method: sudo
-
-- name: Check if gitconfig exists
-  ansible.builtin.stat:
-    path: "{{ home }}/.gitconfig"
-  register: gitconfig_stat
-
-- name: Back up gitconfig
-  ansible.builtin.copy:
-    src: "{{ home }}/.gitconfig"
-    dest: "{{ home }}/.gitconfig.bak"
-  when: gitconfig_stat.stat.exists
-
-- name: Remove old gitconfig
-  ansible.builtin.file:
-    path: "{{ home }}/.gitconfig"
-    state: absent
-  when: gitconfig_stat.stat.exists
-
-- name: Make sure gitconfig is up to date
-  ansible.builtin.template:
-    src: "{{ core.dirs.custom }}/roles/git/templates/gitconfig.j2"
-    dest: "{{ home }}/.gitconfig"
+- name: Ubuntu tasks
+  ansible.builtin.import_tasks: ubuntu.yml
+  when: ansible_os_family == 'Debian'

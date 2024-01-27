@@ -7,6 +7,8 @@ core:
     host: "localhost"
 
   dirs:
+    cache: "{{ home }}/.cache/my"
+
     bin: "{{ my }}/bin"
     local: "{{ my }}/local"
 
@@ -21,8 +23,6 @@ core:
     init: "{{ my }}/init"
     init_d: "{{ my }}/init/init.d"
     custom_d: "{{ my }}/init/custom.d"
-
-    cache: "{{ home }}/.cache/my"
 
   files:
     inventory: "{{ my }}/dotfiles/core/inventory"

@@ -34,15 +34,9 @@ M.general = {
 }
 
 M.oil = {
-<<<<<<< HEAD:stow/nvim/.config/nvim/lua/custom/mappings.lua
-  n = {
-	["-"] = {"<CMD>Oil<CR>", "Open parent directory"},
-  },
-=======
 	n = {
 		["-"] = { "<CMD>Oil<CR>", "Open parent directory" },
 	},
->>>>>>> wip-ansible:custom/roles/neovim/files/custom/mappings.lua
 }
 
 M.harpoon = {
