@@ -3,6 +3,7 @@ return {
 		"lua-language-server",
 		"ansible-language-server",
 		"ansible-lint",
+		"spectral-language-server",
 		"stylua",
 		"codespell",
 		"bash-language-server",
