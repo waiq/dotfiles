@@ -3,6 +3,7 @@ return {
 		"vim",
 		"lua",
 		"html",
+		"http",
 		"php",
 		"json",
 		"go",

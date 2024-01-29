@@ -27,8 +27,11 @@ local servers = {
 	"phpactor",
 	"bashls",
 	"sqlls",
+<<<<<<< Updated upstream
+	"ansiblels",
+=======
 	"spectral",
-    "ansiblels",
+>>>>>>> Stashed changes
 }
 
 for _, lsp in ipairs(servers) do

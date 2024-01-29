@@ -1,7 +1,7 @@
---- 
-
+---
 packages:
   - aptitude
+  - tidy
   - ansible
   - libgtk-4-dev
   - wl-clipboard
@@ -13,7 +13,7 @@ packages:
   - htop
   - jq
   - ripgrep
-  - libfuse2 
+  - libfuse2
   - meld
   - npm
   - python3-venv

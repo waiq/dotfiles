@@ -11,9 +11,11 @@ local sources = {
 	formatting.goimports,
 	formatting.golines,
 	formatting.google_java_format,
+	formatting.xmlformat,
 
 	lint.ansiblelint,
 	lint.codespell,
+	lint.spectral,
 }
 
 null_ls.setup({

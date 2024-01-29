@@ -77,7 +77,7 @@ local plugins = {
 		-- use the jdtls own setup
 		"mfussenegger/nvim-jdtls",
 		dependencies = { "mfussenegger/nvim-dap", "neovim/nvim-lspconfig" },
-		event = "VeryLazy",
+		ft = "java",
 		config = function()
 			require("custom.configs.java")
 		end,

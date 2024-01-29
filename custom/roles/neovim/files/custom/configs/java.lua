@@ -7,13 +7,13 @@ end
 local mason_registry = require("mason-registry")
 
 if not mason_registry.is_installed("java-debug-adapter") then
-  vim.notify("java-debug-adapter not found, install with `:Mason install java-debug-adapter`")
-  return
+	vim.notify("java-debug-adapter not found, install with `:Mason install java-debug-adapter`")
+	return
 end
 
 if not mason_registry.is_installed("java-test") then
-  vim.notify("java-test not found, install with `:Mason install java-test`")
-  return
+	vim.notify("java-test not found, install with `:Mason install java-test`")
+	return
 end
 
 local lspconfig = require("plugins.configs.lspconfig")
@@ -35,9 +35,9 @@ vim.list_extend(
 local java_test_path = mason_registry.get_package("java-test"):get_install_path()
 vim.list_extend(bundles, vim.split(vim.fn.glob(java_test_path .. "/extension/server/*.jar", 1), "\n"))
 
--- note: how to fix java_test Mason Issue 
+-- note: how to fix java_test Mason Issue
 -- clone https://github.com/microsoft/vscode-java-test into the mason install java-test path
--- run: 
+-- run:
 -- npm i
 -- npm run build-plugin
 --
@@ -196,6 +196,10 @@ local config = {
 					{
 						name = "JavaSE-11",
 						path = "~/.sdkman/candidates/java/11.0.12-open",
+					},
+					{
+						name = "JavaSE-21",
+						path = "~/.sdkman/candidates/java/21.ea.35-open",
 					},
 				},
 			},
