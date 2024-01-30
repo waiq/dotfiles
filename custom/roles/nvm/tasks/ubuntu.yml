@@ -1,0 +1,30 @@
+---
+- name: "Install nvm"
+  ansible.builtin.debug:
+    msg: "nvm"
+
+- name: Check for nvm installation
+  ansible.builtin.stat:
+    path: "{{ home }}/.nvm"
+  register: nvm
+
+- name: Install nvm
+  block:
+    - name: Get nvm latest tag
+      community.general.github_release:
+        user: nvm-sh
+        repo: nvm
+        action: latest_release
+      register: nvm_latest
+
+    - name: Installing version
+      ansible.builtin.debug:
+        msg: "{{ nvm_latest[tag] }}"
+
+    - name: Install nvm
+      ansible.builtin.shell: > 
+        PROFILE=/dev/null bash -curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest[tag] }}/install.sh | bash"
+      args:
+        creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+  when: not nvm.stat.exists

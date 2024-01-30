@@ -10,3 +10,6 @@ custom:
   git:
     name: ""
     email: ""
+
+  dirs:
+    config: "{{ home }}/.config"

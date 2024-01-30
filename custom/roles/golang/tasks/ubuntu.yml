@@ -71,7 +71,6 @@
       ansible.builtin.file:
         path: "/tmp/{{ go_file }}.tar.gz"
         state: absent
-      become: true
 
     - name: "Golang downloading goLang release"
       ansible.builtin.get_url:
@@ -86,7 +85,6 @@
       ansible.builtin.file:
         path: "/tmp/go"
         state: absent
-      become: true
 
     - name: "Golang extract go tar file"
       ansible.builtin.unarchive:
@@ -95,9 +93,8 @@
 
     - name: "Golang remove any current Go installations"
       ansible.builtin.file:
-        path: "{{ golang.dirs.root }}"
+        path: "{{ golang.dirs.install_path }}/go"
         state: absent
-      become: true
 
     - name: "Golang install Go"
       ansible.builtin.copy:
@@ -106,7 +103,6 @@
         dest: "{{ golang.dirs.install_path }}"
         mode: preserve
         force: true
-      become: true
       notify:
         - Remove extracted go directory
 

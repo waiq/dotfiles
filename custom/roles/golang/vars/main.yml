@@ -2,5 +2,4 @@
 golang:
   dirs:
     install_path: "{{ core.dirs.local }}"
-    root: "{{ core.dirs.local }}/go"
     bin: "{{ core.dirs.local }}/go/bin"

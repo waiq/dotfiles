@@ -59,3 +59,8 @@
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotrun.j2"
     dest: "{{ core.dirs.bin }}/dotrun"
     mode: "0755"
+
+- name: Install Python dependencies
+  ansible.builtin.pip:
+    name:
+      - github3.py
