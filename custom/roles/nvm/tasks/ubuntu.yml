@@ -22,9 +22,14 @@
         msg: "{{ nvm_latest[tag] }}"
 
     - name: Install nvm
-      ansible.builtin.shell: > 
+      ansible.builtin.shell: >
         PROFILE=/dev/null bash -curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest[tag] }}/install.sh | bash"
       args:
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
+    - name: Setup init for sdkman
+      ansible.builtin.template:
+        src: "{{ core.dirs.custom }}/roles/nvm/templates/init_d/10-nvm.j2"
+        dest: "{{ core.dirs.init_d }}/10-nvm.sh"
 
   when: not nvm.stat.exists
