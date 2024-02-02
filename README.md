@@ -15,3 +15,28 @@ been installed.
 
 The 'core' folder contains tooling on how to maintaining the dotfiles itself.
 This 'customs' folder contains the playbooks for setting upp the system.
+
+## Install (WIP)
+
+TODO: add a install that can be used by curl/wget
+
+For now: clone and run
+
+```
+$> core/install.sh
+```
+
+## Command
+
+The dotfiles will be controlled by the bash script dotrun
+
+```
+$> dotrun --help
+```
+
+By running the command without any parameters. It will ty to run all roles
+defined under: 'custom/common/progile.yml'
+
+```
+$> dotrun
+```
