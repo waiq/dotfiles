@@ -57,7 +57,6 @@ M.harpoon = {
 }
 
 M.dap = {
-	plugin = true,
 	n = {
 		["<leader>dc"] = {
 			function()

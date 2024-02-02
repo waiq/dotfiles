@@ -58,4 +58,4 @@
         dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-vi-mode"
         update: yes
 
-  when: not oh_my_zsh.stat.exits
+  when: not oh_my_zsh.stat.exists

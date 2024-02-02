@@ -4,14 +4,18 @@
     path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
   register: p
 
-# Gnome terminal theme
-- name: Install catppuccin theme for gnome terminal
-  ansible.builtin.raw: "curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.2.0/install.py | python3 -"
-  changed_when: true
-  when: not p.exists
+- name: "Install terminal theme"
+  block:
+    # Gnome terminal theme
+    - name: Install catppuccin theme for gnome terminal
+      ansible.builtin.raw: "curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.2.0/install.py | python3 -"
+      changed_when: true
+      when: not p.stat.exists
 
-- name: Add cache file
-  ansible.builtin.file:
-    path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
-    state: "file"
-    mode: "0644"
+    - name: Add cache file
+      ansible.builtin.file:
+        path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
+        state: "touch"
+        mode: "0644"
+
+  when: not p.stat.exists

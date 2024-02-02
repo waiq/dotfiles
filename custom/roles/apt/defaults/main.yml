@@ -15,7 +15,6 @@ packages:
   - ripgrep
   - libfuse2
   - meld
-  - npm
   - python3-venv
   - composer
 remove_packages:

@@ -25,5 +25,6 @@ return {
 		"java-debug-adapter",
 		"java-test",
 		"jdtls",
+		"checkmake",
 	},
 }

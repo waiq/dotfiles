@@ -16,6 +16,7 @@ local sources = {
 	lint.ansiblelint,
 	lint.codespell,
 	lint.spectral,
+	lint.checkmake,
 }
 
 null_ls.setup({

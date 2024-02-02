@@ -23,4 +23,5 @@
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
         dest: "{{ home }}/.fonts/"
         remote_src: true
+
   when: not p.stat.exists
