@@ -9,27 +9,28 @@
   register: nvm
 
 - name: Install nvm
+  when: not nvm.stat.exists
   block:
-    - name: Get nvm latest tag
-      community.general.github_release:
-        user: nvm-sh
-        repo: nvm
-        action: latest_release
-      register: nvm_latest
+
+    - name: Get latest version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
+        return_content: true
+      register: json_reponse
 
     - name: Installing version
       ansible.builtin.debug:
-        msg: "{{ nvm_latest[tag] }}"
+        msg: "{{ json_reponse.json.tag_name }}"
 
     - name: Install nvm
       ansible.builtin.shell: >
-        PROFILE=/dev/null bash -curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_latest[tag] }}/install.sh | bash"
+        PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/"{{ json_reponse.json.tag_name }}"/install.sh | bash'
       args:
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
-    - name: Setup init for sdkman
+    - name: Setup init for nvm
       ansible.builtin.template:
         src: "{{ core.dirs.custom }}/roles/nvm/templates/init_d/10-nvm.j2"
         dest: "{{ core.dirs.init_d }}/10-nvm.sh"
+        mode: '0644'
 
-  when: not nvm.stat.exists

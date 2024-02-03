@@ -21,8 +21,9 @@ usage() {
  echo "Options:"
  echo " -h, --help       Display this help message"
  echo " -v, --verbose    Enable verbose mode"
- echo " -t, --tags       run tag"
- echo " -d, --default    run all default roles"
+ echo " -t, --tags       Run tag"
+ echo " -d, --default    Run all default roles"
+ echo " -u, --update     Update dotfiles"
 }
 
 ansible_command="ansible-playbook -i {{ core.files.inventory }} {{ core.files.main }} --ask-become-pass"
@@ -40,6 +41,11 @@ run_default() {
 run_add_role() {
   name=$1
   eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t add_role --extra-vars \"{\"add_role\": { \"name\": $name }}"\" 
+  return $?
+}
+
+run_update() {
+  eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t update --extra-vars \"{\"install\": { \"git_pull\": true }}"\" 
   return $?
 }
 
@@ -73,6 +79,11 @@ handle_options() {
       -d | --default)
 		shift
         run_default "${@}"
+		return $?
+        ;;
+      -u | --update)
+		shift
+        run_update "${@}"
 		return $?
         ;;
       *)

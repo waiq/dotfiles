@@ -11,6 +11,8 @@ requirements="$(dirname "$0")/requirements.yml"
 
 if ! [ -x "$(command -v ansible)" ]; then
   sudo apt install ansible "$anible_verison" -y
+  sudo apt install python3 -y
+  sudo apt install pip3 -y
 fi
 
 if ! [ -x "$(command -v ansible-playbook)" ]; then
