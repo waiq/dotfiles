@@ -1,0 +1,22 @@
+---
+- name: Checkout dotfiles
+  ansible.builtin.git:
+    repo: "{{ core.git.repository }}"
+    dest: "{{ core.dirs.dotfiles }}"
+    update: true
+    version: "{{ core.git.version }}"
+  when: install.git_pull
+
+- name: Set dotfiles github name
+  community.general.git_config:
+    name: user.name
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "{{ core.git.name }}"
+
+- name: Set dotfiles github email
+  community.general.git_config:
+    name: user.email
+    repo: "{{ core.dirs.dotfiles }}"
+    scope: local
+    value: "<>"
