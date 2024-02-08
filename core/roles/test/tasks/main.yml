@@ -1,0 +1,4 @@
+---
+
+- name: Create test container
+  ansible.builtin.docker_stack::
