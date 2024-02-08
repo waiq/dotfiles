@@ -28,7 +28,8 @@ local servers = {
 	"bashls",
 	"sqlls",
 	"spectral",
-    "ansiblels",
+	"ansiblels",
+	"dockerls",
 }
 
 for _, lsp in ipairs(servers) do
