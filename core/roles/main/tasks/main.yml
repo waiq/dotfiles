@@ -3,6 +3,8 @@
   ansible.builtin.include_vars:
     dir: "{{ core.dirs.custom }}/common/vars"
     files_matching: profile.yml
+  tags:
+    - always
 
 - name: Set roles
   ansible.builtin.set_fact:

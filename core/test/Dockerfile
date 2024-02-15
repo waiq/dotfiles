@@ -10,16 +10,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update package lists and install basic packages
 RUN apt-get update && \
     apt-get install -y tzdata && \
-	apt-get -y install sudo 
-
-RUN apt-get install -y git 
-
-VOLUME /app/data
-https://stackoverflow.com/questions/24738264/how-to-test-ansible-playbook-using-docker
-COPY "{{ core.dirs.dotfile }} { core.dirs.dotfile }}"
-
-# Set the working directory
-WORKDIR /app
+	apt-get -y install sudo && \
+	apt-get -y install python3-pip && \
+	apt-get install -y git
 
 # Specify the default command to run when the container starts
 CMD ["bash"]
