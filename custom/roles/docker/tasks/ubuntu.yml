@@ -30,12 +30,7 @@
 
 - name: Set user to docker group
   become: yes
-  ansible.builtin.shell: "usermod -aG docker $USER" 
-  args:
-    executable: /bin/bash
-
-- name: Update group in current session
-  become: no
-  ansible.builtin.shell: "newgrp docker" 
+  become_method: ansible.builtin.sudo
+  ansible.builtin.shell: "usermod -aG docker $USER"
   args:
     executable: /bin/bash
