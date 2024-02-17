@@ -1,8 +1,4 @@
 ---
-# TODO: run docker in userspace by default
-# CURRENT_UID=$(id -u):$(id -g) docker
-# command. add to alias,
-
 - name: Add Docker GPG apt Key
   ansible.builtin.apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
@@ -31,3 +27,15 @@
     update_cache: true
   become: true
   become_method: ansible.builtin.sudo
+
+- name: Set user to docker group
+  become: yes
+  ansible.builtin.shell: "usermod -aG docker $USER" 
+  args:
+    executable: /bin/bash
+
+- name: Update group in current session
+  become: no
+  ansible.builtin.shell: "newgrp docker" 
+  args:
+    executable: /bin/bash
