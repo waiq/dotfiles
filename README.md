@@ -35,7 +35,7 @@ $> dotrun --help
 ```
 
 By running the command without any parameters. It will ty to run all roles
-defined under: 'custom/common/progile.yml'
+defined under: 'custom/common/profile.yml'
 
 ```
 $> dotrun
