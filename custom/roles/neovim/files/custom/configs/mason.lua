@@ -12,6 +12,7 @@ return {
 		"css-lsp",
 		"gopls",
 		"golines",
+		"delve",
 		"goimports-reviser",
 		"prettier",
 		"sqlls",
