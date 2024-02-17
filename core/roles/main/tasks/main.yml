@@ -1,4 +1,11 @@
 ---
+- name: Check if Password is correct
+  ansible.builtin.command: echo "PW is correct"
+  become: true
+  run_once: true
+  tags:
+    - always
+
 - name: Load custom variables
   ansible.builtin.include_vars:
     dir: "{{ core.dirs.custom }}/common/vars"
