@@ -38,7 +38,7 @@ if ! [ -f "$inventory" ]; then
   exit 1
 fi
 
-ansible_playbook_command="ansible-playbook -i $inventory $install_yml"
+ansible_playbook_command="ansible-playbook -i $inventory $install_yml --ask-become-pass" 
 
 # Function to display script usage
 usage() {
