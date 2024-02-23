@@ -10,7 +10,7 @@ local sources = {
 	formatting.stylua,
 	formatting.goimports,
 	formatting.golines,
-	formatting.google_java_format,
+	-- formatting.google_java_format,
 	formatting.xmlformat,
 
 	lint.ansiblelint,
