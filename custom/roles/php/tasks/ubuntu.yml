@@ -1,0 +1,51 @@
+---
+- name: "Add PHP repo"
+  ansible.builtin.apt_repository:
+    repo: ppa:ondrej/php
+  become: true
+
+- name: "PHP setup init"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/php/templates/init_d/10-php.j2"
+    dest: "{{ core.dirs.init_d }}/10-php.sh"
+    mode: "0755"
+
+- name: "PHP install php 8.2 dependencies"
+  ansible.builtin.apt:
+    pkg:
+      - "php8.2"
+      - "php8.2-gd"
+      - "php8.2-redis"
+      - "php8.2-zip"
+      - "php8.2-curl"
+      - "php8.2-xdebug"
+      - "php8.2-pgsql"
+      - "php8.2-xml"
+      - "php8.2-pcov"
+      - "php8.2-yaml"
+    state: present
+  register: apt_result
+  become: true
+  until: apt_result is success
+  retries: 1
+  delay: 2
+
+- name: "PHP install php 8.3 dependencies"
+  ansible.builtin.apt:
+    pkg:
+      - "php8.3"
+      - "php8.3-gd"
+      - "php8.3-redis"
+      - "php8.3-zip"
+      - "php8.3-curl"
+      - "php8.3-xdebug"
+      - "php8.3-pgsql"
+      - "php8.3-xml"
+      - "php8.3-pcov"
+      - "php8.3-yaml"
+    state: present
+  register: apt_result
+  become: true
+  until: apt_result is success
+  retries: 1
+  delay: 2
