@@ -12,24 +12,21 @@
     path: "{{ home }}/.gitconfig"
   register: gitconfig
 
-- name: "Setup gitconfig if not present"
-  block:
-    - name: Back up gitconfig
-      ansible.builtin.copy:
-        src: "{{ home }}/.gitconfig"
-        dest: "{{ home }}/.gitconfig.bak"
-        mode: "0644"
-      when: gitconfig.stat.exists
+- name: Back up gitconfig
+  ansible.builtin.copy:
+    src: "{{ home }}/.gitconfig"
+    dest: "{{ home }}/.gitconfig.bak"
+    mode: "0644"
+  when: gitconfig.stat.exists
 
-    - name: Remove old gitconfig
-      ansible.builtin.file:
-        path: "{{ home }}/.gitconfig"
-        state: absent
-      when: gitconfig.stat.exists
+- name: Remove old gitconfig
+  ansible.builtin.file:
+    path: "{{ home }}/.gitconfig"
+    state: absent
+  when: gitconfig.stat.exists
 
-    - name: Make sure gitconfig is up to date
-      ansible.builtin.template:
-        src: "{{core.dirs.custom}}/roles/git/templates/gitconfig.j2"
-        dest: "{{ home }}/.gitconfig"
-        mode: "0644"
-  when: not gitconfig.stat.exists
+- name: Make sure gitconfig is up to date
+  ansible.builtin.template:
+    src: "{{core.dirs.custom}}/roles/git/templates/gitconfig.j2"
+    dest: "{{ home }}/.gitconfig"
+    mode: "0644"

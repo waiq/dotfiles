@@ -34,3 +34,9 @@
   ansible.builtin.shell: "usermod -aG docker $USER"
   args:
     executable: /bin/bash
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: docker
+    append: true
