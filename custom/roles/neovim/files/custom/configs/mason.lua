@@ -19,7 +19,7 @@ return {
 		"phpactor",
 		"phpstan",
 		"php-debug-adapter",
-		"remark-language-server",
+		"marksman",
 		"typescript-language-server",
 		"dockerfile-language-server",
 		"google-java-format",
