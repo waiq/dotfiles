@@ -95,6 +95,7 @@
       ansible.builtin.file:
         path: "{{ golang.dirs.install_path }}/go"
         state: absent
+      become: true
 
     - name: "Golang install Go"
       ansible.builtin.copy:
