@@ -40,3 +40,9 @@
     name: "{{ lookup('env', 'USER') }}"
     groups: docker
     append: true
+
+- name: Add docker custom commands
+  ansible.builtin.file:
+    src: "{{ core.dirs.custom }}/roles/docker/files/docker-swagger-ui.bash"
+    dest: "{{ core.dirs.bin }}/swagger-ui"
+    state: link
