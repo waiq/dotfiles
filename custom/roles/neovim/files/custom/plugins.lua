@@ -91,9 +91,22 @@ local plugins = {
 	},
 	{
 		"nvimtools/none-ls.nvim",
-		lazy = false,
+		event = "VeryLazy",
 		config = function()
 			require("custom.configs.null-ls")
+		end,
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		ft = {
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+			"html",
+		},
+		config = function()
+			require("nvim-ts-autotag").setup()
 		end,
 	},
 	{
@@ -112,7 +125,6 @@ local plugins = {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		lazy = false,
 		opts = function()
 			return require("custom.configs.treesitter")
 		end,
@@ -134,6 +146,9 @@ local plugins = {
 	{
 		"christoomey/vim-tmux-navigator",
 		lazy = false,
+	},
+	{
+		"github/copilot.vim",
 	},
 	{
 		"nvim-lua/plenary.nvim",

@@ -21,6 +21,8 @@ return {
 		"php-debug-adapter",
 		"marksman",
 		"typescript-language-server",
+		"tailwindcss-language-server",
+		"eslint-lsp",
 		"dockerfile-language-server",
 		"google-java-format",
 		"java-debug-adapter",

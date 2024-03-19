@@ -10,5 +10,9 @@ return {
 		"java",
 		"org",
 		"bash",
+		"javascript",
+		"typescript",
+		"tsx",
+		"css",
 	},
 }

@@ -24,6 +24,8 @@ lspconfig.gopls.setup({
 -- generic servers
 local servers = {
 	"tsserver",
+	"tailwindcss",
+	"eslint",
 	"phpactor",
 	"bashls",
 	"sqlls",
@@ -31,6 +33,7 @@ local servers = {
 	"ansiblels",
 	"dockerls",
 	"marksman",
+	"cssls",
 }
 
 for _, lsp in ipairs(servers) do
