@@ -1,0 +1,18 @@
+---
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: "Install Krita"
+  community.general.flatpak:
+    name: org.kde.krita
+    state: present
+
+- name: "Krita setup init"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/krita/templates/init_d/10-krita.j2"
+    dest: "{{ core.dirs.init_d }}/10-krita.sh"
+    mode: "0755"

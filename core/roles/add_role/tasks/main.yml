@@ -34,6 +34,24 @@
     state: directory
     mode: "0775"
 
+- name: Create path templates
+  ansible.builtin.file:
+    path: "{{ new_roles_path }}/templates"
+    state: directory
+    mode: "0775"
+
+- name: Create path init_d
+  ansible.builtin.file:
+    path: "{{ new_roles_path }}/templates/init_d"
+    state: directory
+    mode: "0775"
+
+- name: Create path init_d
+  ansible.builtin.file:
+    path: "{{ new_roles_path }}/templates/custom_d"
+    state: directory
+    mode: "0775"
+
 - name: Create path vars
   ansible.builtin.file:
     path: "{{ core.dirs.custom }}/roles/{{ add_role.name }}/vars"

@@ -1,0 +1,8 @@
+---
+- name: Install flatpak
+  ansible.builtin.apt:
+    name: flatpak
+    state: present
+  become: true
+  become_user: root
+  become_method: ansible.builtin.sudo

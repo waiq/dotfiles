@@ -9,10 +9,13 @@ install_yml="$(dirname "$0")/main.yml"
 inventory="$(dirname "$0")/inventory"
 requirements="$(dirname "$0")/requirements.yml"
 
+if ! [ -x "$(command -v pipx)" ]; then
+  echo "pipx not found"
+  exit 1;
+fi
+
 if ! [ -x "$(command -v ansible)" ]; then
-  sudo apt install ansible "$anible_verison" -y
-  sudo apt install python3 -y
-  sudo apt install python3-pip -y
+  pipx install --include-deps ansible
 fi
 
 if ! [ -x "$(command -v ansible-playbook)" ]; then
