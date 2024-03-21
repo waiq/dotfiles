@@ -30,3 +30,9 @@
     src: "{{core.dirs.custom}}/roles/git/templates/gitconfig.j2"
     dest: "{{ home }}/.gitconfig"
     mode: "0644"
+
+- name: Make sure gitignore is up to date
+  ansible.builtin.template:
+    src: "{{core.dirs.custom}}/roles/git/templates/gitignore.j2"
+    dest: "{{ home }}/.gitignore"
+    mode: "0644"
