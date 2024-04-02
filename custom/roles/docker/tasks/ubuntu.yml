@@ -41,8 +41,28 @@
     groups: docker
     append: true
 
-- name: Add docker custom commands
+# link commands
+
+- name: Add docker custom commands swagger-ui
   ansible.builtin.file:
     src: "{{ core.dirs.custom }}/roles/docker/files/docker-swagger-ui.bash"
     dest: "{{ core.dirs.bin }}/swagger-ui"
+    state: link
+
+- name: Add docker custom commands docker-images
+  ansible.builtin.file:
+    src: "{{ core.dirs.custom }}/roles/docker/files/docker-images.bash"
+    dest: "{{ core.dirs.bin }}/docker-images"
+    state: link
+
+- name: Add docker custom commands docker-container
+  ansible.builtin.file:
+    src: "{{ core.dirs.custom }}/roles/docker/files/docker-containers.bash"
+    dest: "{{ core.dirs.bin }}/docker-containers"
+    state: link
+
+- name: Add docker custom commands docker-prune
+  ansible.builtin.file:
+    src: "{{ core.dirs.custom }}/roles/docker/files/docker-prune.bash"
+    dest: "{{ core.dirs.bin }}/docker-prune"
     state: link
