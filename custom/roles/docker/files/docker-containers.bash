@@ -34,6 +34,9 @@ handle_options() {
 	  -r | --remove)
 		docker_command='docker rm -vf $(docker ps -aq)'
 		;;
+	  -l | --list)
+		return
+		;;
 	  *)
 		usage
 		;;

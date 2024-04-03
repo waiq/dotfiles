@@ -34,6 +34,9 @@ handle_options() {
 	  -r | --remove)
 		docker_command='docker rmi -f $(docker images -aq)'
 		;;
+	  -l | --list)
+		return
+		;;
 	  *)
 		usage
 		;;
