@@ -10,6 +10,7 @@
     repo: "https://github.com/NvChad/NvChad"
     dest: "{{ custom.dirs.config }}/nvim"
     depth: 1
+    version: "v2.0"
     update: no
 
 - name: Link custom folder

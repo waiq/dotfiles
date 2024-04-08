@@ -9,6 +9,8 @@ install_yml="$(dirname "$0")/main.yml"
 inventory="$(dirname "$0")/inventory"
 requirements="$(dirname "$0")/requirements.yml"
 
+export PATH=$PATH:~/.local/bin
+
 if ! [ -x "$(command -v pipx)" ]; then
   echo "pipx not found"
   exit 1;
