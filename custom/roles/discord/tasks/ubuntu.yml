@@ -1,0 +1,10 @@
+---
+- name: "Install discord"
+  ansible.builtin.flatpak:
+    name: com.discordapp.Discord
+
+- name: "Discord setup init"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/discord/templates/init_d/10-discord.j2"
+    dest: "{{ core.dirs.init_d }}/10-discord.sh"
+    mode: "0755"
