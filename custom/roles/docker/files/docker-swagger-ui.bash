@@ -4,7 +4,7 @@ set -e
 
 # Function to display script usage
 usage() {
-  echo "Usage: $(basename $0) [OPTIONS] openapi_file.json|yaml|yml"
+  echo "Usage: $(basename $0) [OPTIONS] openapi_file.json|yaml|yml|json"
   echo "Options:"
   echo " -h, --help      Display this help message"
   echo " -p, --port      Set dockerport, default 80:8080"

@@ -20,3 +20,9 @@
   become: true
   become_method: ansible.builtin.sudo
   when: ansible_facts['lsb']['release'] != "22.04"
+
+- name: "Dropbox setup init"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/dropbox/templates/init_d/10-dropbox.j2"
+    dest: "{{ core.dirs.init_d }}/10-dropbox.sh"
+    mode: "0755"

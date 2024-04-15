@@ -17,6 +17,7 @@ local sources = {
 	lint.codespell,
 	lint.spectral,
 	lint.checkmake,
+	lint.vacuum,
 }
 
 null_ls.setup({
