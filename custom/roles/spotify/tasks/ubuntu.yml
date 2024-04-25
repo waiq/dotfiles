@@ -1,0 +1,34 @@
+---
+- name: "Install spotify"
+  ansible.builtin.debug:
+    msg: "spotify"
+
+- name: Add Spotify GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
+    keyring: /etc/apt/trusted.gpg.d/spotify.gpg
+    state: present
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Add Spotify Repository
+  ansible.builtin.apt_repository:
+    repo: deb http://repository.spotify.com stable non-free
+    state: present
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Upgrade apt
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Install Spotify
+  ansible.builtin.apt:
+    pkg: spotify-client
+    state: present
+    update_cache: true
+  become: true
+  become_method: ansible.builtin.sudo
