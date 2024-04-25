@@ -2,9 +2,14 @@
 # list of default roles
 default_roles:
   - apt
+  - git
+  - neovim
+  - nvm
   - tmux
   - fonts
   - zsh
+  - golang
+  - dropbox
 
 # custom variables
 custom:
