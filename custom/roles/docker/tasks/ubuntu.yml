@@ -36,6 +36,8 @@
     executable: /bin/bash
 
 - name: Add user to docker group
+  become: yes
+  become_method: ansible.builtin.sudo
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"
     groups: docker

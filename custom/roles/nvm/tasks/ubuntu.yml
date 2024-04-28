@@ -40,5 +40,5 @@
     # "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install {{ item }} && nvm alias default {{ item }}"
     "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install {{item}}"
   with_items:
-    - "v20.12.1"
+    - "--lts"
 
