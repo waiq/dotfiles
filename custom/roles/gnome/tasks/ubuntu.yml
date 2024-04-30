@@ -5,6 +5,7 @@
   register: p
 
 - name: "Install terminal theme"
+  when: not p.stat.exists
   block:
     # Gnome terminal theme
     - name: Install catppuccin theme for gnome terminal
@@ -18,4 +19,9 @@
         state: "touch"
         mode: "0644"
 
-  when: not p.stat.exists
+- name: "Install apt packages"
+  ansible.builtin.apt:
+    name: "gnome-tweaks"
+    update_cache: true
+  become: true
+  become_method: ansible.builtin.sudo

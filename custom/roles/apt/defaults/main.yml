@@ -4,6 +4,7 @@ packages:
   - tidy
   - libgtk-4-dev
   - wl-clipboard
+  - xsel
   - build-essential
   - stow
   - make

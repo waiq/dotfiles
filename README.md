@@ -18,7 +18,11 @@ This 'customs' folder contains the playbooks for setting upp the system.
 
 ## Install (WIP)
 
-TODO: add a install that can be used by curl/wget
+Install pipx
+
+```
+$> mkdir ~/.my/dotfiles/ && git clone
+```
 
 For now: clone and run
 
