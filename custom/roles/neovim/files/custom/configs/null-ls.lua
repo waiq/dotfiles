@@ -11,7 +11,6 @@ local sources = {
 	formatting.goimports,
 	formatting.goimports_reviser,
 	formatting.golines,
-	formatting.xmlformat,
 
 	lint.ansiblelint,
 	lint.codespell,

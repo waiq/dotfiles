@@ -5,6 +5,7 @@ return {
 		"ansible-lint",
 		"spectral-language-server",
 		"vacuum",
+		"xmlformatter",
 		"stylua",
 		"codespell",
 		"bash-language-server",

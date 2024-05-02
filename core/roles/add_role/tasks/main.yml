@@ -64,8 +64,8 @@
     dest: "{{ new_roles_path }}/tasks/main.yml"
     mode: "0644"
 
-- name: Create ubuntu.yml
+- name: Create debian.yml
   ansible.builtin.template:
-    src: "{{ core.dirs.core_roles }}/add_role/templates/ubuntu.j2"
-    dest: "{{ new_roles_path }}/tasks/ubuntu.yml"
+    src: "{{ core.dirs.core_roles }}/add_role/templates/debian.j2"
+    dest: "{{ new_roles_path }}/tasks/debian.yml"
     mode: "0644"

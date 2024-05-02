@@ -1,7 +1,8 @@
 ---
 - name: "Install discord"
-  ansible.builtin.flatpak:
+  community.general.flatpak:
     name: com.discordapp.Discord
+    state: present
 
 - name: "Discord setup init"
   ansible.builtin.template:
