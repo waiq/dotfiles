@@ -20,26 +20,26 @@ This 'customs' folder contains the playbooks for setting upp the system.
 
 Install pipx and git
 
-```console
+```shell
 sudo apt install pipx git
 ```
 
 Install dotfiles
 
-```console
+```shell
 mkdir -p ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles
 ```
 
 For now: clone and run
 
-```console
+```shell
 ~/.my/dotfiles/core/install.sh -n
 ```
 
 Install default playbooks
 
-```console
-~/.my/dotfiles/custom/common/vars/profile_example.yml \
+```shell
+cp ~/.my/dotfiles/custom/common/vars/profile_example.yml \
 ~/.my/dotfiles/custom/common/vars/profile.yml
 ```
 
@@ -47,13 +47,13 @@ Install default playbooks
 
 The dotfiles will be controlled by the bash script dotrun
 
-```console
+```shell
 dotrun --help
 ```
 
 By running the command without any parameters. It will ty to run all roles
 defined under: 'custom/common/profile.yml'
 
-```console
+```shell
 dotrun
 ```
