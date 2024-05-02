@@ -21,7 +21,7 @@ This 'customs' folder contains the playbooks for setting upp the system.
 Install pipx
 
 ```
-$> apt install pipx
+$> sudo apt install pipx
 ```
 
 Install dotfiles
