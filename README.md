@@ -27,20 +27,30 @@ sudo apt install pipx git
 Install dotfiles
 
 ```shell
-mkdir -p ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles
+mkdir -p ~/.my/dotfiles/ \
+    && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles \
+    && ~/.my/dotfiles/core/install.sh -n
 ```
 
-For now: clone and run
+### Run default playbooks
 
-```shell
-~/.my/dotfiles/core/install.sh -n
-```
-
-Install default playbooks
+Copy the default profile
 
 ```shell
 cp ~/.my/dotfiles/custom/common/vars/profile_example.yml \
 ~/.my/dotfiles/custom/common/vars/profile.yml
+```
+
+Source the init file
+
+```shell
+source ~/.my/init/init.sh
+```
+
+Run the dotrun command
+
+```shell
+dotrun
 ```
 
 ## Command
@@ -49,11 +59,4 @@ The dotfiles will be controlled by the bash script dotrun
 
 ```shell
 dotrun --help
-```
-
-By running the command without any parameters. It will ty to run all roles
-defined under: 'custom/common/profile.yml'
-
-```shell
-dotrun
 ```
