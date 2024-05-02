@@ -21,6 +21,12 @@ This 'customs' folder contains the playbooks for setting upp the system.
 Install pipx
 
 ```
+$> apt install pipx
+```
+
+Install dotfiles
+
+```
 $> mkdir ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles
 ```
 
