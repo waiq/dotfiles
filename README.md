@@ -16,18 +16,18 @@ been installed.
 The 'core' folder contains tooling on how to maintaining the dotfiles itself.
 This 'customs' folder contains the playbooks for setting upp the system.
 
-## Install (WIP)
+## Install
 
-Install pipx
+Install pipx and git
 
 ```
-$> sudo apt install pipx
+$> sudo apt install pipx git
 ```
 
 Install dotfiles
 
 ```
-$> mkdir ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles
+$> mkdir -p ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles
 ```
 
 For now: clone and run
