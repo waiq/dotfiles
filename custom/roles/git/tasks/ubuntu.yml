@@ -7,6 +7,14 @@
   become_user: root
   become_method: ansible.builtin.sudo
 
+- name: Install tig
+  ansible.builtin.apt:
+    name: tig
+    state: present
+  become: true
+  become_user: root
+  become_method: ansible.builtin.sudo
+
 - name: Check if gitconfig exists
   ansible.builtin.stat:
     path: "{{ home }}/.gitconfig"
