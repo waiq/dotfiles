@@ -27,7 +27,7 @@ $> mkdir ~/.my/dotfiles/ && git clone https://github.com/waiq/dotfiles.git ~/.my
 For now: clone and run
 
 ```
-$> core/install.sh
+$> ~/.my/dotfiles/core/install.sh -n
 ```
 
 ## Command
