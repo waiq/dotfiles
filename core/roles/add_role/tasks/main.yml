@@ -52,6 +52,12 @@
     state: directory
     mode: "0775"
 
+- name: Create path meta
+  ansible.builtin.file:
+    path: "{{ new_roles_path }}/meta"
+    state: directory
+    mode: "0775"
+
 - name: Create path vars
   ansible.builtin.file:
     path: "{{ core.dirs.custom }}/roles/{{ add_role.name }}/vars"
