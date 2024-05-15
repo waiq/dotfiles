@@ -1,6 +1,6 @@
 ---
-- name: Ubuntu tasks
-  ansible.builtin.import_tasks: ubuntu.yml
+- name: Debian tasks
+  ansible.builtin.import_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install Packages
