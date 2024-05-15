@@ -30,5 +30,6 @@ return {
 		"java-test",
 		"jdtls",
 		"checkmake",
+		"rust-analyzer",
 	},
 }

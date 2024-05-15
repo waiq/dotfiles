@@ -21,6 +21,20 @@ lspconfig.gopls.setup({
 	},
 })
 
+lspconfig.rust_analyzer.setup({
+	on_attach = config.on_attach,
+	capabilities = config.capabilities,
+	filetypes = { "rust" },
+	root_dir = util.root_pattern("Cargo.toml"),
+	settings = {
+		["rust_analyzer"] = {
+			cargo = {
+				allFeatures = true,
+			},
+		},
+	},
+})
+
 -- generic servers
 local servers = {
 	"tsserver",
