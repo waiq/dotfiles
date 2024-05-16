@@ -12,8 +12,11 @@ local plugins = {
 	},
 	{
 		"nvim-orgmode/orgmode",
-		dependencies = { "akinsho/org-bullets.nvim" },
-		lazy = false,
+		dependencies = {
+			"akinsho/org-bullets.nvim",
+			"chipsenkbeil/org-roam.nvim",
+		},
+		event = "VeryLazy",
 		config = function()
 			require("custom.configs.orgmode")
 		end,

@@ -1,6 +1,3 @@
--- Load custom treesitter grammar for org filetype
-require("orgmode").setup_ts_grammar()
-
 -- Treesitter configuration
 require("nvim-treesitter.configs").setup({
 	-- If TS highlights are not enabled at all, or disabled via `disable` prop,
@@ -22,6 +19,7 @@ end
 
 local agendapath = orgpath .. "/agenda"
 local notepath = orgpath .. "/notes"
+local raompath = orgpath .. "/orgfiles"
 
 require("orgmode").setup({
 	org_agenda_files = { agendapath .. "/**/*" },
@@ -54,4 +52,8 @@ require("org-bullets").setup({
 			todo = { "˟", "OrgTODO" },
 		},
 	},
+})
+
+require("org-roam").setup({
+	directory = raompath,
 })
