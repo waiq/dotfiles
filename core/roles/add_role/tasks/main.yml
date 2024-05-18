@@ -58,6 +58,12 @@
     state: directory
     mode: "0775"
 
+- name: Create meta main.yml
+  ansible.builtin.template:
+    src: "{{ core.dirs.core_roles }}/add_role/templates/meta/main.j2"
+    dest: "{{ new_roles_path }}/meta/main.yml"
+    mode: "0644"
+
 - name: Create path vars
   ansible.builtin.file:
     path: "{{ core.dirs.custom }}/roles/{{ add_role.name }}/vars"

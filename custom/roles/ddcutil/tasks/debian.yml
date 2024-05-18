@@ -5,25 +5,3 @@
   ansible.builtin.apt:
     name: "ddcutil"
     update_cache: true
-
-- name: "Install i2c-tools"
-  become: true
-  become_method: ansible.builtin.sudo
-  ansible.builtin.apt:
-    name: "i2c-tools"
-    update_cache: true
-
-- name: "Install libi2c-dev"
-  become: true
-  become_method: ansible.builtin.sudo
-  ansible.builtin.apt:
-    name: "libi2c-dev"
-    update_cache: true
-
-# add modules
-- name: "Add to modules.conf"
-  become: true
-  become_method: ansible.builtin.sudo
-  ansible.builtin.lineinfile:
-    path: /etc/modules-load.d/modules.conf
-    line: "i2c-dev"
