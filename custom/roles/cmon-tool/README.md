@@ -2,4 +2,4 @@
 
 Small hack to change input using ddcutil
 
-Only tested on Dell Ultrasharp 32 monitor.
+Only tested on Dell Ultrasharp 32 monitor U3223QE

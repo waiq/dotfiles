@@ -9,7 +9,7 @@ fi
 
 # Get current input
 currentline=$(ddcutil getvcp 60)
-currentName=$(echo $currentline | sed -n "s/.*: \(.*\) (sl=.*)/\1/p")
+currentName=$(echo $currentline | sed -n "s/.*:\s*\([a-zA-Z0-9-]*\).*/\1/p")
 current=$(echo $currentline | sed -n "s/.*(sl=\(.*\))/\1/p")
 
 # Function to display script usage
