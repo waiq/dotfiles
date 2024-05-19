@@ -1,0 +1,5 @@
+---
+# add dependencies for task: "cmon-tool"
+#
+dependencies:
+  - role: ddcutil

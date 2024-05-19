@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e
+
+if ! [ -x "$(command -v ddcutil)" ]; then
+  echo "ddcutil not found"
+  exit 1;
+fi
+
+# Get current input
+currentline=$(ddcutil getvcp 60)
+current=$($currentline | sed -n "s/.*(sl=\(.*\))/\1/p")
+
+# Function to display script usage
+usage() {
+ echo "Usage: $0 [OPTIONS]"
+ echo "Options:"
+ echo " -h, --help          Display this help message"
+ echo " -v, --verbose       Enable verbose mode"
+}
+
+# Function to handle options and arguments
+handle_options() {
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -h | --help)
+        usage
+        exit 0
+        ;;
+      -v | --verbose)
+        echo "Verbose mode enabled."
+        ;;
+      -c | --current)
+        echo "current input"
+        ;;
+      -l | --list)
+        echo "list inputs"
+        ;;
+      -s | --switch)
+        echo "switch input"
+        ;;
+      *)
+        echo "Invalid option: $1" >&2
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+}
+
+# Main script execution
+handle_options "$@"
+
+# Get the other input
+case $current in
+
+    # Usb
+    0x1b)
+        output=0x0f
+        ;;
+
+    # Display port
+    0x0f)
+        output=0x1b
+        ;;
+
+    *)
+        echo "Unknown input"
+        exit 1
+        ;;
+esac
+
+# Set new input
+# ddcutil setvcp 60 $output
