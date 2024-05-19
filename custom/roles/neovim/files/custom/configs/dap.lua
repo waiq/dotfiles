@@ -14,7 +14,7 @@ local mason_registry = require("mason-registry")
 -- Setup XDebug
 -- https://xdebug.org/docs/install
 -- Example 20-xdebug.ini:
---[=====[ 
+--[=====[
 
  zend_extension=xdebug.so
  xdebug.mode=develop,debug
@@ -68,7 +68,7 @@ dap.adapters.bashdb = {
 	name = "bashdb",
 }
 
-dap.configurations.sh = {
+dap.configurations.bashdb = {
 	{
 		type = "bashdb",
 		request = "launch",

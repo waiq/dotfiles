@@ -10,6 +10,7 @@ return {
 		"java",
 		"rust",
 		"c",
+		"cpp",
 		"org",
 		"bash",
 		"javascript",

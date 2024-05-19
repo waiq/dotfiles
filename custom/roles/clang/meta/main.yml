@@ -1,0 +1,5 @@
+---
+# add dependencies for task: "clang"
+#
+# dependencies:
+#  - role: nvm

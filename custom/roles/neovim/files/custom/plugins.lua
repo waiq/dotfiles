@@ -36,7 +36,9 @@ local plugins = {
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"theHamsta/nvim-dap-virtual-text",
+			"nvim-neotest/nvim-nio",
 		},
+		event = "VeryLazy",
 		config = function()
 			require("custom.configs.dap-ui")
 		end,

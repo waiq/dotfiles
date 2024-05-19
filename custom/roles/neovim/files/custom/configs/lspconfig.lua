@@ -36,6 +36,14 @@ lspconfig.rust_analyzer.setup({
 	},
 })
 
+lspconfig.clangd.setup({
+	-- chad bug
+	on_attach = function(client, bufnur)
+		client.server_capabilities.signatureHelpProvider = false
+		on_attach(client, bufnur)
+	end,
+})
+
 -- generic servers
 local servers = {
 	"tsserver",
