@@ -21,6 +21,7 @@ lspconfig.gopls.setup({
 	},
 })
 
+-- rust
 lspconfig.rust_analyzer.setup({
 	on_attach = config.on_attach,
 	capabilities = config.capabilities,

@@ -1,6 +1,7 @@
 ---
 # list of default roles
 default_roles:
+  - 1password
   - apt
   - git
   - neovim
@@ -9,6 +10,7 @@ default_roles:
   - fonts
   - zsh
   - golang
+  - rust
   - dropbox
 
 # custom variables
