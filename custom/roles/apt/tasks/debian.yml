@@ -6,6 +6,22 @@
   become: true
   become_method: ansible.builtin.sudo
 
+- name: Install xset clipboard
+  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'x11'
+  ansible.builtin.apt:
+    name: "xsel"
+    update_cache: true
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Install wl-clipboard clipboard
+  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'wayland'
+  ansible.builtin.apt:
+    name: "wl-clipboard"
+    update_cache: true
+  become: true
+  become_method: ansible.builtin.sudo
+
 - name: Install apt packages
   ansible.builtin.apt:
     name: "{{ item }}"
