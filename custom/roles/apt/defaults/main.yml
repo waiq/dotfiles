@@ -12,7 +12,6 @@ packages:
   - jq
   - ripgrep
   - libfuse2
-  - meld
   - python3-venv
   - composer
 remove_packages:
