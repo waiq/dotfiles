@@ -1,61 +1,70 @@
 ---
-- name: Install zsh
+- name: "Install zsh"
   ansible.builtin.apt:
     name: zsh
     state: present
   become: yes
   become_method: ansible.builtin.sudo
 
-- name: Check for oh-my-zsh installation
+- name: "Install fzf"
+  ansible.builtin.apt:
+    name: fzf
+    state: present
+  become: yes
+  become_method: ansible.builtin.sudo
+
+- name: "Check for oh-my-zsh installation"
   ansible.builtin.stat:
     path: "{{ home }}/.oh-my-zsh"
   register: oh_my_zsh
 
-- name: Install oh-my-zsh
-  block:
-    - name: Check for .zshrc
-      ansible.builtin.stat:
-        path: "{{ home }}/.zshrc"
-      register: zshrc
-
-    - name: Download oh-my-zsh
-      ansible.builtin.raw: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
-      when: not oh_my_zsh.stat.exists
-
-    - name: Backup zshrc
-      ansible.builtin.copy:
-        src: "{{ home }}/.zshrc"
-        dest: "{{ home }}/.zshrc.bak"
-      when: zshrc.stat.exists
-
-    - name: Remove old zshrc
-      ansible.builtin.file:
-        path: "{{ home }}/.zshrc"
-        state: absent
-      when: zshrc.stat.exists
-
-    - name: Make sure zshrc is up to date
-      ansible.builtin.template:
-        src: "{{ core.dirs.custom }}/roles/zsh/templates/zshrc.j2"
-        dest: "{{ home }}/.zshrc"
-
-    # install plugins
-    - name: Install plugins 256color
-      ansible.builtin.git:
-        repo: https://github.com/chrissicool/zsh-256color.git
-        dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-256color"
-        update: yes
-
-    - name: Install plugins zsh-autosuggestions
-      ansible.builtin.git:
-        repo: https://github.com/zsh-users/zsh-autosuggestions
-        dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-        update: yes
-
-    - name: Install plugins zsh-vi-mode
-      ansible.builtin.git:
-        repo: https://github.com/jeffreytse/zsh-vi-mode
-        dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-vi-mode"
-        update: yes
-
+- name: "Download oh-my-zsh"
+  ansible.builtin.raw: 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
   when: not oh_my_zsh.stat.exists
+
+- name: "Check for .zshrc"
+  ansible.builtin.stat:
+    path: "{{ home }}/.zshrc"
+  register: zshrc
+
+- name: "Backup zshrc"
+  ansible.builtin.copy:
+    src: "{{ home }}/.zshrc"
+    dest: "{{ home }}/.zshrc.bak"
+  when: zshrc.stat.exists
+
+- name: "Remove old zshrc"
+  ansible.builtin.file:
+    path: "{{ home }}/.zshrc"
+    state: absent
+  when: zshrc.stat.exists
+
+- name: "Make sure zshrc is up to date"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/zsh/templates/zshrc.j2"
+    dest: "{{ home }}/.zshrc"
+
+# install plugins
+- name: "Install plugins 256color"
+  ansible.builtin.git:
+    repo: "https://github.com/chrissicool/zsh-256color.git"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-256color"
+    update: yes
+
+- name: "Install plugins zsh-autosuggestions"
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    update: yes
+
+- name: "Install plugins zsh-vi-mode"
+  ansible.builtin.git:
+    repo: "https://github.com/jeffreytse/zsh-vi-mode"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-vi-mode"
+    update: yes
+
+- name: "Install plugins zsh-fzf-history-search"
+  ansible.builtin.git:
+    repo: "https://github.com/joshskidmore/zsh-fzf-history-search"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-fzf-history-search"
+    update: yes
