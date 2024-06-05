@@ -11,7 +11,6 @@
 - name: "Install nvm"
   when: not nvm.stat.exists
   block:
-
     - name: "Get latest version"
       ansible.builtin.uri:
         url: https://api.github.com/repos/nvm-sh/nvm/releases/latest
@@ -28,17 +27,15 @@
       args:
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
-    - name: "Setup init for nvm"
-      ansible.builtin.template:
-        src: "{{ core.dirs.custom }}/roles/nvm/templates/init_d/10-nvm.j2"
-        dest: "{{ core.dirs.init_d }}/10-nvm.sh"
-        mode: '0644'
+- name: "Setup init for nvm"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/nvm/templates/init_d/10-nvm.j2"
+    dest: "{{ core.dirs.init_d }}/10-nvm.sh"
+    mode: "0644"
 
 # indtall node versions
 - name: "Install Node.js"
   ansible.builtin.shell: >
-    # "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install {{ item }} && nvm alias default {{ item }}"
     "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm install {{item}}"
   with_items:
     - "--lts"
-
