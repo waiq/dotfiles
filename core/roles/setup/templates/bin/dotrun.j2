@@ -25,6 +25,7 @@ usage() {
  echo " -t, --tags       Run tag"
  echo " -d, --default    Run all default roles"
  echo " -u, --update     Update dotfiles"
+ echo " -e, --edit       Open default editor in .my directory"
 }
 
 ansible_command="ansible-playbook -i {{ core.files.inventory }} {{ core.files.main }} --ask-become-pass"
@@ -47,6 +48,15 @@ run_add_role() {
 
 run_update() {
   eval "ANSIBLE_ROLES_PATH={{core.dirs.core_roles}} ${ansible_command} -t update --extra-vars \"{\"install\": { \"git_pull\": true }}"\" 
+  return $?
+}
+
+run_edit() {
+  if [ -z "$EDITOR" ]; then
+	echo "env \$EDITOR not set"
+	return 1
+  fi
+  eval "$EDITOR {{my}}"
   return $?
 }
 
@@ -85,6 +95,11 @@ handle_options() {
       -u | --update)
 		shift
         run_update "${@}"
+		return $?
+        ;;
+      -e | --edit)
+		shift
+        run_edit
 		return $?
         ;;
       *)
