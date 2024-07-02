@@ -21,5 +21,4 @@ custom:
 
   dirs:
     dropbox: "{{ home }}/Dropbox"
-    livebook: "{{ home }}/Dropbox/livebook"
     config: "{{ home }}/.config"
