@@ -1,4 +1,18 @@
 ---
+- name: "Install gnome-extensions"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    name: "gnome-extensions"
+    update_cache: true
+
+- name: "Install apt packages"
+  ansible.builtin.apt:
+    name: "gnome-tweaks"
+    update_cache: true
+  become: true
+  become_method: ansible.builtin.sudo
+
 - name: Check if catppuccin terminal theme exists
   ansible.builtin.stat:
     path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
@@ -18,10 +32,3 @@
         path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
         state: "touch"
         mode: "0644"
-
-- name: "Install apt packages"
-  ansible.builtin.apt:
-    name: "gnome-tweaks"
-    update_cache: true
-  become: true
-  become_method: ansible.builtin.sudo
