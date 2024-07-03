@@ -1,5 +1,0 @@
----
-# add dependencies for task: "setup"
-#
-# dependencies:
-#  - role: nvm

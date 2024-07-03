@@ -1,4 +1,0 @@
----
-- name: "Install setup"
-  ansible.builtin.debug:
-    msg: "setup"
