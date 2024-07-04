@@ -6,22 +6,6 @@
   become: true
   become_method: ansible.builtin.sudo
 
-- name: Install xset clipboard
-  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'x11'
-  ansible.builtin.apt:
-    name: "xsel"
-    update_cache: true
-  become: true
-  become_method: ansible.builtin.sudo
-
-- name: Install wl-clipboard clipboard
-  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'wayland'
-  ansible.builtin.apt:
-    name: "wl-clipboard"
-    update_cache: true
-  become: true
-  become_method: ansible.builtin.sudo
-
 - name: Install apt packages
   ansible.builtin.apt:
     name: "{{ item }}"
@@ -38,3 +22,40 @@
   become: true
   become_method: ansible.builtin.sudo
   loop: "{{ remove_packages }}"
+
+  # Clipboard setup
+- name: "Clipboard x11"
+  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'x11'
+  block:
+    - name: Install xset clipboard
+      ansible.builtin.apt:
+        name: "xsel"
+        update_cache: true
+      become: true
+      become_method: ansible.builtin.sudo
+
+    - name: Remove wl-clipboard
+      ansible.builtin.apt:
+        name: "wl-clipboard"
+        update_cache: true
+        state: absent
+      become: true
+      become_method: ansible.builtin.sudo
+
+- name: "Clipboard Wayland"
+  when: (lookup('ansible.builtin.env', 'XDG_SESSION_TYPE')) == 'wayland'
+  block:
+    - name: Install wl-clipboard clipboard
+      ansible.builtin.apt:
+        name: "wl-clipboard"
+        update_cache: true
+      become: true
+      become_method: ansible.builtin.sudo
+
+    - name: Remove xset clipboard
+      ansible.builtin.apt:
+        name: "xsel"
+        update_cache: true
+        state: absent
+      become: true
+      become_method: ansible.builtin.sudo
