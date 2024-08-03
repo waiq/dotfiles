@@ -54,6 +54,7 @@ require("org-bullets").setup({
 	},
 })
 
+-- Org-roam configuration
 require("org-roam").setup({
 	directory = raompath,
 })

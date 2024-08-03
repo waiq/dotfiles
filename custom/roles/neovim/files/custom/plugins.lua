@@ -160,6 +160,7 @@ local plugins = {
 	},
 	{
 		"github/copilot.vim",
+		event = "VeryLazy",
 	},
 	{
 		"nvim-lua/plenary.nvim",
