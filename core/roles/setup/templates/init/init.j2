@@ -1,7 +1,7 @@
 #!/bin/bash
 
-local init_d={{ core.dirs.init_d }}
-local custom_d={{ core.dirs.custom_d }}
+init_d={{ core.dirs.init_d }}
+custom_d={{ core.dirs.custom_d }}
 
 if [ -n "$(ls -A $init_d)" ]; then
   # shellcheck disable=SC1090

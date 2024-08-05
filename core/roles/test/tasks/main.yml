@@ -1,6 +1,0 @@
----
-- name: Container present
-  community.docker.docker_container:
-    name: dotfile-test-ubuntu-22.04
-    state: present
-    image: ubuntu:22.04
