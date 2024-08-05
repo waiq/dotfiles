@@ -5,6 +5,7 @@
     dest: "{{ core.dirs.dotfiles }}"
     update: true
     version: "{{ core.git.version }}"
+    register: git_result
   when: install.git_pull
 
 - name: Set dotfiles github name
@@ -20,3 +21,7 @@
     repo: "{{ core.dirs.dotfiles }}"
     scope: local
     value: "<>"
+
+- name: Run setup
+  ansible.builtin.import_tasks: ../../setup/tasks/main.yml
+  when: git_result.changed
