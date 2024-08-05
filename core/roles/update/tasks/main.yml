@@ -24,4 +24,4 @@
 
 - name: Run setup
   ansible.builtin.import_tasks: ../../setup/tasks/main.yml
-  when: git_result.changed
+  when: git_result.after != git_result.after
