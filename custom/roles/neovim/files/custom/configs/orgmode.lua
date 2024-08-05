@@ -17,12 +17,11 @@ if not vim.fn.isdirectory(orgpath) then
 	return
 end
 
-local agendapath = orgpath .. "/agenda"
 local notepath = orgpath .. "/notes"
 local raompath = orgpath .. "/orgfiles"
 
 require("orgmode").setup({
-	org_agenda_files = { agendapath .. "/**/*" },
+	org_agenda_files = { orgpath .. "/**/*" },
 	org_default_notes_file = notepath .. "/notes.org",
 	org_todo_keywords = { "TODO", "WAITING", "INPROGRESS", "|", "CANCELED", "DONE", "DELEGATED" },
 	org_todo_keyword_faces = {
