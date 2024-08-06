@@ -2,8 +2,6 @@
 
 set -e
 
-ansible_version="2.14.2"
-
 # ansible config files
 install_yml="$(dirname "$0")/main.yml"
 inventory="$(dirname "$0")/inventory"

@@ -29,9 +29,6 @@ core:
     main: "{{ my }}/dotfiles/core/main.yml"
     init: "{{ my }}/init/init.sh"
 
-    generated:
-      tags: "{{ home }}/.cache/my/tags.yml"
-
   git:
     name: "dotfiles"
     repository: "git@github.com:waiq/dotfiles.git"
