@@ -46,3 +46,6 @@
 
 - name: "Enable tailing extension NEEDS TO RESTART GNOME ALT+F2 and r"
   ansible.builtin.shell: "gnome-extensions enable tilingshell@ferrarodomenico.com"
+
+- name: "Disable workspace animation"
+  ansible.builtin.shell: "gsettings set org.gnome.desktop.interface enable-animations false"
