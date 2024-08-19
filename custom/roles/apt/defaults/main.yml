@@ -14,5 +14,6 @@ packages:
   - libfuse2
   - python3-venv
   - composer
+  - fzf
 remove_packages:
   - gnome-shell-extension-ubuntu-dock

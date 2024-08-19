@@ -9,7 +9,6 @@ local sources = {
 	formatting.prettier,
 	formatting.stylua,
 	formatting.goimports,
-	formatting.goimports_reviser,
 	formatting.golines,
 	formatting.clang_format,
 

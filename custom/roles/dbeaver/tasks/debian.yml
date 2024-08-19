@@ -1,0 +1,10 @@
+---
+- name: "Install dbeaver"
+  ansible.builtin.debug:
+    msg: "dbeaver"
+
+- name: Install dbeaver
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    deb: https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
