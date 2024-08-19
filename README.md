@@ -28,7 +28,7 @@ Install dotfiles
 
 ```shell
 mkdir -p ~/.my/dotfiles/ \
-    && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles \
+    && git clone git@github.com:waiq/dotfiles.git ~/.my/dotfiles \
     && ~/.my/dotfiles/core/install.sh -n
 ```
 
