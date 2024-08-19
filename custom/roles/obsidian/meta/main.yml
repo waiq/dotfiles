@@ -1,0 +1,5 @@
+---
+# add dependencies for task: "obsidian"
+#
+# dependencies:
+#  - role: nvm
