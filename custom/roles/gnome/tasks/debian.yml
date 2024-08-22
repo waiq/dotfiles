@@ -25,27 +25,3 @@
         path: "{{ core.dirs.cache }}/gnome-terminal-catppuccin-theme"
         state: "touch"
         mode: "0644"
-
-- name: Get tilingshell facts
-  ansible.builtin.stat:
-    path: "~/.local/share/gnome-shell/extensions/tilingshell@ferrarodomenico.com"
-  register: extension_tilingshell
-
-- name: Ensure the destination directory exists
-  when: not extension_tilingshell.stat.exists
-  ansible.builtin.file:
-    path: "~/.local/share/gnome-shell/extensions/tilingshell@ferrarodomenico.com"
-    state: directory
-
-- name: "Download tailing extension"
-  when: not extension_tilingshell.stat.exists
-  ansible.builtin.unarchive:
-    src: "https://github.com/domferr/tilingshell/releases/download/12.2.0/GNOME.42-44.tilingshell@ferrarodomenico.com.zip"
-    dest: "~/.local/share/gnome-shell/extensions/tilingshell@ferrarodomenico.com"
-    remote_src: true
-
-- name: "Enable tailing extension NEEDS TO RESTART GNOME ALT+F2 and r"
-  ansible.builtin.shell: "gnome-extensions enable tilingshell@ferrarodomenico.com"
-
-- name: "Disable workspace animation"
-  ansible.builtin.shell: "gsettings set org.gnome.desktop.interface enable-animations false"
