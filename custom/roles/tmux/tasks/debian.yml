@@ -12,7 +12,6 @@
     repo: https://github.com/tmux-plugins/tpm.git
     dest: "{{ home }}/.tmux/plugins/tpm"
     update: yes
-  become: yes
 
 - name: Link tmux config
   ansible.builtin.file:
