@@ -1,0 +1,3 @@
+git_repo_path: "{{ core.dirs.dotfiles }}"
+git_remote_name: "origin"
+ssh_remote_url: "{{ core.git.repository }}"

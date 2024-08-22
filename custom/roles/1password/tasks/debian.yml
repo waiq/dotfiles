@@ -57,3 +57,38 @@
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/1password/templates/init_d/10-1password.j2"
     dest: "{{ core.dirs.init_d }}/10-1password.sh"
+
+- name: Ensure Git remote is using SSH
+  git:
+    repo: "{{ git_repo_path }}"
+    remote: "{{ git_remote_name }}"
+    version: master
+    # This is the SSH URL you want to set
+    ssh_opts: "-o StrictHostKeyChecking=no"
+    clone: no
+    track_submodules: no
+  register: git_info
+
+- name: Get the current remote URL
+  command: git remote get-url {{ git_remote_name }}
+  args:
+    chdir: "{{ git_repo_path }}"
+  register: current_remote_url
+
+- name: Change remote URL from HTTPS to SSH
+  command: git remote set-url {{ git_remote_name }} {{ ssh_remote_url }}
+  args:
+    chdir: "{{ git_repo_path }}"
+  when: "'https' in current_remote_url.stdout and ssh_remote_url not in current_remote_url.stdout"
+  register: remote_change
+
+- name: Confirm the remote URL has been changed
+  command: git remote get-url {{ git_remote_name }}
+  args:
+    chdir: "{{ git_repo_path }}"
+  when: remote_change is changed
+  register: new_remote_url
+
+- debug:
+    msg: "Remote URL changed to {{ new_remote_url.stdout }}"
+  when: remote_change is changed
