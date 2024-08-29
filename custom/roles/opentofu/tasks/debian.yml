@@ -1,0 +1,59 @@
+---
+- name: "Install OpenTofu dependencies"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+    update_cache: true
+
+- name: "Add APT Key"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt_key:
+    url: https://get.opentofu.org/opentofu.gpg
+    keyring: /etc/apt/keyrings/opentofu.gpg
+    state: present
+
+- name: "Add Package Key"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt_key:
+    url: https://packages.opentofu.org/opentofu/tofu/gpgkey
+    keyring: /etc/apt/keyrings/opentofu-repo.gpg
+    state: present
+
+- name: "Add deb Repo"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main"
+    state: present
+    mode: "0644"
+    filename: opentofu
+
+- name: "Add deb-src repo"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt_repository:
+    repo: "deb-src [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main"
+    state: present
+    mode: "0644"
+    filename: opentofu
+
+- name: "Update APT Cache"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: "Install OpenTofu"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    name: tofu
+    state: present
+    update_cache: true

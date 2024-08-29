@@ -34,5 +34,6 @@ return {
 		"jdtls",
 		"checkmake",
 		"rust-analyzer",
+		"terraform-ls",
 	},
 }
