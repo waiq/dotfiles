@@ -1,0 +1,4 @@
+---
+- name: Install opentofu-local
+  community.general.pipx:
+    name: opentofu-local
