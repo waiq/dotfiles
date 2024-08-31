@@ -44,6 +44,26 @@
     src: "{{ core.dirs.custom }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
 
+- name: "Check for oh-my-posh installation"
+  ansible.builtin.stat:
+    path: "{{ core.dirs.bin }}/oh-my-posh"
+  register: oh_my_posh
+
+- name: "Download oh-my-posh"
+  ansible.builtin.raw: "curl -s https://ohmyposh.dev/install.sh | bash -s -- -d {{ core.dirs.bin }}"
+  when: not oh_my_posh.stat.exists
+
+- name: Create omp folder
+  ansible.builtin.file:
+    path: "{{ core.dirs.local }}/omp/themes/"
+    state: directory
+    mode: "0755"
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: "{{ core.dirs.custom }}/roles/zsh/oh-my-posh/themes/"
+    dest: "{{ core.dirs.local }}/omp/themes/"
+
 # install plugins
 - name: "Install plugins 256color"
   ansible.builtin.git:
