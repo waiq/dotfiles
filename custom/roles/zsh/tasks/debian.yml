@@ -61,7 +61,7 @@
 
 - name: Copy file with owner and permissions
   ansible.builtin.copy:
-    src: "{{ core.dirs.custom }}/roles/zsh/oh-my-posh/themes/"
+    src: "{{ core.dirs.custom }}/roles/zsh/files/oh-my-posh/themes/"
     dest: "{{ core.dirs.local }}/omp/themes/"
 
 # install plugins
