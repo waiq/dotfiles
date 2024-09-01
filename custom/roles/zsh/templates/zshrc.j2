@@ -20,5 +20,5 @@ bashcompinit
 # load my dotfiles ecosystem
 source "{{ core.files.init }}"
 
-
 eval "$(oh-my-posh init zsh --config {{ core.dirs.local }}/omp/themes/catppuccin_macchiato.omp.json)"
+eval "$(zoxide init zsh --cmd cd)"

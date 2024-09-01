@@ -53,16 +53,25 @@
   ansible.builtin.raw: "curl -s https://ohmyposh.dev/install.sh | bash -s -- -d {{ core.dirs.bin }}"
   when: not oh_my_posh.stat.exists
 
-- name: Create omp folder
+- name: "Create omp folder"
   ansible.builtin.file:
     path: "{{ core.dirs.local }}/omp/themes/"
     state: directory
     mode: "0755"
 
-- name: Copy file with owner and permissions
+- name: "Copy file with owner and permissions"
   ansible.builtin.copy:
     src: "{{ core.dirs.custom }}/roles/zsh/files/oh-my-posh/themes/"
     dest: "{{ core.dirs.local }}/omp/themes/"
+
+- name: "Check for zoxide installation"
+  ansible.builtin.stat:
+    path: "{{ core.dirs.bin }}/zoxide"
+  register: zoxide
+
+- name: "Download zoxide"
+  ansible.builtin.raw: "(curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh -s - --bin-dir {{ core.dirs.bin }})"
+  when: not zoxide.stat.exists
 
 # install plugins
 - name: "Install plugins 256color"
