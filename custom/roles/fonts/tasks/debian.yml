@@ -14,13 +14,13 @@
 
     - name: "Download fonts"
       ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip
+        src: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip"
         dest: "{{ home }}/.fonts/"
         remote_src: true
 
     - name: "Download fonts symbols"
       ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/NerdFontsSymbolsOnly.zip
+        src: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip"
         dest: "{{ home }}/.fonts/"
         remote_src: true
 
