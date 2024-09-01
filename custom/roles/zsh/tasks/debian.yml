@@ -13,6 +13,13 @@
   become: yes
   become_method: ansible.builtin.sudo
 
+- name: "Install direnv"
+  ansible.builtin.apt:
+    name: direnv
+    state: present
+  become: yes
+  become_method: ansible.builtin.sudo
+
 - name: "Check for oh-my-zsh installation"
   ansible.builtin.stat:
     path: "{{ home }}/.oh-my-zsh"
