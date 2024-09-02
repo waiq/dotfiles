@@ -1,0 +1,10 @@
+---
+- name: "Install zoom"
+  ansible.builtin.debug:
+    msg: "zoom"
+
+- name: "Install deb"
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.apt:
+    deb: https://zoom.us/client/6.1.11.1545/zoom_amd64.deb
