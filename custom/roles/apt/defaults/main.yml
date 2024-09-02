@@ -15,5 +15,7 @@ packages:
   - python3-venv
   - composer
   - fzf
+  - network-manager-l2tp
+  - network-manager-l2tp-gnome
 remove_packages:
   - gnome-shell-extension-ubuntu-dock
