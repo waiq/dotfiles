@@ -17,5 +17,6 @@ return {
 		"typescript",
 		"tsx",
 		"css",
+		"terraform",
 	},
 }
