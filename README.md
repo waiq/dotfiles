@@ -1,6 +1,6 @@
 ## dotfiles-ansible-thing
 
-Neverending "work in progress"!
+Never ending work in progress!
 
 ## Why
 
