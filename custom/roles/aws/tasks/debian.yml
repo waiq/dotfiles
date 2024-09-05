@@ -9,10 +9,6 @@
     suffix: build
   register: temp_dir
 
-- name: "merp"
-  ansible.builtin.debug:
-    msg: "{{ temp_dir.path }}"
-
 - name: "Download"
   ansible.builtin.unarchive:
     src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
