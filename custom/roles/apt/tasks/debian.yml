@@ -8,20 +8,35 @@
 
 - name: Install apt packages
   ansible.builtin.apt:
-    name: "{{ item }}"
-    update_cache: true
+    pkg:
+      - aptitude
+      - tidy
+      - libgtk-4-dev
+      - build-essential
+      - stow
+      - make
+      - curl
+      - wget
+      - htop
+      - jq
+      - ripgrep
+      - libfuse2
+      - python3-venv
+      - composer
+      - fzf
+      - network-manager-l2tp
+      - network-manager-l2tp-gnome
+      - fd-find
   become: true
   become_method: ansible.builtin.sudo
-  loop: "{{ packages }}"
 
 - name: Remove apt packages
   ansible.builtin.apt:
-    name: "{{ item }}"
-    update_cache: true
+    pkg:
+      - gnome-shell-extension-ubuntu-dock
     state: absent
   become: true
   become_method: ansible.builtin.sudo
-  loop: "{{ remove_packages }}"
 
   # Clipboard setup
 - name: "Clipboard x11"

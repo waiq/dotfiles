@@ -3,17 +3,25 @@
   ansible.builtin.debug:
     msg: "aws"
 
-- name: "Create temporary download directory"
-  ansible.builtin.tempfile:
-    state: directory
-    suffix: build
-  register: temp_dir
+- name: "Check if installed"
+  ansible.builtin.stat:
+    path: "{{ core.dirs.bin }}/aws"
+  register: aws
 
-- name: "Download"
-  ansible.builtin.unarchive:
-    src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-    dest: "{{ temp_dir.path }}/"
-    remote_src: true
+- name: "Download and Install"
+  when: not aws.stat.exists
+  block:
+    - name: "Create temporary download directory"
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: build
+      register: temp_dir
 
-- name: "Install"
-  ansible.builtin.raw: "{{ temp_dir.path }}/aws/install --bin-dir {{ core.dirs.bin }} --install-dir {{ core.dirs.local }}"
+    - name: "Download"
+      ansible.builtin.unarchive:
+        src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+        dest: "{{ temp_dir.path }}/"
+        remote_src: true
+
+    - name: "Install"
+      ansible.builtin.raw: "{{ temp_dir.path }}/aws/install --bin-dir {{ core.dirs.bin }} --install-dir {{ core.dirs.local }}"
