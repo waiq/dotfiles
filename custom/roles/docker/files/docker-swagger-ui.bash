@@ -16,9 +16,13 @@ if ! [ -x "$(command -v docker)" ]; then
   exit 1;
 fi
 
+random_string=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 5)
+
 docker_image="swaggerapi/swagger-ui"
 docker_port="80"
-docker_command="docker run"
+docker_container_name="swagger-ui-$random_string"
+
+docker_command="docker run --name $docker_container_name"
 
 input_file=""
 
@@ -54,4 +58,5 @@ handle_options() {
 # Main script execution
 handle_options "${@}"
 
-eval "$docker_command -p $docker_port:8080 -e SWAGGER_JSON=/spec/$(basename $input_file) -v /$(dirname $input_file):/spec $docker_image"
+eval "$docker_command -p $docker_port:8080 -e SWAGGER_JSON=/spec/$(basename $input_file) -v /$(dirname $input_file):/spec $docker_image & \
+  xdg-open http://localhost"
