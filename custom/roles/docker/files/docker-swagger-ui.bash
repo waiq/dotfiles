@@ -59,4 +59,4 @@ handle_options() {
 handle_options "${@}"
 
 eval "$docker_command -p $docker_port:8080 -e SWAGGER_JSON=/spec/$(basename $input_file) -v /$(dirname $input_file):/spec $docker_image & \
-  xdg-open http://localhost"
+  xdg-open http://localhost:$docker_port"
