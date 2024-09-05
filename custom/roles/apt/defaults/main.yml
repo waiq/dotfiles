@@ -17,6 +17,6 @@ packages:
   - fzf
   - network-manager-l2tp
   - network-manager-l2tp-gnome
-  - chromium
+  - fd-find
 remove_packages:
   - gnome-shell-extension-ubuntu-dock

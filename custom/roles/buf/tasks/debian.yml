@@ -1,0 +1,15 @@
+---
+- name: "Install buf"
+  ansible.builtin.debug:
+    msg: "buf"
+
+- name: "Check if installed"
+  ansible.builtin.stat:
+    path: "{{ core.dirs.bin }}/buf"
+  register: buf
+
+- name: "Download"
+  ansible.builtin.get_url:
+    url: "https://github.com/bufbuild/buf/releases/download/v1.39.0/buf-Linux-x86_64"
+    dest: "{{ core.dirs.bin }}/buf"
+  when: not buf.stat.exists
