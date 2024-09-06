@@ -1,5 +1,0 @@
----
-# add dependencies for task: "buf"
-#
-# dependencies:
-#  - role: nvm

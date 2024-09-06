@@ -1,5 +1,0 @@
----
-# add dependencies for task: "aws"
-#
-# dependencies:
-#  - role: nvm

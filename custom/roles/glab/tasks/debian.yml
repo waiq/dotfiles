@@ -1,0 +1,21 @@
+---
+- name: "Check is glab installed"
+  shell: "command -v glab >/dev/null 2>&1"
+  register: glab_exist
+  ignore_errors: yes
+
+- debug: msg="{{ glab_exist.rc }}" # it returns rc 1
+- debug: var=glab_exist
+
+- name: "Install"
+  become: true
+  become_method: ansible.builtin.sudo
+  when: glab_exist.failed == true
+  block:
+    - name: "Set keys"
+      ansible.builtin.raw: curl -sSL "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | sudo bash
+    - name: "package"
+      ansible.builtin.apt:
+        pkg:
+          - glab
+        update_cache: true
