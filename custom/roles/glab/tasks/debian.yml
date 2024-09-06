@@ -10,7 +10,7 @@
 - name: "Install"
   become: true
   become_method: ansible.builtin.sudo
-  when: glab_exist.failed == true
+  when: glab_exist.failed
   block:
     - name: "Set keys"
       ansible.builtin.raw: curl -sSL "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | sudo bash
