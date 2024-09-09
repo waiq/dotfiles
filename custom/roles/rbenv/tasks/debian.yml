@@ -5,3 +5,8 @@
   ansible.builtin.apt:
     pkg:
       - rbenv
+
+- name: "Set environment variables"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/rbenv/templates/init_d/10-rbenv.j2"
+    dest: "{{ core.dirs.custom_d }}/10-rbenv.sh"
