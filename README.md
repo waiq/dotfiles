@@ -60,3 +60,9 @@ The dotfiles will be controlled by the bash script dotrun
 ```shell
 dotrun --help
 ```
+
+## Python pipx env mismatch, remember to reinstall modules
+
+```shell
+pipx reinstall-all
+```
