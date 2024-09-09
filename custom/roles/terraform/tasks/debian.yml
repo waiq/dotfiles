@@ -1,0 +1,28 @@
+---
+- name: "Install terraform"
+  ansible.builtin.debug:
+    msg: "terraform"
+
+- name: Add HashiCorp GPG key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add Repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    state: present
+    mode: "0644"
+    filename: "hashicorp"
+  become: true
+  become_method: ansible.builtin.sudo
+
+- name: Install
+  ansible.builtin.apt:
+    pkg:
+      - terraform
+    state: present
+    update_cache: true
+  become: true
+  become_user: root
+  become_method: ansible.builtin.sudo

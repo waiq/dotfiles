@@ -9,6 +9,9 @@
 - name: Install apt packages
   ansible.builtin.apt:
     pkg:
+      - cheese
+      - gnupg
+      - software-properties-common
       - aptitude
       - tidy
       - libgtk-4-dev
