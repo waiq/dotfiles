@@ -18,6 +18,12 @@ custom:
     name: ""
     email: ""
 
+  mongosh:
+    # Connection strings
+
+    integration_conn_string: "$(op read --account 4cc0unt.1password.com op://Path/to/conn_string)"
+    production_conn_string: "$(op read --account 4cc0unt.1password.com op://Path/to/conn_string)"
+
   dirs:
     dropbox: "{{ home }}/Dropbox"
     config: "{{ home }}/.config"
