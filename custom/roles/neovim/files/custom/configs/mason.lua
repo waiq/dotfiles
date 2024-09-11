@@ -15,7 +15,7 @@ return {
 		"gopls",
 		"golines",
 		"delve",
-		"goimports-reviser",
+		"goimports",
 		"prettier",
 		"sqlls",
 		"clang-format",
