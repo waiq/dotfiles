@@ -1,10 +1,15 @@
 ---
-- name: "Install zoom"
-  ansible.builtin.debug:
-    msg: "zoom"
+- name: "Check if installed"
+  ansible.builtin.shell: command -v mongodb-compass
+  register: install_check
+  changed_when: false
+  ignore_errors: true
 
-- name: "Install deb"
-  become: true
-  become_method: ansible.builtin.sudo
-  ansible.builtin.apt:
-    deb: https://zoom.us/client/6.1.11.1545/zoom_amd64.deb
+- name: "Install"
+  when: install_check.rc != 0
+  block:
+    - name: "Install deb"
+      become: true
+      become_method: ansible.builtin.sudo
+      ansible.builtin.apt:
+        deb: https://zoom.us/client/6.1.11.1545/zoom_amd64.deb
