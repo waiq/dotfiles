@@ -1,0 +1,29 @@
+---
+- name: "Check if installed"
+  ansible.builtin.shell: command -v yaak
+  register: install_check
+  changed_when: false
+  ignore_errors: true
+
+- name: "Install"
+  when: install_check.rc != 0
+  block:
+    - name: Check latest version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/yaakapp/app/releases/latest
+        return_content: true
+      register: github_release
+
+    - name: Extract .deb asset URL
+      set_fact:
+        deb_asset_url: "{{ github_release.json.assets | selectattr('name', 'search', '.deb$') | map(attribute='browser_download_url') | first }}"
+
+    - name: Check latest version
+      ansible.builtin.debug:
+        var: "{{ deb_asset_url }}"
+
+    - name: "Installing {{ github_release.json.tag_name }}"
+      become: true
+      become_method: ansible.builtin.sudo
+      ansible.builtin.apt:
+        deb: "{{ deb_asset_url }}"

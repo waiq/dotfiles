@@ -9,7 +9,7 @@ local sources = {
 	formatting.prettier,
 	formatting.stylua,
 	formatting.goimports,
-	formatting.golines,
+	-- formatting.golines,
 	formatting.clang_format,
 
 	lint.ansiblelint,
