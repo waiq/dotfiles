@@ -1,21 +1,30 @@
 ---
-- name: "Check is glab installed"
-  shell: "command -v glab >/dev/null 2>&1"
-  register: glab_exist
-  ignore_errors: yes
-
-- debug: msg="{{ glab_exist.rc }}" # it returns rc 1
-- debug: var=glab_exist
+- name: "Check if installed"
+  ansible.builtin.shell: command -v glab
+  register: install_check
+  changed_when: false
+  ignore_errors: true
 
 - name: "Install"
-  become: true
-  become_method: ansible.builtin.sudo
-  when: glab_exist.failed
+  when: install_check.rc != 0
   block:
-    - name: "Set keys"
-      ansible.builtin.raw: curl -sSL "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | sudo bash
-    - name: "package"
+    - name: Check latest version
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases"
+        return_content: true
+      register: release
+
+    - name: Extract .deb asset URL
+      set_fact:
+        asset_name: "{{ release.json[0].assets.links | selectattr('name', 'search', 'Linux_x86_64.deb$') | map(attribute='name') | first }}"
+        asset_url: "{{ release.json[0].assets.links | selectattr('name', 'search', 'Linux_x86_64.deb$') | map(attribute='url') | first }}"
+
+    - name: Check latest version
+      ansible.builtin.debug:
+        msg: "{{ asset_url }}"
+
+    - name: "Installing {{ asset_name }}"
+      become: true
+      become_method: ansible.builtin.sudo
       ansible.builtin.apt:
-        pkg:
-          - glab
-        update_cache: true
+        deb: "{{ asset_url }}"
