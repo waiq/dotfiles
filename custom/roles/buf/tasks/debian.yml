@@ -1,15 +1,29 @@
 ---
-- name: "Install buf"
-  ansible.builtin.debug:
-    msg: "buf"
-
 - name: "Check if installed"
-  ansible.builtin.stat:
-    path: "{{ core.dirs.bin }}/buf"
-  register: buf
+  ansible.builtin.shell: command -v buf
+  register: install_check
+  changed_when: false
+  ignore_errors: true
 
-- name: "Download"
-  ansible.builtin.get_url:
-    url: "https://github.com/bufbuild/buf/releases/download/v1.39.0/buf-Linux-x86_64"
-    dest: "{{ core.dirs.bin }}/buf"
-  when: not buf.stat.exists
+- name: "Install"
+  when: install_check.rc != 0
+  block:
+    - name: Check latest version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/bufbuild/buf/releases/latest
+        return_content: true
+      register: github_release
+
+    - name: Extract .deb asset URL
+      set_fact:
+        asset_url: "{{ github_release.json.assets | selectattr('name', 'search', 'buf-Linux-x86_64') | map(attribute='browser_download_url') | first }}"
+
+    - name: Check latest version
+      ansible.builtin.debug:
+        var: "{{ asset_url }}"
+
+    - name: "Installing {{ github_release.json.tag_name }}"
+      ansible.builtin.get_url:
+        url: "{{ asset_url }}"
+        dest: "{{ core.dirs.bin }}/buf"
+        mode: "0755"
