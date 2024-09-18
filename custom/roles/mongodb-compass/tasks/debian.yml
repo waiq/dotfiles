@@ -1,25 +1,35 @@
 ---
-- name: "Check if installed"
-  ansible.builtin.shell: command -v mongodb-compass
-  register: install_check
-  changed_when: false
-  ignore_errors: true
+- name: "Install"
+  ansible.builtin.set_fact:
+    package_name: "mongodb-compass"
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Check whether a package is installed"
+  ansible.builtin.set_fact:
+    install_check: "{{ ansible_facts.packages[package_name] | default([]) }}"
 
 - name: "Install"
-  when: install_check.rc != 0
+  when: install_check | length == 0
   block:
     - name: Check latest version
       ansible.builtin.uri:
         url: https://api.github.com/repos/mongodb-js/compass/releases/latest
         return_content: true
-      register: latest
+      register: release
+
+    - name: "Extract .deb asset URL"
+      ansible.builtin.set_fact:
+        asset_url: "{{ release.json.assets | selectattr('name', 'search', '_amd64.deb$') | map(attribute='browser_download_url') | first }}"
 
     - name: Check latest version
       ansible.builtin.debug:
-        var: "https://github.com/mongodb-js/compass/releases/download/{{ latest.json.tag_name }}/mongodb-compass_{{ latest.json.name }}_amd64.deb"
+        var: "{{ asset_url }}"
 
-    - name: "Installing {{ latest.json.tag_name }}"
+    - name: "Installing {{ release.json.tag_name }}"
       become: true
       become_method: ansible.builtin.sudo
       ansible.builtin.apt:
-        deb: "https://github.com/mongodb-js/compass/releases/download/{{ latest.json.tag_name }}/mongodb-compass_{{ latest.json.name }}_amd64.deb"
+        deb: "{{ asset_url }}"
