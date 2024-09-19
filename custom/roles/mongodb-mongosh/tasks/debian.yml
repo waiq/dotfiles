@@ -1,10 +1,10 @@
 ---
 - name: "Install"
   ansible.builtin.set_fact:
-    package_name: "mongodb-compass"
-    package_repo: "https://api.github.com/repos/mongodb-js/compass/releases/latest"
+    package_name: "mongodb-mongosh"
+    package_repo: "https://api.github.com/repos/mongodb-js/mongosh/releases/latest"
 
-- name: Gather the package facts
+- name: "Gather the package facts"
   ansible.builtin.package_facts:
     manager: auto
 
@@ -23,7 +23,7 @@
 
     - name: "Extract .deb asset URL"
       ansible.builtin.set_fact:
-        asset_url: "{{ release.json.assets | selectattr('name', 'search', '_amd64.deb$') | map(attribute='browser_download_url') | first }}"
+        asset_url: "{{ release.json.assets | selectattr('name', 'search', '^mongodb-mongosh_.*_amd64.deb$') | map(attribute='browser_download_url') | first }}"
 
     - name: Check latest version
       ansible.builtin.debug:
@@ -34,3 +34,9 @@
       become_method: ansible.builtin.sudo
       ansible.builtin.apt:
         deb: "{{ asset_url }}"
+
+- name: "Create init_d files"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/mongodb-mongosh/templates/init_d/10-mongodb-mongosh.j2"
+    dest: "{{ core.dirs.init_d }}/10-mongodb-mongosh.sh"
+    mode: "0755"

@@ -1,16 +1,22 @@
 ---
-- name: "Check if installed"
-  ansible.builtin.shell: command -v glab
-  register: install_check
-  changed_when: false
-  ignore_errors: true
+- ansible.builtin.set_fact:
+    package_name: "glab"
+    package_repo: "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases"
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Check whether a package is installed"
+  ansible.builtin.set_fact:
+    install_check: "{{ ansible_facts.packages[package_name] | default([]) }}"
 
 - name: "Install"
-  when: install_check.rc != 0
+  when: install_check | length == 0
   block:
     - name: Check latest version
       ansible.builtin.uri:
-        url: "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases"
+        url: "{{ package_repo }}"
         return_content: true
       register: release
 
