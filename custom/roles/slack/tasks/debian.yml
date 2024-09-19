@@ -3,18 +3,18 @@
   ansible.builtin.package_facts:
     manager: auto
 
-# - name: Print the package facts
-#   ansible.builtin.debug:
-#     var: ansible_facts.packages
+- name: "Install"
+  when: "'slack-desktop' in ansible_facts.packages"
+  block:
+    - name: "Download"
+      get_url:
+        url: https://slack.com/downloads/instructions/linux?ddl=1&build=deb
+        dest: /tmp/slack-desktop.deb
+        mode: "0755"
+        force: "yes"
 
-# - name: "Check whether a package called foobar is installed"
-#   ansible.builtin.debug:
-#     msg: "{{ ansible_facts.packages['foobar'] | length }} versions of foobar are installed!"
-#   when: "'foobar' in ansible_facts.packages"
-
-- name: "Install Slack"
-  ansible.builtin.apt:
-    deb: https://downloads.slack-edge.com/releases/linux/4.35.131/prod/x64/slack-desktop-4.35.131-amd64.deb
-  become: true
-  become_method: ansible.builtin.sudo
-  when: "'slack-desktop' not in ansible_facts.packages"
+    - name: "Install"
+      ansible.builtin.apt:
+        deb: /tmp/slack-desktop.deb
+      become: true
+      become_method: ansible.builtin.sudo

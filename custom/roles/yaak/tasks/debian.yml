@@ -1,29 +1,36 @@
 ---
-- name: "Check if installed"
-  ansible.builtin.shell: command -v yaak
-  register: install_check
-  changed_when: false
-  ignore_errors: true
+- name: "Install"
+  ansible.builtin.set_fact:
+    package_name: "yaak"
+    package_repo: "https://api.github.com/repos/yaakapp/app/releases/latest"
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Check whether a package is installed"
+  ansible.builtin.set_fact:
+    install_check: "{{ ansible_facts.packages[package_name] | default([]) }}"
 
 - name: "Install"
-  when: install_check.rc != 0
+  when: install_check | length == 0
   block:
     - name: Check latest version
       ansible.builtin.uri:
-        url: https://api.github.com/repos/yaakapp/app/releases/latest
+        url: "{{ package_repo }}"
         return_content: true
-      register: github_release
+      register: release
 
     - name: Extract .deb asset URL
       set_fact:
-        deb_asset_url: "{{ github_release.json.assets | selectattr('name', 'search', '.deb$') | map(attribute='browser_download_url') | first }}"
+        asset_url: "{{ release.json.assets | selectattr('name', 'search', '.deb$') | map(attribute='browser_download_url') | first }}"
 
     - name: Check latest version
       ansible.builtin.debug:
-        var: "{{ deb_asset_url }}"
+        var: "{{ asset_url }}"
 
-    - name: "Installing {{ github_release.json.tag_name }}"
+    - name: "Installing {{ release.json.tag_name }}"
       become: true
       become_method: ansible.builtin.sudo
       ansible.builtin.apt:
-        deb: "{{ deb_asset_url }}"
+        deb: "{{ asset_url }}"

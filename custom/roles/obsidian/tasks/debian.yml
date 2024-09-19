@@ -1,10 +1,36 @@
 ---
-- name: "Install obsidian"
-  ansible.builtin.debug:
-    msg: "obsidian"
+- name: "Install"
+  ansible.builtin.set_fact:
+    package_name: "obsidian"
+    package_repo: "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"
 
-- name: Install obsidian
-  ansible.builtin.get_url:
-    url: "https://github.com/obsidianmd/obsidian-releases/releases/latest/download/Obsidian-1.6.7.AppImage"
-    dest: "{{ core.dirs.bin }}/obsidian"
-    mode: "0755"
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: "Check whether a package is installed"
+  ansible.builtin.set_fact:
+    install_check: "{{ ansible_facts.packages[package_name] | default([]) }}"
+
+- name: "Install"
+  when: install_check | length == 0
+  block:
+    - name: Check latest version
+      ansible.builtin.uri:
+        url: "{{ package_repo }}"
+        return_content: true
+      register: release
+
+    - name: "Extract .deb asset URL"
+      ansible.builtin.set_fact:
+        asset_url: "{{ release.json.assets | selectattr('name', 'search', '_amd64.deb$') | map(attribute='browser_download_url') | first }}"
+
+    - name: Check latest version
+      ansible.builtin.debug:
+        var: "{{ asset_url }}"
+
+    - name: "Installing {{ release.json.tag_name }}"
+      become: true
+      become_method: ansible.builtin.sudo
+      ansible.builtin.apt:
+        deb: "{{ asset_url }}"
