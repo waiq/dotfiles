@@ -1,4 +1,9 @@
 ---
+- name: "path to pipx"
+  ansible.builtin.shell: "which pipx"
+  register: binary_path
+
 - name: "Install"
   community.general.pipx:
     name: terraform-local
+    executable: "{{ binary_path.stdout }}"

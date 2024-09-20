@@ -4,10 +4,10 @@
     manager: auto
 
 - name: "Install"
-  when: "'slack-desktop' in ansible_facts.packages"
+  when: "'slack-desktop' not in ansible_facts.packages"
   block:
     - name: "Download"
-      get_url:
+      ansible.builtin.get_url:
         url: https://slack.com/downloads/instructions/linux?ddl=1&build=deb
         dest: /tmp/slack-desktop.deb
         mode: "0755"

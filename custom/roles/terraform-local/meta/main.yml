@@ -1,5 +1,5 @@
 ---
 # add dependencies for task: "terraform-local"
 #
-# dependencies:
-#  - role: nvm
+dependencies:
+  - role: terraform
