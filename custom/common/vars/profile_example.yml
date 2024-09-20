@@ -21,7 +21,7 @@ custom:
   onepassword:
     account: ""
 
-  attlasian:
+  atlassian:
     jira:
       environment:
         JIRA_API_KEY: "op://Path/to/api_key"
