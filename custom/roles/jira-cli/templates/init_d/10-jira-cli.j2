@@ -1,3 +1,4 @@
 export JIRA_API_TOKEN="{{ custom.atlassian.jira.environment.JIRA_API_KEY }}"
 
 alias jira='op run --account $ONE_PASSWORD_ACCOUNT -- jira'
+alias my-jira-list='jira issues list -a$(jira me) --order-by created'
