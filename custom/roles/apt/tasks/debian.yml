@@ -9,6 +9,7 @@
 - name: Install apt packages
   ansible.builtin.apt:
     pkg:
+      - luarocks
       - cheese
       - gnupg
       - software-properties-common
