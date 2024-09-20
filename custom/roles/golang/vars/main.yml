@@ -3,6 +3,3 @@ golang:
   dirs:
     install_path: "{{ core.dirs.local }}"
     bin: "{{ core.dirs.local }}/go/bin"
-
-  packages:
-    - github.com/tufin/oasdiff@latest

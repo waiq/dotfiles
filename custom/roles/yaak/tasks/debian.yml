@@ -22,7 +22,7 @@
       register: release
 
     - name: Extract .deb asset URL
-      set_fact:
+      ansible.builtin.set_fact:
         asset_url: "{{ release.json.assets | selectattr('name', 'search', '.deb$') | map(attribute='browser_download_url') | first }}"
 
     - name: Check latest version

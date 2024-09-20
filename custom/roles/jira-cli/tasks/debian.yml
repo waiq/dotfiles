@@ -1,0 +1,57 @@
+---
+- name: "Install"
+  ansible.builtin.set_fact:
+    package_name: "jira-cli"
+    package_repo: "https://api.github.com/repos/ankitpokhrel/jira-cli/releases/latest"
+    package_command: "jira"
+
+- name: "Check if command installed"
+  ansible.builtin.stat:
+    path: "{{ core.dirs.bin }}/{{ package_command }}"
+  register: file_stat
+
+- name: "Command fact"
+  ansible.builtin.set_fact:
+    file_exists: "{{ file_stat.stat.exists }}"
+
+- name: "Install"
+  when: not file_exists
+  block:
+    - name: Create a temporary directory
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: download
+      register: temp_dir
+
+    - name: "Check latest version"
+      ansible.builtin.uri:
+        url: "{{ package_repo }}"
+        return_content: true
+      register: release
+
+    - name: "Extract .deb asset URL"
+      ansible.builtin.set_fact:
+        asset_url: "{{ release.json.assets | selectattr('name', 'search', 'linux_x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
+
+    - name: "Check latest version"
+      ansible.builtin.debug:
+        var: "{{ asset_url }}"
+
+    - name: "Installing {{ asset_url }}"
+      ansible.builtin.unarchive:
+        src: "{{ asset_url }}"
+        dest: "{{ temp_dir.path }}"
+        extra_opts: [--strip-components=1]
+        remote_src: true
+
+    - name: "Move binary to bin"
+      ansible.builtin.copy:
+        src: "{{ temp_dir.path }}/bin/jira"
+        dest: "{{ core.dirs.bin }}"
+        mode: "0755"
+
+- name: "Setup init for"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/jira-cli/templates/init_d/10-jira-cli.j2"
+    dest: "{{ core.dirs.init_d }}/10-jira-cli.sh"
+    mode: "0755"

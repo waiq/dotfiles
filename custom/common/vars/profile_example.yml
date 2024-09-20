@@ -18,11 +18,18 @@ custom:
     name: ""
     email: ""
 
-  mongosh:
-    # Connection strings
+  onepassword:
+    account: ""
 
-    integration_conn_string: "$(op read --account 4cc0unt.1password.com op://Path/to/conn_string)"
-    production_conn_string: "$(op read --account 4cc0unt.1password.com op://Path/to/conn_string)"
+  attlasian:
+    jira:
+      environment:
+        JIRA_API_KEY: "op://Path/to/api_key"
+
+  mongosh:
+    environment:
+      MONGOSH_DEV_CONNECTION_STRING: "op://Path/to/conn_string"
+      MONOGSH_PROD_CONNECTION_STRING: "op://Path/to/conn_string"
 
   dirs:
     dropbox: "{{ home }}/Dropbox"
