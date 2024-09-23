@@ -38,3 +38,9 @@
     src: "{{core.dirs.custom}}/roles/git/templates/gitignore.j2"
     dest: "{{ home }}/.gitignore"
     mode: "0644"
+
+- name: "setup init"
+  ansible.builtin.template:
+    src: "{{ core.dirs.custom }}/roles/git/templates/init_d/10-git.j2"
+    dest: "{{ core.dirs.init_d }}/10-git.sh"
+    mode: "0755"

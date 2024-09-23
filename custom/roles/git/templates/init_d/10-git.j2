@@ -1,0 +1,5 @@
+git-pull() {
+  TARGET_BRANCH=${1:-main}   # Use the first argument, default to "main" if none provided
+  CURRENT=$(git rev-parse --abbrev-ref HEAD)
+  git checkout "$TARGET_BRANCH" && git pull && git checkout "$CURRENT"
+}
