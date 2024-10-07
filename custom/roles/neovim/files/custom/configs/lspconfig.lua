@@ -21,30 +21,6 @@ lspconfig.gopls.setup({
 	},
 })
 
--- rust
-lspconfig.rust_analyzer.setup({
-	on_attach = config.on_attach,
-	capabilities = config.capabilities,
-	filetypes = { "rust" },
-	root_dir = util.root_pattern("Cargo.toml"),
-	settings = {
-		["rust_analyzer"] = {
-			cargo = {
-				allFeatures = true,
-			},
-		},
-	},
-})
-
--- clangd
-lspconfig.clangd.setup({
-	-- chad bug
-	on_attach = function(client, bufnur)
-		client.server_capabilities.signatureHelpProvider = false
-		on_attach(client, bufnur)
-	end,
-})
-
 -- terraform
 lspconfig.terraformls.setup({})
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {

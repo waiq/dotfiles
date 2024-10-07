@@ -74,6 +74,16 @@ local plugins = {
 		end,
 	},
 	{
+		"mrcjkb/rustaceanvim",
+		version = "^5", -- Recommended
+		lazy = false, -- This plugin is already lazy
+		config = function()
+			vim.g.rustaceanvim = {
+				require("custom.configs.rustaceanvim"),
+			}
+		end,
+	},
+	{
 		"leoluz/nvim-dap-go",
 		ft = "go",
 		dependencies = "mfussenegger/nvim-dap",
