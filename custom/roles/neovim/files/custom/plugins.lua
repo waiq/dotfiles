@@ -5,6 +5,7 @@ local plugins = {
 		"ThePrimeagen/harpoon",
 		lazy = false,
 	},
+	{ "echasnovski/mini.nvim", version = "*" },
 	{
 		"lukas-reineke/headlines.nvim",
 		dependencies = "nvim-treesitter/nvim-treesitter",
