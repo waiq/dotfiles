@@ -3,21 +3,58 @@
   ansible.builtin.apt:
     name: zsh
     state: present
-  become: yes
+  become: true
   become_method: ansible.builtin.sudo
+
+- name: "Set zsh as default shell for user: {{ ansible_env.USER }}"
+  become_method: ansible.builtin.sudo
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    shell: /bin/zsh
 
 - name: "Install fzf"
   ansible.builtin.apt:
     name: fzf
     state: present
-  become: yes
+  become: true
   become_method: ansible.builtin.sudo
+
+- name: "Setup .fzf folder"
+  ansible.builtin.file:
+    path: "{{ home }}/.fzf/shell/"
+    state: directory
+    mode: "0755"
+
+- name: "Setup fzf"
+  ansible.builtin.stat:
+    path: "/usr/share/doc/fzf/examples/key-bindings.zsh"
+  register: fzf_key
+
+- name: "Setup fzf"
+  ansible.builtin.stat:
+    path: "/usr/share/doc/fzf/examples/completion.zsh"
+  register: fzf_completion
+
+- name: "Copy fzf key bindings"
+  ansible.builtin.copy:
+    src: "/usr/share/doc/fzf/examples/key-bindings.zsh"
+    dest: "{{ home }}/.fzf/shell/key-bindings.zsh"
+    mode: "0755"
+  when: fzf_key.stat.exists
+
+- name: "Copy fzf key completion"
+  ansible.builtin.copy:
+    src: "/usr/share/doc/fzf/examples/completion.zsh"
+    dest: "{{ home }}/.fzf/shell/completion.zsh"
+    mode: "0755"
+  when: fzf_completion.stat.exists
 
 - name: "Install direnv"
   ansible.builtin.apt:
     name: direnv
     state: present
-  become: yes
+  become: true
   become_method: ansible.builtin.sudo
 
 - name: "Check for oh-my-zsh installation"
@@ -38,6 +75,7 @@
   ansible.builtin.copy:
     src: "{{ home }}/.zshrc"
     dest: "{{ home }}/.zshrc.bak"
+    mode: "0755"
   when: zshrc.stat.exists
 
 - name: "Remove old zshrc"
@@ -50,6 +88,7 @@
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/zsh/templates/zshrc.j2"
     dest: "{{ home }}/.zshrc"
+    mode: "0755"
 
 - name: "Check for oh-my-posh installation"
   ansible.builtin.stat:
@@ -70,28 +109,47 @@
   ansible.builtin.copy:
     src: "{{ core.dirs.custom }}/roles/zsh/files/oh-my-posh/themes/"
     dest: "{{ core.dirs.local }}/omp/themes/"
+    mode: "0755"
 
 # install plugins
 - name: "Install plugins 256color"
   ansible.builtin.git:
     repo: "https://github.com/chrissicool/zsh-256color.git"
     dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-256color"
-    update: yes
+    update: true
+
+- name: "Install plugins zsh-completions"
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-completions.git"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-completions"
+    update: true
+
+- name: "Install plugins fzf-zsh-plugin"
+  ansible.builtin.git:
+    repo: "https://github.com/unixorn/fzf-zsh-plugin.git"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/fzf-zsh-plugin"
+    update: true
+
+- name: "Install plugins fzf-tab"
+  ansible.builtin.git:
+    repo: "https://github.com/Aloxaf/fzf-tab"
+    dest: "{{ home }}/.oh-my-zsh/custom/plugins/fzf-tab"
+    update: true
 
 - name: "Install plugins zsh-autosuggestions"
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions"
     dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-    update: yes
+    update: true
 
 - name: "Install plugins zsh-vi-mode"
   ansible.builtin.git:
     repo: "https://github.com/jeffreytse/zsh-vi-mode"
     dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-vi-mode"
-    update: yes
+    update: true
 
 - name: "Install plugins zsh-fzf-history-search"
   ansible.builtin.git:
     repo: "https://github.com/joshskidmore/zsh-fzf-history-search"
     dest: "{{ home }}/.oh-my-zsh/custom/plugins/zsh-fzf-history-search"
-    update: yes
+    update: true
