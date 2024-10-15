@@ -3,3 +3,4 @@
 #
 dependencies:
   - role: 1password
+  - role: zsh

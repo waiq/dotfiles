@@ -55,3 +55,9 @@
     src: "{{ core.dirs.custom }}/roles/jira-cli/templates/init_d/10-jira-cli.j2"
     dest: "{{ core.dirs.init_d }}/10-jira-cli.sh"
     mode: "0755"
+
+- name: "Setup completions"
+  ansible.builtin.shell:
+    cmd: "{{ core.dirs.bin }}/jira completion zsh > {{ core.dirs.init_d }}/2-jira-cli-completions.zsh"
+  args:
+    creates: "{{ core.dirs.init_d }}/2-jira-cli-completions.zsh"
