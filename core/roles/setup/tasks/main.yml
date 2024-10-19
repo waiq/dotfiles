@@ -44,14 +44,14 @@
 
 - name: Setup init folder
   ansible.builtin.template:
-    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-env.j2"
-    dest: "{{ core.dirs.init_d }}/1-dotfiles-env.sh"
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/001-dotfiles-env.j2"
+    dest: "{{ core.dirs.init_d }}/001-dotfiles-env.sh"
     mode: "0755"
 
 - name: Setup dotrun completions
   ansible.builtin.template:
-    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/1-dotfiles-dotrun-completions.j2"
-    dest: "{{ core.dirs.init_d }}/1-dotfiles-dotrun-completions.sh"
+    src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/init/001-dotfiles-dotrun-completions.j2"
+    dest: "{{ core.dirs.init_d }}/001-dotfiles-dotrun-completions.sh"
     mode: "0755"
 
 - name: Setup bin file dotrun
@@ -59,4 +59,3 @@
     src: "{{ core.dirs.dotfiles }}/core/roles/setup/templates/bin/dotrun.j2"
     dest: "{{ core.dirs.bin }}/dotrun"
     mode: "0755"
-
