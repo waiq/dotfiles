@@ -3,3 +3,4 @@
 #
 dependencies:
   - role: zsh
+  - role: fonts

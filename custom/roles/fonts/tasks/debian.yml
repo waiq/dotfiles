@@ -5,6 +5,7 @@
   register: p
 
 - name: "Install fonts"
+  when: not p.stat.exists
   block:
     - name: "Create fonts directory"
       ansible.builtin.file:
@@ -23,5 +24,3 @@
         src: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip"
         dest: "{{ home }}/.fonts/"
         remote_src: true
-
-  when: not p.stat.exists
