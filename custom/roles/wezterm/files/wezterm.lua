@@ -9,6 +9,8 @@ config.color_scheme = "Catppuccin Mocha"
 
 config.enable_tab_bar = false
 
+config.audible_bell = "Disabled"
+
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 
 return config
