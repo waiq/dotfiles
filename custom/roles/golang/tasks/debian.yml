@@ -66,6 +66,7 @@
     var: go_latest_release
 
 - name: "Golang install"
+  when: go_latest_version not in current_go_version.stdout|default('')
   block:
     - name: "Golang ensure clean download destination"
       ansible.builtin.file:
@@ -112,5 +113,3 @@
         src: "{{ core.dirs.custom }}/roles/golang/templates/init_d/10-golang.j2"
         dest: "{{ core.dirs.init_d }}/10-golang.sh"
         mode: "0755"
-
-  when: go_latest_version not in current_go_version.stdout|default('')
