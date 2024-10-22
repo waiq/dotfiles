@@ -11,7 +11,7 @@
     dest: "{{ custom.dirs.config }}/nvim"
     depth: 1
     version: "v2.0"
-    update: no
+    update: false
 
 - name: Link custom folder
   ansible.builtin.file:
@@ -23,8 +23,10 @@
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/neovim/templates/init_d/10-nvim.j2"
     dest: "{{ core.dirs.init_d }}/10-nvim.sh"
+    mode: "0755"
 
 - name: Create neovim custom_d files
   ansible.builtin.template:
     src: "{{ core.dirs.custom }}/roles/neovim/templates/custom_d/10-nvim.j2"
     dest: "{{ core.dirs.custom_d }}/10-nvim.sh"
+    mode: "0755"
