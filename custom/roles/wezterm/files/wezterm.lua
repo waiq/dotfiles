@@ -5,7 +5,8 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Setup color_scheme:
-config.color_scheme = "Catppuccin Mocha"
+-- config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "tokyonight_night"
 
 config.enable_tab_bar = false
 
