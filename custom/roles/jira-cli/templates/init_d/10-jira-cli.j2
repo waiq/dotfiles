@@ -5,7 +5,22 @@ jira() {
 }
 compdef _jira jira
 
-my-jira() {
+jimy() {
   op run --account "$ONE_PASSWORD_ACCOUNT" -- jira issues list -a$(jira me) --order-by created "$@"
 }
-compdef _jira my-jira
+compdef _jira jimy
+
+jiw() {
+  op run --account "$ONE_PASSWORD_ACCOUNT" -- jira issues view "$@"
+}
+compdef _jira jiw
+
+jil() {
+  op run --account "$ONE_PASSWORD_ACCOUNT" -- jira issues list "$@"
+}
+compdef _jira jil
+
+jimo() {
+  op run --account "$ONE_PASSWORD_ACCOUNT" -- jira issues move "$@"
+}
+compdef _jira jimo

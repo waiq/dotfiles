@@ -24,3 +24,9 @@
         src: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip"
         dest: "{{ home }}/.fonts/"
         remote_src: true
+
+    - name: "Install noto emoji"
+      ansible.builtin.get_url:
+        url: "https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
+        dest: "{{ home }}/.fonts/NotoColorEmoji.ttf"
+        mode: "0755"
