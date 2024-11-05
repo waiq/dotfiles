@@ -32,4 +32,4 @@ core:
   git:
     name: "dotfiles"
     repository: "git@github.com:waiq/dotfiles.git"
-    version: "main"
+    version: "new_neovim"
