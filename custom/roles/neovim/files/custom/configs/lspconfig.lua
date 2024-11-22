@@ -43,6 +43,8 @@ local servers = {
 	"dockerls",
 	"marksman",
 	"cssls",
+	"templ",
+	"rubyls",
 }
 
 for _, lsp in ipairs(servers) do
