@@ -44,7 +44,7 @@ local servers = {
 	"marksman",
 	"cssls",
 	"templ",
-	"rubyls",
+	"ruby_lsp",
 }
 
 for _, lsp in ipairs(servers) do
