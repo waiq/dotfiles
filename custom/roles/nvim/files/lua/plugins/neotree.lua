@@ -34,7 +34,7 @@ return {
     vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
 
     require('neo-tree').setup {
-      close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       popup_border_style = 'rounded',
       enable_git_status = true,
       enable_diagnostics = true,
@@ -126,7 +126,7 @@ return {
       -- see `:h neo-tree-custom-commands-global`
       commands = {},
       window = {
-        position = 'left',
+        position = 'bottom',
         width = 40,
         mapping_options = {
           noremap = true,
@@ -235,7 +235,8 @@ return {
             ['<bs>'] = 'navigate_up',
             ['.'] = 'set_root',
             ['H'] = 'toggle_hidden',
-            ['/'] = 'fuzzy_finder',
+            -- ['/'] = 'fuzzy_finder',
+            ['/'] = '',
             ['D'] = 'fuzzy_finder_directory',
             ['#'] = 'fuzzy_sorter', -- fuzzy sorting using the fzy algorithm
             -- ["D"] = "fuzzy_sorter_directory",
