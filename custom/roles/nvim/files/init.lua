@@ -30,8 +30,10 @@ require('lazy').setup {
   require 'plugins.lualine',
   require 'plugins.gitsigns',
   require 'plugins.indent-blankline',
-  require 'plugins.dap',
   require 'plugins.oil',
+  require 'plugins.dap',
+  require 'plugins.dap-ui',
+  require 'plugins.dap-go',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
