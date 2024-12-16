@@ -28,6 +28,7 @@ source "{{ core.files.init }}"
 
 eval "$(oh-my-posh init zsh --config {{ core.dirs.local }}/omp/themes/my.omp.json)"
 eval "$(zoxide init zsh --cmd cd)"
+eval "$(op completion zsh)"; compdef _op op
 
 # history settings
 HISTORYSIZE=50000

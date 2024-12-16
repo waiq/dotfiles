@@ -18,5 +18,6 @@ return {
 		"tsx",
 		"css",
 		"terraform",
+		"templ",
 	},
 }

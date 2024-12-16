@@ -35,5 +35,7 @@ return {
 		"checkmake",
 		"rust-analyzer",
 		"terraform-ls",
+		"templ",
+		"ruby-lsp",
 	},
 }

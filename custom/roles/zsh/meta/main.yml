@@ -2,3 +2,4 @@
 dependencies:
   - role: rbenv
   - role: zoxide
+  - role: 1password
