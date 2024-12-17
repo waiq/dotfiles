@@ -37,7 +37,7 @@ vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts)
 -- Buffers
 vim.keymap.set('n', '<S-L>', ':bnext<CR>', opts)
 vim.keymap.set('n', '<S-H>', ':bprevious<CR>', opts)
-vim.keymap.set('n', '<S-Q>', ':bdelete!<CR>', opts) -- close buffer
+vim.keymap.set('n', '<S-Q>', ':bdelete<CR>', opts) -- close buffer
 vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
 
 -- Window management
@@ -73,6 +73,3 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
--- Oil
-vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent foler' })

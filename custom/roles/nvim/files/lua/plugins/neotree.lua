@@ -235,7 +235,6 @@ return {
             ['<bs>'] = 'navigate_up',
             ['.'] = 'set_root',
             ['H'] = 'toggle_hidden',
-            -- ['/'] = 'fuzzy_finder',
             ['/'] = '',
             ['D'] = 'fuzzy_finder_directory',
             ['#'] = 'fuzzy_sorter', -- fuzzy sorting using the fzy algorithm
