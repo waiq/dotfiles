@@ -9,6 +9,10 @@ return {
     'tpope/vim-sleuth',
   },
   {
+    'echasnovski/mini.nvim',
+    version = '*',
+  },
+  {
     -- Powerful Git integration for Vim
     'tpope/vim-fugitive',
   },
