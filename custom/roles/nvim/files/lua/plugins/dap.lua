@@ -22,7 +22,7 @@ return {
     end, { desc = 'Dap Step into' })
 
     vim.keymap.set('n', '<leader>dn', function()
-      require('dap').step_into()
+      require('dap').step_over()
     end, { desc = 'Dap Step next' })
 
     vim.keymap.set('n', '<leader>do', function()
