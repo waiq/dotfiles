@@ -26,7 +26,7 @@ return {
     end, { desc = 'Dap window scopes' })
 
     vim.keymap.set('n', '<leader>dw', function()
-      widget.toggle()
+      dapui.toggle()
     end, { desc = 'Dap window open' })
 
     -- add listeners
