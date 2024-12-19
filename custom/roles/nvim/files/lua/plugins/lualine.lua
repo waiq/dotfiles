@@ -8,7 +8,8 @@ return {
     local mode = {
       'mode',
       fmt = function(str)
-        return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
+        -- return ' ' .. str:sub(1, 1) .. ' ' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+        return ' ' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
       end,
     }
 
