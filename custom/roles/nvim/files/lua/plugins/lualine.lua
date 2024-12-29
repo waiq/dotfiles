@@ -45,7 +45,6 @@ return {
       options = {
         icons_enabled = true,
         theme = 'auto',
-        theme = 'tokyonight', -- Set theme based on environment variable
         -- Some useful glyphs:
         -- https://www.nerdfonts.com/cheat-sheet
         --          
