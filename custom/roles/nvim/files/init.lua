@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Set up plugins
 require('lazy').setup {
   require 'plugins.alpha',
-  require 'plugins.neotree',
+  require 'plugins.obsidian',
   require 'plugins.themes',
   require 'plugins.treesitter',
   require 'plugins.lsp',
