@@ -5,6 +5,7 @@ return {
   requires = {
     -- Required.
     'nvim-lua/plenary.nvim',
+    'folke/which-key.nvim',
   },
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   event = {
@@ -29,6 +30,10 @@ return {
         {
           name = 'Brains',
           path = '~/vaults/Brains',
+        },
+        {
+          name = 'Work',
+          path = '~/vaults/Work',
         },
       },
 
@@ -246,16 +251,12 @@ return {
         -- Runs anytime you enter the buffer for a note.
         ---@param client obsidian.Client
         ---@param note obsidian.Note
-        enter_note = function(client, note)
-          print(note)
-        end,
+        enter_note = function(client, note) end,
 
         -- Runs anytime you leave the buffer for a note.
         ---@param client obsidian.Client
         ---@param note obsidian.Note
-        leave_note = function(client, note)
-          print(note)
-        end,
+        leave_note = function(client, note) end,
 
         -- Runs right before writing the buffer for a note.
         ---@param client obsidian.Client
@@ -341,8 +342,16 @@ return {
       },
     }
 
-    vim.keymap.set('n', '<leader>oo', ':ObsidianNew <CR>', { desc = 'open obsidian new note' })
-    vim.keymap.set('n', '<leader>od', ':ObsidianDalies <CR>', { desc = 'open obsidian dailies' })
-    vim.keymap.set('n', '<leader>os', ':ObsidianSearch <CR>', { desc = 'search brains' })
+    local wk = require 'which-key'
+    wk.add {
+      { '<leader>o', group = 'obsidian' },
+    }
+
+    vim.keymap.set('n', '<leader>oo', ':ObsidianNew <CR>', { desc = 'open new note' })
+    vim.keymap.set('n', '<leader>od', ':ObsidianDalies <CR>', { desc = 'open dailies' })
+    vim.keymap.set('n', '<leader>ow', ':ObsidianWorkspace <CR>', { desc = 'open workspace' })
+    vim.keymap.set('n', '<leader>os', ':ObsidianSearch <CR>', { desc = 'search notes' })
+    vim.keymap.set('n', '<leader>ot', ':ObsidianTags <CR>', { desc = 'search tags' })
+    vim.keymap.set('n', '<leader>oq', ':ObsidianQuickSwitch <CR>', { desc = 'quick switch' })
   end,
 }
