@@ -50,7 +50,7 @@ return {
 
       daily_notes = {
         -- Optional, if you keep daily notes in a separate directory.
-        folder = 'notes/dailies',
+        folder = 'capture/dailies',
         -- Optional, if you want to change the date format for the ID of daily notes.
         date_format = '%Y-%m-%d',
         -- Optional, if you want to change the date format of the default alias of daily notes.
@@ -348,7 +348,7 @@ return {
     }
 
     vim.keymap.set('n', '<leader>oo', ':ObsidianNew <CR>', { desc = 'open new note' })
-    vim.keymap.set('n', '<leader>od', ':ObsidianDalies <CR>', { desc = 'open dailies' })
+    vim.keymap.set('n', '<leader>od', ':ObsidianDailies <CR>', { desc = 'open dailies' })
     vim.keymap.set('n', '<leader>ow', ':ObsidianWorkspace <CR>', { desc = 'open workspace' })
     vim.keymap.set('n', '<leader>os', ':ObsidianSearch <CR>', { desc = 'search notes' })
     vim.keymap.set('n', '<leader>ot', ':ObsidianTags <CR>', { desc = 'search tags' })
