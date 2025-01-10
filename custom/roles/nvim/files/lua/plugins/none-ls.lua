@@ -20,6 +20,7 @@ return {
         'checkmake', -- linter for Makefiles
         'ruff', -- Python linter and formatter
         'goimports', -- golang formatter
+        'vacuum', -- openapi linter
       },
       automatic_installation = true,
     }

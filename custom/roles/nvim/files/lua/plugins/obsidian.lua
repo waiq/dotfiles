@@ -98,7 +98,7 @@ return {
       -- Where to put new notes. Valid options are
       --  * "current_dir" - put new notes in same directory as the current buffer.
       --  * "notes_subdir" - put new notes in the default notes subdirectory.
-      new_notes_location = 'notes_subdir',
+      new_notes_location = 'current_dir',
 
       -- Optional, customize how note IDs are generated given an optional title.
       ---@param title string|?
@@ -353,5 +353,6 @@ return {
     vim.keymap.set('n', '<leader>os', ':ObsidianSearch <CR>', { desc = 'search notes' })
     vim.keymap.set('n', '<leader>ot', ':ObsidianTags <CR>', { desc = 'search tags' })
     vim.keymap.set('n', '<leader>oq', ':ObsidianQuickSwitch <CR>', { desc = 'quick switch' })
+    vim.keymap.set('n', '<leader>oit', ':ObsidianTemplate <CR>', { desc = 'insert template' })
   end,
 }
