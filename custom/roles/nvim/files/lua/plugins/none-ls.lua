@@ -28,6 +28,7 @@ return {
     local sources = {
       diagnostics.checkmake,
       diagnostics.codespell,
+      diagnostics.vacuum,
 
       formatting.prettier.with { filetypes = { 'html', 'json', 'yaml', 'markdown' } },
       formatting.stylua,
