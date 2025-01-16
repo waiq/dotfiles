@@ -1,14 +1,15 @@
 ---
 - name: Add Docker GPG apt Key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+    dest: /usr/share/keyrings/docker.gpg
+    mode: "0644"
   become: true
   become_method: ansible.builtin.sudo
 
 - name: Add Docker Repository
   ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    repo: deb [arch={{ ansible_machine | replace('x86_64', 'amd64') }} signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu focal stable
     state: present
   become: true
   become_method: ansible.builtin.sudo
@@ -29,14 +30,14 @@
   become_method: ansible.builtin.sudo
 
 - name: Set user to docker group
-  become: yes
+  become: true
   become_method: ansible.builtin.sudo
   ansible.builtin.shell: "usermod -aG docker $USER"
   args:
     executable: /bin/bash
 
 - name: Add user to docker group
-  become: yes
+  become: true
   become_method: ansible.builtin.sudo
   ansible.builtin.user:
     name: "{{ lookup('env', 'USER') }}"

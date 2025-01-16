@@ -4,13 +4,16 @@
     msg: "terraform"
 
 - name: Add HashiCorp GPG key
-  apt_key:
+  ansible.builtin.get_url:
     url: https://apt.releases.hashicorp.com/gpg
-    state: present
+    dest: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    mode: "0644"
+  become: true
+  become_method: ansible.builtin.sudo
 
 - name: Add Repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    repo: "deb [arch={{ ansible_machine | replace('x86_64', 'amd64') }} signed-by=/usr/share/keyrings/terraform.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
     state: present
     mode: "0644"
     filename: "hashicorp"

@@ -1,10 +1,11 @@
 ---
-- name: "Add APT Key"
-  ansible.builtin.apt_key:
+- name: Download 1password GPG key
+  ansible.builtin.get_url:
     url: https://downloads.1password.com/linux/keys/1password.asc
-    keyring: /usr/share/keyrings/1password-archive-keyring.gpg
-    state: present
+    dest: /usr/share/keyrings/1password.gpg
+    mode: "0644"
   become: true
+  become_method: ansible.builtin.sudo
 
 - name: "Add APT Repo"
   ansible.builtin.apt_repository:
@@ -12,6 +13,14 @@
     state: present
     mode: "0644"
   become: true
+
+- name: Download 1password GPG key
+  ansible.builtin.get_url:
+    url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
+    dest: /usr/share/keyrings/spotify.gpg
+    mode: "0644"
+  become: true
+  become_method: ansible.builtin.sudo
 
 - name: "Add debsig-verify policy"
   become: true
@@ -35,9 +44,12 @@
         mode: "0755"
 
     - name: "Add debsig keyring"
-      ansible.builtin.apt_key:
+      ansible.builtin.get_url:
         url: https://downloads.1password.com/linux/keys/1password.asc
-        keyring: /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+        dest: /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+        mode: "0644"
+      become: true
+      become_method: ansible.builtin.sudo
 
 - name: "Install 1Password-cli"
   ansible.builtin.apt:

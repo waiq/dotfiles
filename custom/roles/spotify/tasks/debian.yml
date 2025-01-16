@@ -3,18 +3,19 @@
   ansible.builtin.debug:
     msg: "spotify"
 
-- name: Add Spotify GPG apt Key
-  ansible.builtin.apt_key:
-    url: https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg
-    keyring: /etc/apt/trusted.gpg.d/spotify.gpg
-    state: present
+- name: Download Spotify GPG key
+  ansible.builtin.get_url:
+    url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
+    dest: /usr/share/keyrings/spotify.gpg
+    mode: "0644"
   become: true
   become_method: ansible.builtin.sudo
 
-- name: Add Spotify Repository
+- name: Add Spotify repository with signed-by option
   ansible.builtin.apt_repository:
-    repo: deb http://repository.spotify.com stable non-free
+    repo: "deb [signed-by=/usr/share/keyrings/spotify.gpg] http://repository.spotify.com stable non-free"
     state: present
+    update_cache: yes
   become: true
   become_method: ansible.builtin.sudo
 
