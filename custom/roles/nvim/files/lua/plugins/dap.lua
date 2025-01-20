@@ -17,6 +17,10 @@ return {
       require('dap').continue()
     end, { desc = 'Dap continue' })
 
+    vim.keymap.set('n', '<leader>dr', function()
+      require('dap').run_to_cursor()
+    end, { desc = 'Dap run to cursor' })
+
     vim.keymap.set('n', '<leader>di', function()
       require('dap').step_into()
     end, { desc = 'Dap Step into' })
