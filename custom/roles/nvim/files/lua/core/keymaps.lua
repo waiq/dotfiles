@@ -25,6 +25,12 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
 vim.keymap.set('n', 'n', 'nzzzv', opts)
 vim.keymap.set('n', 'N', 'Nzzzv', opts)
 
+-- Marks
+vim.keymap.set('n', '<leader>ddm', '<cmd> delmarks! <cr>', { desc = 'delete marks, not A-Z or 0-9' })
+
+-- spelling
+vim.keymap.set('n', 'zl', '<cmd> setlocal spell spelllang=en_us <cr>', { desc = 'Enable Spelling' })
+
 -- Buffers
 vim.keymap.set('n', '<S-L>', ':bnext<CR>', opts)
 vim.keymap.set('n', '<S-H>', ':bprevious<CR>', opts)
