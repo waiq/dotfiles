@@ -13,7 +13,8 @@
 
 - name: Add Repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch={{ ansible_machine | replace('x86_64', 'amd64') }} signed-by=/usr/share/keyrings/terraform.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    # repo: "deb [arch={{ ansible_machine | replace('x86_64', 'amd64') }} signed-by=/usr/share/keyrings/terraform.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    repo: "deb [arch={{ ansible_machine | replace('x86_64', 'amd64') }} signed-by=/usr/share/keyrings/terraform.gpg] https://apt.releases.hashicorp.com bookworm main"
     state: present
     mode: "0644"
     filename: "hashicorp"
