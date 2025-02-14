@@ -37,6 +37,7 @@ require('lazy').setup {
   require 'plugins.dap-go',
   require 'plugins.smart-split',
   require 'plugins.lsp-signature',
+  require 'plugins.rest',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
