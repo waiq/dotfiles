@@ -26,12 +26,17 @@ git-pull() {
   TARGET_BRANCH=${1:-main}  
   CURRENT=$(git rev-parse --abbrev-ref HEAD)
   
-  # Stash any current changes and untracked files
-  git stash -u
+  # Check if there are uncommitted changes
+  if ! git diff --quiet || ! git diff --staged --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+    STASH_NEEDED=1
+    git stash -u
+  fi
   
   # Switch to the target branch, pull the latest changes, then switch back
   git checkout "$TARGET_BRANCH" && git pull && git checkout "$CURRENT"
   
-  # Pop the stashed changes back
-  git stash pop
+  # Pop the stashed changes back if they were stashed
+  if [ -n "$STASH_NEEDED" ]; then
+    git stash pop
+  fi
 }
