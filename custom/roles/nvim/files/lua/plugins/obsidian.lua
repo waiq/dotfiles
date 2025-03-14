@@ -353,6 +353,7 @@ return {
     vim.keymap.set('n', '<leader>os', ':ObsidianSearch <CR>', { desc = 'search notes' })
     vim.keymap.set('n', '<leader>ot', ':ObsidianTags <CR>', { desc = 'search tags' })
     vim.keymap.set('n', '<leader>oq', ':ObsidianQuickSwitch <CR>', { desc = 'quick switch' })
+    vim.keymap.set('n', '<leader>of', ':ObsidianFollowLink <CR>', { desc = 'follow link' })
     vim.keymap.set('n', '<leader>oit', ':ObsidianTemplate <CR>', { desc = 'insert template' })
   end,
 }
