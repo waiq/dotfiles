@@ -31,10 +31,6 @@ return {
           name = 'Brains',
           path = '~/vaults/Brains',
         },
-        {
-          name = 'Work',
-          path = '~/vaults/Work',
-        },
       },
 
       -- Alternatively - and for backwards compatibility - you can set 'dir' to a single path instead of

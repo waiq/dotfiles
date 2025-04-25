@@ -1,10 +1,4 @@
 ---
-- name: Install neovim
-  ansible.builtin.get_url:
-    url: "https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-    dest: "{{ core.dirs.bin }}/nvim"
-    mode: "0755"
-
 - name: Link custom folder
   ansible.builtin.file:
     src: "{{ core.dirs.custom }}/roles/nvim/files"
