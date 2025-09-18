@@ -17,6 +17,7 @@
     lazygit
     terraform-local
     neovim
+    lua51Packages.luarocks
     tmux
     htop
     jq
