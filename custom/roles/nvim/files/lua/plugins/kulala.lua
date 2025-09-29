@@ -7,6 +7,9 @@ return {
   -- },
   ft = { 'http', 'rest' },
   opts = {
+    ui = {
+      max_response_size = 1024 * 1024, -- 1MB
+    },
     -- your configuration comes here
     global_keymaps = true,
 
