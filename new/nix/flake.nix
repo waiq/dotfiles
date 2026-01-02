@@ -12,6 +12,7 @@
     nixpkgs-jira.url = "github:NixOS/nixpkgs/7d0ed7f2e5aea07ab22ccb338d27fbe347ed2f11";
   };
 
+
   outputs = {
     nixpkgs,
     home-manager,

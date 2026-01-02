@@ -27,6 +27,13 @@
     ripgrep
     fzf
     mitmproxy
+    zoxide
+    protoc-gen-go
+    protobuf
+    golangci-lint
+    rust-analyzer
+    rustc
   ];
+
   programs.home-manager.enable = true;
 }
