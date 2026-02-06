@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Set up plugins
 require('lazy').setup {
+  require 'plugins.mason',
   require 'plugins.alpha',
   require 'plugins.which-key',
   require 'plugins.obsidian',
