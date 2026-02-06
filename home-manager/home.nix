@@ -33,6 +33,10 @@
     golangci-lint
     rust-analyzer
     rustc
+    cargo
+    rustfmt
+    cargo-watch
+    jira-cli-go
   ];
 
   # This value determines the Home Manager release that your

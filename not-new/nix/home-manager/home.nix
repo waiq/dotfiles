@@ -33,6 +33,7 @@
     golangci-lint
     rust-analyzer
     rustc
+    jira-cli-go
   ];
 
   programs.home-manager.enable = true;

@@ -38,6 +38,7 @@ require('lazy').setup {
   require 'plugins.smart-split',
   require 'plugins.lsp-signature',
   require 'plugins.kulala',
+  require 'plugins.rust-tools',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
