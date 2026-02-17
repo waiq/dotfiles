@@ -1,0 +1,37 @@
+[include]
+  path = ~/.gitconfig.local
+
+[alias]
+  co = checkout
+  br = branch
+  cm = commit -m 
+  st = status
+  pl = pull
+  ps = push
+
+[core]
+  excludesFile = "~/.gitignore"
+
+[diff]
+  tool = meld
+
+[difftool]
+  prompt = false
+
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
+
+[merge]
+    tool = meld
+
+[mergetool "meld"]
+  cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+
+[pull]
+	rebase = false
+
+[init]
+  defaultBranch = main
+
+[rebase]
+	updateRefs = true

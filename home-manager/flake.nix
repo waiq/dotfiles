@@ -15,17 +15,34 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      mkHome = modules: home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = modules;
+      };
     in
     {
-      homeConfigurations."waiq" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+      # Legacy/default target kept stable during migration.
+      homeConfigurations."waiq" = mkHome [ ./home.nix ];
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
+      # Migration targets by concern.
+      homeConfigurations."waiq-nix" = mkHome [
+        ./modules/base.nix
+      ];
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-      };
+      homeConfigurations."waiq-config" = mkHome [
+        ./modules/base.nix
+      ];
+
+      # Profile overlays (scaffold).
+      homeConfigurations."waiq-work" = mkHome [
+        ./modules/base.nix
+        ./profiles/work.nix
+      ];
+
+      homeConfigurations."waiq-home" = mkHome [
+        ./modules/base.nix
+        ./profiles/home.nix
+      ];
     };
 }
