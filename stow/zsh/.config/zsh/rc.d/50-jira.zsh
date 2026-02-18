@@ -2,7 +2,7 @@ export JIRA_API_TOKEN="op://Readly/Atlassian/api_key"
 
 _require_op_account() {
   if [ -z "${OP_ACCOUNT:-}" ]; then
-    echo "OP_ACCOUNT is not set. Configure it in stow/local/.config/zsh/profile.d/20-1password-account.zsh" >&2
+    echo "OP_ACCOUNT is not set. Configure it in stow/local/.zshrc.local" >&2
     return 1
   fi
 }

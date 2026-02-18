@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $(basename \"$0\") [OPTIONS]"
+  echo "Options:"
+  echo " -h, --help        Display this help message"
+  echo " -l, --list        list all images"
+  echo " -r, --remove      Remove all images"
+}
+
+if ! [ -x "$(command -v docker)" ]; then
+  echo "docker not installed"
+  exit 1
+fi
+
+docker_command='docker images -a'
+
+handle_options() {
+  if [ $# -eq 0 ]; then
+    return
+  fi
+
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -r|--remove)
+        docker_command='docker rmi -f $(docker images -aq)'
+        ;;
+      -l|--list)
+        return
+        ;;
+      *)
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+}
+
+handle_options "$@"
+eval "$docker_command"

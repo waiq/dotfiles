@@ -23,17 +23,19 @@ source $ZSH/oh-my-zsh.sh
 autoload -U compinit; compinit
 autoload bashcompinit; bashcompinit
 
-# load my dotfiles ecosystem
-source "/home/waiq/.my/init/init.sh"
-
-# load stow-managed zsh modules during migration
+# load stow-managed zsh modules first
 if [ -d "$HOME/.config/zsh/rc.d" ]; then
   for f in "$HOME"/.config/zsh/rc.d/*.zsh; do
     [ -r "$f" ] && source "$f"
   done
 fi
 
-eval "$(oh-my-posh init zsh --config /home/waiq/.my/local/omp/themes/my.omp.json)"
+# optional legacy compatibility fallback
+if [ "${DOTFILES_LEGACY_INIT:-0}" = "1" ] && [ -f "$HOME/.my/init/init.sh" ]; then
+  source "$HOME/.my/init/init.sh"
+fi
+
+eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/themes/my.omp.json)"
 eval "$(zoxide init zsh --cmd cd)"
 eval "$(op completion zsh)"; compdef _op op
 

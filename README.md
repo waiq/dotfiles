@@ -42,19 +42,19 @@ Stow is used to apply config packages to `$HOME`.
 Preview changes first:
 
 ```bash
-stow --dir stow --target "$HOME" --simulate zsh git tmux nvim
+stow --dir stow --target "$HOME" --simulate zsh git tmux nvim wezterm
 ```
 
 Apply:
 
 ```bash
-stow --dir stow --target "$HOME" zsh git tmux nvim
+stow --dir stow --target "$HOME" zsh git tmux nvim wezterm
 ```
 
 Restow (safe re-link after file moves):
 
 ```bash
-stow --dir stow --target "$HOME" --restow zsh git tmux nvim
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm
 ```
 
 Remove package links:
@@ -77,7 +77,7 @@ home-manager switch --flake ./home-manager#waiq
 cp -a stow/local.example stow/local  # first time only
 # edit stow/local/.gitconfig.local and set your user.name/email
 # edit stow/local/.zshrc.local and set OP_ACCOUNT
-stow --dir stow --target "$HOME" --restow zsh git tmux nvim bin local
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 source ~/.my/init/init.sh
 ```
 
@@ -95,6 +95,12 @@ This setup is `op`-heavy by design.
 - Keep secrets out of repo; commit only references like `op://...`.
 - Keep command wrappers (`jira`, etc.) in stow-managed shell config.
 - Set account IDs only in local untracked files under `stow/local`.
+- Sign in before running wrappers:
+
+```bash
+op signin
+```
+
 - Validate after apply:
 
 ```bash

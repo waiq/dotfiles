@@ -44,7 +44,7 @@ home-manager switch --flake ./home-manager#waiq-nix
 cp -a stow/local.example stow/local  # first time only
 # edit stow/local/.gitconfig.local and set your user.name/email
 # edit stow/local/.zshrc.local and set OP_ACCOUNT
-stow --dir stow --target "$HOME" --restow zsh git tmux nvim bin local
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 ```
 
 Then verify shell and secret-dependent wrappers:

@@ -1,16 +1,31 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "mongodb-compass"
+      "obsidian"
+      "dropbox"
+      "firefox-bin"
+      "firefox-bin-unwrapped"
+      "slack"
+      "spotify"
+      "zoom"
+      "zoom-us"
+    ];
+
   home.username = "waiq";
   home.homeDirectory = "/home/waiq";
 
   home.packages = with pkgs; [
     stow
+    awscli2
     dbeaver-bin
     go
     go-mockery
     gotestsum
     duckdb
+    dropbox
     grpcurl
     curl
     git
@@ -38,6 +53,15 @@
     ffmpeg
     espeak-ng
     sox
+    flatpak
+    nerd-fonts.jetbrains-mono
+    obsidian
+    mongodb-compass
+    slack
+    spotify
+    wezterm
+    zoom-us
+    nodejs
   ];
 
   home.stateVersion = "25.05";
