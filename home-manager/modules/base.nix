@@ -17,6 +17,10 @@
   home.username = "waiq";
   home.homeDirectory = "/home/waiq";
 
+  home.sessionPath = [
+    "$HOME/.local/npm-global/bin"
+  ];
+
   home.packages = with pkgs; [
     stow
     awscli2
