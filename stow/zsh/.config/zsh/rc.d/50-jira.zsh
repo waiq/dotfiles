@@ -12,6 +12,45 @@ jira() {
   op run --account "$OP_ACCOUNT" -- jira "$@"
 }
 
+list-epics() {
+  _require_op_account || return 1
+
+  if [ -z "${1:-}" ]; then
+    echo "Usage: list-epics <PROJECT_KEY> [JQL]" >&2
+    return 1
+  fi
+
+  local project_key="$1"
+  local jql="${2:-}"
+
+  if [ -n "$jql" ]; then
+    op run --account "$OP_ACCOUNT" -- jira epic list -p "$project_key" --plain --columns key,summary,status --jql "$jql"
+  else
+    op run --account "$OP_ACCOUNT" -- jira epic list -p "$project_key" --plain --columns key,summary,status
+  fi
+}
+
+create-issue-in-epic() {
+  _require_op_account || return 1
+
+  if [ $# -lt 4 ]; then
+    echo "Usage: create-issue-in-epic <PROJECT_KEY> <EPIC_KEY> <ISSUE_TYPE> <SUMMARY> [DESCRIPTION]" >&2
+    return 1
+  fi
+
+  local project_key="$1"
+  local epic_key="$2"
+  local issue_type="$3"
+  local summary="$4"
+  local description="${5:-}"
+
+  if [ -n "$description" ]; then
+    op run --account "$OP_ACCOUNT" -- jira issue create -p "$project_key" -t "$issue_type" -P "$epic_key" -s "$summary" -b "$description" --no-input
+  else
+    op run --account "$OP_ACCOUNT" -- jira issue create -p "$project_key" -t "$issue_type" -P "$epic_key" -s "$summary" --no-input
+  fi
+}
+
 jimy-issues() {
   _require_op_account || return 1
   op run --account "$OP_ACCOUNT" -- jira issues list -a"$(jira me)" --order-by created "$@"
