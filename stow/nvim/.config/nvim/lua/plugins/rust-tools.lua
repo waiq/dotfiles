@@ -1,25 +1,24 @@
 return {
-  'simrat39/rust-tools.nvim',
+  'mrcjkb/rustaceanvim',
+  version = '^6',
+  ft = { 'rust' },
   dependencies = {
-    'neovim/nvim-lspconfig',
     'jay-babu/mason-nvim-dap.nvim',
-    'nvim-lua/plenary.nvim',
     'mfussenegger/nvim-dap',
   },
+  init = function()
+    vim.g.rustaceanvim = {
+      server = {
+        on_attach = function(_, bufnr)
+          vim.keymap.set('n', '<leader>rh', '<cmd>RustLsp hover actions<CR>', { buffer = bufnr, desc = 'Rust hover actions' })
+          vim.keymap.set('n', '<leader>ra', '<cmd>RustLsp codeAction<CR>', { buffer = bufnr, desc = 'Rust code action group' })
+        end,
+      },
+    }
+  end,
   config = function()
     require('mason-nvim-dap').setup {
       ensure_installed = { 'codelldb' },
-    }
-    local rt = require 'rust-tools'
-    rt.setup {
-      server = {
-        on_attach = function(_, bufnr)
-          -- Hover actions
-          vim.keymap.set('n', '<leader>rh', rt.hover_actions.hover_actions, { buffer = bufnr, desc = 'Rust hover actions' })
-          -- Code action groups
-          vim.keymap.set('n', '<leader>ra', rt.code_action_group.code_action_group, { buffer = bufnr, desc = 'Rust code action group' })
-        end,
-      },
     }
   end,
 }
