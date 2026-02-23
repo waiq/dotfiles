@@ -2,3 +2,5 @@
 # 1Password account selection
 # export OP_ACCOUNT="YOUR_ACCOUNT_ID"
 # export ONE_PASSWORD_ACCOUNT="$OP_ACCOUNT"
+# Workspace root for git-workspace helper
+# export GIT_WORKSPACE_ROOT="$HOME/dev/workspaces"

@@ -17,3 +17,6 @@ git-pull() {
     git stash pop
   fi
 }
+
+# Create git worktree workspace + branch from a name.
+alias gw='git-workspace'

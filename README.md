@@ -126,6 +126,23 @@ Shared git config will include that file, and it should define:
 - `[user] name = ...`
 - `[user] email = ...`
 
+## Git Workspace Helper
+Use `git-workspace` to create a new branch and a matching git worktree workspace from a name.
+
+Examples:
+
+```bash
+git-workspace feature-auth
+git-workspace -b main DOT-1008
+git-workspace --root "$HOME/dev/workspaces/dotfiles" feature-shell-cleanup
+```
+
+Behavior:
+- slugifies the input name for branch/workspace naming
+- creates worktree under `../workspaces/<repo-name>/<slug>` by default
+- creates new branch from `main` (falls back to `master` if `main` is missing)
+- use `--force` to reuse an existing branch with a new worktree path
+
 ## Legacy Ansible (Transitional)
 Legacy commands remain for compatibility, but are being phased out.
 
