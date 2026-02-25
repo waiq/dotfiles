@@ -3,12 +3,19 @@ alias ts='tmux-switch'
 alias td='tmux-dev-layout'
 alias tk='tmux-kill'
 
-
 tmux-reload() {
-  tmux source-file ~/.tmux.conf
-  tmux list-sessions -F "#{session_name}" | while read -r session; do
-    tmux send-keys -t "$session" "source ~/.zshrc" C-m
-  done
+  tmux start-server
+
+  if ! tmux source-file ~/.tmux.conf; then
+    echo "Failed to reload ~/.tmux.conf"
+    return 1
+  fi
+
+  tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_current_command}' \
+    | while read -r target cmd; do
+        [[ "$cmd" == "zsh" ]] || continue
+        tmux send-keys -t "$target" 'source ~/.zshrc' C-m
+      done
 }
 
 tmux-kill() {
