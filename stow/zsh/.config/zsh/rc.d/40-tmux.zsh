@@ -1,3 +1,21 @@
+tmux-switch() {
+  local session="$1"
+  if [[ -z "$session" ]]; then
+    session=$(tmux list-sessions | fzf | sed 's/: .*//g')
+  fi
+
+  if tmux has-session -t "$session" 2>/dev/null; then
+    if [[ -n "$TMUX" ]]; then
+      tmux switch-client -t "$session"
+    else
+      tmux attach -t "$session"
+    fi
+  else
+    echo "Session '$session' does not exist."
+    return 1
+  fi
+}
+
 tmux-default-layout() {
   local session="default"
 
