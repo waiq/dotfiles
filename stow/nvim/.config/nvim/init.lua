@@ -40,6 +40,7 @@ require('lazy').setup {
   require 'plugins.lsp-signature',
   require 'plugins.kulala',
   require 'plugins.rust-tools',
+  require 'plugins.lazygit',
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
