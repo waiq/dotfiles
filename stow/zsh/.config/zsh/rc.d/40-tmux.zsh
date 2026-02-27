@@ -45,7 +45,8 @@ tmux-kill() {
 tmux-switch() {
   local session="$1"
   if [[ -z "$session" ]]; then
-    session=$(tmux list-sessions | fzf | sed 's/: .*//g')
+    session=$(tmux list-sessions | fzf | sed 's/: .*//g') || return 0
+    [[ -z "$session" ]] && return 0
   fi
 
   if tmux has-session -t "$session" 2>/dev/null; then
