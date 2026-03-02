@@ -1,5 +1,6 @@
 { pkgs, lib, ... }:
 
+
 {
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
@@ -34,8 +35,10 @@
     curl
     git
     lazygit
+    difftastic
     terraform-local
     neovim
+    neovim-remote
     lua51Packages.luarocks
     tmux
     htop

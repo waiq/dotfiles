@@ -6,4 +6,3 @@ export PATH="$HOME/.local/bin:$MY_BIN:$PATH"
 
 # Editor defaults.
 export ORGPATH="$HOME/Dropbox/my-orgs"
-export EDITOR="nvim"

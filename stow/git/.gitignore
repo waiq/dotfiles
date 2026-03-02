@@ -1,0 +1,17 @@
+**/*/.phpactor.json
+.env
+
+# java class files
+.settings
+.project
+.classpath
+.factorypath
+
+# meld diff files
+*.orgin
+*.orig
+
+AGENTS.md
+AUTHORS_*
+AGENTS_*
+AGENTS-*
