@@ -138,8 +138,9 @@ git-workspace --root "$HOME/dev/workspaces/dotfiles" feature-shell-cleanup
 ```
 
 Behavior:
-- slugifies the input name for branch/workspace naming
-- creates worktree under `../workspaces/<repo-name>/<slug>` by default
+- slugifies the input name
+- creates branch as `<repo-name>/<slug>`
+- creates worktree under `../workspaces/<repo-name>/<repo-name>-<slug>` by default
 - creates new branch from `main` (falls back to `master` if `main` is missing)
 - use `--force` to reuse an existing branch with a new worktree path
 

@@ -18,6 +18,10 @@ Options:
 
 Environment:
   GIT_WORKSPACE_ROOT         Overrides default workspaces root
+
+Naming:
+  branch:                    <repo-name>/<slug>
+  workspace dir:             <repo-name>-<slug>
 EOF
 }
 
@@ -84,7 +88,7 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || die "not inside a git rep
 repo_root="$(git rev-parse --show-toplevel)"
 repo_name="$(basename "$repo_root")"
 slug="$(slugify "$input_name")"
-branch_name="$slug"
+branch_name="${repo_name}/${slug}"
 
 if ! git show-ref --verify --quiet "refs/heads/$base_branch"; then
   if [ "$base_branch" = "main" ] && git show-ref --verify --quiet "refs/heads/master"; then
@@ -99,7 +103,8 @@ if [ -z "$workspace_root" ]; then
 fi
 
 workspace_root="$(cd "$(dirname "$workspace_root")" && pwd)/$(basename "$workspace_root")"
-workspace_path="$workspace_root/$slug"
+workspace_dir_name="${repo_name}-${slug}"
+workspace_path="$workspace_root/$workspace_dir_name"
 
 [ -e "$workspace_path" ] && die "workspace path already exists: $workspace_path"
 
@@ -108,6 +113,8 @@ mkdir -p "$workspace_root"
 if git show-ref --verify --quiet "refs/heads/$branch_name"; then
   if [ "$force_reuse_branch" -eq 1 ]; then
     git worktree add "$workspace_path" "$branch_name"
+    echo "Project: $repo_name"
+    echo "Workspace root: $workspace_root"
     echo "Created workspace: $workspace_path"
     echo "Using existing branch: $branch_name"
     exit 0
@@ -116,5 +123,7 @@ if git show-ref --verify --quiet "refs/heads/$branch_name"; then
 fi
 
 git worktree add -b "$branch_name" "$workspace_path" "$base_branch"
+echo "Project: $repo_name"
+echo "Workspace root: $workspace_root"
 echo "Created workspace: $workspace_path"
 echo "Created branch: $branch_name (from $base_branch)"
