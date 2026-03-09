@@ -44,7 +44,7 @@ return {
       -- Desired behavior when the current window is floating:
       -- 'previous' => Focus previous Vim window and perform action
       -- 'mux' => Always forward action to multiplexer
-      float_win_behavior = 'previous',
+      float_win_behavior = 'mux',
       -- when moving cursor between splits left or right,
       -- place the cursor on the same row of the *screen*
       -- regardless of line numbers. False by default.
@@ -117,5 +117,19 @@ return {
     vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
     vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
     vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
+
+    -- terminal mode
+    vim.keymap.set('t', '<C-h>', function()
+      require('smart-splits').move_cursor_left()
+    end)
+    vim.keymap.set('t', '<C-j>', function()
+      require('smart-splits').move_cursor_down()
+    end)
+    vim.keymap.set('t', '<C-k>', function()
+      require('smart-splits').move_cursor_up()
+    end)
+    vim.keymap.set('t', '<C-l>', function()
+      require('smart-splits').move_cursor_right()
+    end)
   end,
 }
