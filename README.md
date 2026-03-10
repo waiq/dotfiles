@@ -9,7 +9,6 @@ Legacy Ansible paths are deprecated and must not be used.
 ## Repository Layout
 - `home-manager/`: Nix flake + Home Manager modules
 - `stow/`: source of truth for dotfile/config symlinks
-- `init/`: compatibility shell bootstrap currently used in active environments
 - `core/`: deprecated legacy Ansible orchestration (retained temporarily for reference)
 - `custom/`: deprecated legacy role source material (reference only, not authoritative)
 
@@ -79,7 +78,6 @@ cp -a stow/local.example stow/local  # first time only
 # edit stow/local/.gitconfig.local and set your user.name/email
 # edit stow/local/.zshrc.local and set OP_ACCOUNT
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
-source ~/.my/init/init.sh
 ```
 
 ## Work vs Home Profiles (Planned)
@@ -151,7 +149,6 @@ Do not run Ansible entrypoints from this repository.
 
 - Deprecated orchestration reference: `core/`
 - Legacy role source material (reference only): `custom/roles/`
-- Compatibility shell bootstrap: `init/`
 
 ## Source Of Truth Policy
 - Package/runtime/service management: `home-manager/`

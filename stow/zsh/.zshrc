@@ -30,11 +30,6 @@ if [ -d "$HOME/.config/zsh/rc.d" ]; then
   done
 fi
 
-# optional legacy compatibility fallback
-if [ "${DOTFILES_LEGACY_INIT:-0}" = "1" ] && [ -f "$HOME/.my/init/init.sh" ]; then
-  source "$HOME/.my/init/init.sh"
-fi
-
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/themes/my.omp.json)"
 eval "$(zoxide init zsh --cmd cd)"
 eval "$(op completion zsh)"; compdef _op op
