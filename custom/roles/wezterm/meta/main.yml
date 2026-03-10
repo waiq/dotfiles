@@ -1,6 +1,0 @@
----
-# add dependencies for task: "wezterm"
-#
-dependencies:
-  - role: zsh
-  - role: fonts

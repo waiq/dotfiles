@@ -1,5 +1,0 @@
----
-# add dependencies for task: "terraform"
-#
-# dependencies:
-#  - role: nvm

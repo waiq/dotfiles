@@ -1,6 +1,0 @@
----
-# add dependencies for task: "jira-cli"
-#
-# dependencies:
-#   - role: 1password
-#   - role: zsh

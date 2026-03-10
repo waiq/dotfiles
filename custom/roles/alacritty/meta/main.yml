@@ -1,5 +1,0 @@
----
-# add dependencies for task: "alacritty"
-#
-dependencies:
-  - role: rust

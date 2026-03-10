@@ -1,6 +1,0 @@
----
-# add dependencies for task: "opentofu-local"
-#
-dependencies:
-  - role: opentofu
-  - role: terraform-local

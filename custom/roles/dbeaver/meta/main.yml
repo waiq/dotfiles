@@ -1,5 +1,0 @@
----
-# add dependencies for task: "dbeaver"
-#
-# dependencies:
-#  - role: nvm

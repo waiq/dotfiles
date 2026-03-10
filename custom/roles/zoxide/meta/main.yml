@@ -1,5 +1,0 @@
----
-# add dependencies for task: "zoxide"
-#
-# dependencies:
-#  - role: nvm

@@ -1,0 +1,68 @@
+#!/bin/bash
+
+set -e
+
+if ! [ -x "$(command -v ddcutil)" ]; then
+  echo "ddcutil not found"
+  exit 1
+fi
+
+currentline=$(ddcutil getvcp 60)
+currentName=$(echo "$currentline" | sed -n "s/.*:\s*\([a-zA-Z0-9-]*\).*/\1/p")
+current=$(echo "$currentline" | sed -n "s/.*(sl=\(.*\))/\1/p")
+
+usage() {
+ echo "Usage: $0 [OPTIONS]"
+ echo "Options:"
+ echo " -h, --help          Display this help message"
+ echo " -v, --verbose       Enable verbose mode"
+}
+
+handle_options() {
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -v|--verbose)
+        echo "Verbose mode enabled."
+        ;;
+      -c|--current)
+        echo "current input"
+        echo "WIP"
+        ;;
+      -l|--list)
+        echo "list inputs"
+        echo "WIP"
+        ;;
+      -s|--switch)
+        echo "switch input"
+        echo "WIP"
+        ;;
+      *)
+        echo "Invalid option: $1" >&2
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+}
+
+handle_options "$@"
+
+case $current in
+    0x1b)
+        output=0x0f
+        ;;
+    0x0f)
+        output=0x1b
+        ;;
+    *)
+        echo "Unknown input" >&2
+        exit 1
+        ;;
+esac
+
+# ddcutil setvcp 60 $output

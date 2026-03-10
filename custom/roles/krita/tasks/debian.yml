@@ -1,6 +1,0 @@
----
-- name: Install Krita
-  ansible.builtin.get_url:
-    url: "https://download.kde.org/stable/krita/5.2.2/krita-5.2.2-x86_64.appimage"
-    dest: "{{ core.dirs.bin }}/krita"
-    mode: "0755"

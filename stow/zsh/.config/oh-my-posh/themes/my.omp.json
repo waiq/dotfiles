@@ -1,0 +1,71 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "blue-bell": "#9aa5ce",
+    "blue-black": "#565f89",
+    "celeste-blue": "#b4f9f8",
+    "light-sky-blue": "#7dcfff",
+    "main-bg": "#24283b",
+    "pastal-grey": "#cfc9c2",
+    "pistachio-green": "#9ece6a",
+    "t-background": "p:main-bg",
+    "terminal-black": "#414868",
+    "terminal-blue": "#7aa2f7",
+    "terminal-green": "#73daca",
+    "terminal-magenta": "#bb9af7",
+    "terminal-red": "#f7768e",
+    "terminal-white": "#c0caf5",
+    "terminal-yellow": "#e0af68",
+    "white-blue": "#a9b1d6"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none",
+            "folder_icon": "..\ue5fe..",
+            "home_icon": "~",
+            "style": "agnoster_short"
+          },
+          "template": "{{ .Path }} ",
+          "foreground": "p:terminal-magenta",
+          "type": "path",
+          "style": "plain"
+        },
+        {
+          "properties": {
+            "branch_icon": "\ue725 ",
+            "cache_duration": "none",
+            "cherry_pick_icon": "\ue29b ",
+            "commit_icon": "\uf417 ",
+            "fetch_status": false,
+            "fetch_upstream_icon": false,
+            "merge_icon": "\ue727 ",
+            "no_commits_icon": "\uf0c3 ",
+            "rebase_icon": "\ue728 ",
+            "revert_icon": "\uf0e2 ",
+            "tag_icon": "\uf412 "
+          },
+          "template": "{{ .HEAD }} ",
+          "foreground": "p:terminal-yellow",
+          "type": "git",
+          "style": "plain"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\uf105",
+          "foreground": "p:terminal-red",
+          "type": "text",
+          "style": "plain"
+        }
+      ]
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}

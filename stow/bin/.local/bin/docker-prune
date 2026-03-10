@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+  echo "Usage: $(basename \"$0\") [OPTIONS]"
+  echo "Options:"
+  echo " -h, --help        Display this help message"
+  echo " -a, --all         prune everything"
+}
+
+if ! [ -x "$(command -v docker)" ]; then
+  echo "docker not installed"
+  exit 1
+fi
+
+docker_command='docker system prune'
+
+handle_options() {
+  if [ $# -eq 0 ]; then
+    return
+  fi
+
+  while [ $# -gt 0 ]; do
+    case $1 in
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -a|--all)
+        docker_command='docker system prune -a'
+        ;;
+      *)
+        usage
+        exit 1
+        ;;
+    esac
+    shift
+  done
+}
+
+handle_options "$@"
+eval "$docker_command"

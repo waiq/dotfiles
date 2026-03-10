@@ -1,5 +1,0 @@
----
-# add dependencies for task: "yaak"
-#
-# dependencies:
-#  - role: nvm

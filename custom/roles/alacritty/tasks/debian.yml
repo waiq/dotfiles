@@ -1,4 +1,0 @@
----
-- name: "Install alacritty Rust package"
-  community.general.cargo:
-    name: alacritty

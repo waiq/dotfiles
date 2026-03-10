@@ -1,68 +1,152 @@
-## dotfiles-ansible-thing
+# dotfiles
 
-Never ending work in progress!
+This repo has migrated away from legacy Ansible automation to:
+- Home Manager (`home-manager/`) for installs/runtime/services
+- GNU Stow (`stow/`) for dotfile/config symlinks
 
-## Why
+Legacy Ansible paths are deprecated and must not be used.
 
-Im trying to make it easy to have the same develop experiace on all my computors.
+## Repository Layout
+- `home-manager/`: Nix flake + Home Manager modules
+- `stow/`: source of truth for dotfile/config symlinks
 
-## How
+## Prerequisites
+- Nix installed
+- Home Manager available (global install or `nix run`)
+- `stow` available (installed by Home Manager or system package manager)
 
-By using ansible to install and setup, I have a record on how and what have
-been installed.
+## Home Manager Usage
+From repo root:
 
-## Overview
-
-The 'core' folder contains tooling on how to maintaining the dotfiles itself.
-This 'customs' folder contains the playbooks for setting upp the system.
-
-## Install
-
-Install pipx and git
-
-```shell
-sudo apt install pipx git
+```bash
+home-manager switch --flake ./home-manager#waiq
 ```
 
-Install dotfiles
+Without global Home Manager install:
 
-```shell
-mkdir -p ~/.my/dotfiles/ \
-    && git clone https://github.com/waiq/dotfiles.git ~/.my/dotfiles \
-    && ~/.my/dotfiles/core/install.sh -n
+```bash
+nix run github:nix-community/home-manager -- switch --flake ./home-manager#waiq
 ```
 
-### Run default playbooks
+Update flake inputs:
 
-Copy the default profile
-
-```shell
-cp ~/.my/dotfiles/custom/common/vars/profile_example.yml \
-~/.my/dotfiles/custom/common/vars/profile.yml
+```bash
+nix flake update --flake ./home-manager
 ```
 
-Source the init file
+## Stow Usage
+Stow is used to apply config packages to `$HOME`.
 
-```shell
-source ~/.my/init/init.sh
+Preview changes first:
+
+```bash
+stow --dir stow --target "$HOME" --simulate zsh git tmux nvim wezterm
 ```
 
-Run the dotrun command
+Apply:
 
-```shell
-dotrun
+```bash
+stow --dir stow --target "$HOME" zsh git tmux nvim wezterm
 ```
 
-## Command
+Restow (safe re-link after file moves):
 
-The dotfiles will be controlled by the bash script dotrun
-
-```shell
-dotrun --help
+```bash
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm
 ```
 
-## Python pipx env mismatch, remember to reinstall modules
+Remove package links:
 
-```shell
-pipx reinstall-all
+```bash
+stow --dir stow --target "$HOME" --delete zsh
 ```
+
+## Recommended Apply Flow
+From repo root:
+
+1. Apply packages/services with Home Manager.
+2. Apply config links with stow.
+3. Reload shell and verify commands/functions.
+
+Example:
+
+```bash
+home-manager switch --flake ./home-manager#waiq
+cp -a stow/local.example stow/local  # first time only
+# edit stow/local/.gitconfig.local and set your user.name/email
+# edit stow/local/.zshrc.local and set OP_ACCOUNT
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
+```
+
+## Work vs Home Profiles (Planned)
+The migration plan defines shared base + small overlays (`work` and `home`).
+Expected flake targets after rollout:
+- `#waiq-work`
+- `#waiq-home`
+
+Until those outputs are added, use `#waiq`.
+
+## 1Password / op Workflows
+This setup is `op`-heavy by design.
+
+- Keep secrets out of repo; commit only references like `op://...`.
+- Keep command wrappers (`jira`, etc.) in stow-managed shell config.
+- Set account IDs only in local untracked files under `stow/local`.
+- Sign in before running wrappers:
+
+```bash
+op signin
+```
+
+- Validate after apply:
+
+```bash
+op whoami
+op account list
+```
+
+If SSH integration is used:
+
+```bash
+echo "$SSH_AUTH_SOCK"
+```
+
+Expected value is usually `~/.1password/agent.sock`.
+
+## Local Git Identity
+Git identity must be provided via local untracked config in `stow/local`.
+
+Target path:
+- `~/.gitconfig.local`
+
+Shared git config will include that file, and it should define:
+- `[user] name = ...`
+- `[user] email = ...`
+
+## Git Workspace Helper
+Use `git-workspace` to create a new branch and a matching git worktree workspace from a name.
+
+Examples:
+
+```bash
+git-workspace feature-auth
+git-workspace -b main DOT-1008
+git-workspace --root "$HOME/dev/workspaces/dotfiles" feature-shell-cleanup
+```
+
+Behavior:
+- slugifies the input name
+- creates branch as `<repo-name>/<slug>`
+- creates worktree under `../workspaces/<repo-name>/<repo-name>-<slug>` by default
+- creates new branch from `main` (falls back to `master` if `main` is missing)
+- use `--force` to reuse an existing branch with a new worktree path
+
+## Legacy Ansible (Deprecated)
+Ansible-based repo workflows are removed and no longer supported.
+
+## Source Of Truth Policy
+- Package/runtime/service management: `home-manager/`
+- Config files and shell wrappers: `stow/`
+
+Migration control doc:
+- `AGENTS_MIGRATION.md`

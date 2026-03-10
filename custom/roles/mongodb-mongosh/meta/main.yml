@@ -1,5 +1,0 @@
----
-# add dependencies for task: "mongodb-sh"
-#
-# dependencies:
-#  - role: nvm
