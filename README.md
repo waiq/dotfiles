@@ -1,16 +1,17 @@
 # dotfiles
 
-This repo is migrating from legacy Ansible automation to:
+This repo has migrated away from legacy Ansible automation to:
 - Home Manager (`home-manager/`) for installs/runtime/services
 - GNU Stow (`stow/`) for dotfile/config symlinks
 
-Legacy paths still exist during migration to keep environments stable.
+Legacy Ansible paths are deprecated and must not be used.
 
 ## Repository Layout
 - `home-manager/`: Nix flake + Home Manager modules
-- `stow/`: config packages (planned/ongoing migration target)
+- `stow/`: source of truth for dotfile/config symlinks
 - `init/`: compatibility shell bootstrap currently used in active environments
-- `core/`, `custom/`: legacy Ansible orchestration and roles
+- `core/`: deprecated legacy Ansible orchestration (retained temporarily for reference)
+- `custom/`: deprecated legacy role source material (reference only, not authoritative)
 
 ## Prerequisites
 - Nix installed
@@ -144,12 +145,18 @@ Behavior:
 - creates new branch from `main` (falls back to `master` if `main` is missing)
 - use `--force` to reuse an existing branch with a new worktree path
 
-## Legacy Ansible (Transitional)
-Legacy commands remain for compatibility, but are being phased out.
+## Legacy Ansible (Deprecated)
+Ansible-based repo workflows are deprecated and no longer supported.
+Do not run Ansible entrypoints from this repository.
 
-- Entrypoints and orchestration: `core/`
-- Role implementations: `custom/roles/`
-- Old bootstrap/init behavior: `init/`
+- Deprecated orchestration reference: `core/`
+- Legacy role source material (reference only): `custom/roles/`
+- Compatibility shell bootstrap: `init/`
+
+## Source Of Truth Policy
+- Package/runtime/service management: `home-manager/`
+- Config files and shell wrappers: `stow/`
+- `core/` and `custom/` are deprecated reference paths and must not be used as authoritative sources.
 
 Migration control doc:
 - `AGENTS_MIGRATION.md`

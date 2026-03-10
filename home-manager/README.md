@@ -1,6 +1,7 @@
 # Home Manager
 
 This directory contains the Home Manager flake used for package/runtime/service management.
+Home Manager is authoritative for packages/services; `stow/` is authoritative for config files.
 
 ## Outputs
 Current Home Manager targets:
@@ -46,6 +47,9 @@ cp -a stow/local.example stow/local  # first time only
 # edit stow/local/.zshrc.local and set OP_ACCOUNT
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 ```
+
+Legacy note:
+- `core/` and `custom/` are deprecated reference paths and are not authoritative.
 
 Then verify shell and secret-dependent wrappers:
 

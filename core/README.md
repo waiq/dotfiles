@@ -1,11 +1,17 @@
-# Dotfile Core
+# Dotfile Core (Deprecated)
 
-This is the core tooling around the dotfile struct.
+`core/` is legacy Ansible orchestration and is deprecated.
 
-## Variables
+## Status
 
-Under common vars.yml are all exposed variables.
+- Do not use `core/install.sh` or `ansible-playbook` workflows from this repository.
+- Canonical apply path is Home Manager + stow.
 
-## Roles
+## Canonical Apply Path
 
-Contains the roles and tasks needed to install and manage the dotfile structure.
+From repo root:
+
+```bash
+home-manager switch --flake ./home-manager#waiq
+stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
+```

@@ -1,6 +1,7 @@
 # stow packages
 
 This directory contains GNU Stow packages for user config files.
+It is the authoritative source of truth for repository-managed dotfiles and shell wrappers.
 
 Current starter packages:
 - `zsh`
@@ -30,3 +31,4 @@ stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 Ownership:
 - package/runtime install -> `home-manager/`
 - config files/shell wrappers -> `stow/`
+- legacy/reference only (non-authoritative) -> `core/`, `custom/`
