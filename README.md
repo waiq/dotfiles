@@ -9,8 +9,6 @@ Legacy Ansible paths are deprecated and must not be used.
 ## Repository Layout
 - `home-manager/`: Nix flake + Home Manager modules
 - `stow/`: source of truth for dotfile/config symlinks
-- `core/`: deprecated legacy Ansible orchestration (retained temporarily for reference)
-- `custom/`: deprecated legacy role source material (reference only, not authoritative)
 
 ## Prerequisites
 - Nix installed
@@ -144,16 +142,11 @@ Behavior:
 - use `--force` to reuse an existing branch with a new worktree path
 
 ## Legacy Ansible (Deprecated)
-Ansible-based repo workflows are deprecated and no longer supported.
-Do not run Ansible entrypoints from this repository.
-
-- Deprecated orchestration reference: `core/`
-- Legacy role source material (reference only): `custom/roles/`
+Ansible-based repo workflows are removed and no longer supported.
 
 ## Source Of Truth Policy
 - Package/runtime/service management: `home-manager/`
 - Config files and shell wrappers: `stow/`
-- `core/` and `custom/` are deprecated reference paths and must not be used as authoritative sources.
 
 Migration control doc:
 - `AGENTS_MIGRATION.md`

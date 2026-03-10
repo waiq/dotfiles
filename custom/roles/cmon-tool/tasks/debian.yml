@@ -1,4 +1,0 @@
----
-- name: "Install cmon-tool"
-  ansible.builtin.debug:
-    msg: "cmon-tool"

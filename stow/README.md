@@ -31,4 +31,3 @@ stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 Ownership:
 - package/runtime install -> `home-manager/`
 - config files/shell wrappers -> `stow/`
-- legacy/reference only (non-authoritative) -> `core/`, `custom/`

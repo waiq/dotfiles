@@ -48,9 +48,6 @@ cp -a stow/local.example stow/local  # first time only
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 ```
 
-Legacy note:
-- `core/` and `custom/` are deprecated reference paths and are not authoritative.
-
 Then verify shell and secret-dependent wrappers:
 
 ```bash

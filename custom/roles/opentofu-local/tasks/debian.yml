@@ -1,5 +1,0 @@
----
-- name: "Set enbironment variables for opentofu-local"
-  ansible.builtin.template:
-    src: "{{ core.dirs.custom }}/roles/opentofu-local/templates/init_d/10-opentofu-local.j2"
-    dest: "{{ core.dirs.custom_d }}/10-opentofu-local.sh"

@@ -1,4 +1,0 @@
----
-- name: "Install clang"
-  ansible.builtin.debug:
-    msg: "clang"

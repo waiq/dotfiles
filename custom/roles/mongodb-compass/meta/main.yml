@@ -1,5 +1,0 @@
----
-# add dependencies for task: "mongodb-compass"
-#
-# dependencies:
-#  - role: nvm

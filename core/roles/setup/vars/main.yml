@@ -1,3 +1,0 @@
----
-install:
-  git_pull: true
