@@ -55,6 +55,12 @@ Restow (safe re-link after file moves):
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm
 ```
 
+Restow all stow packages dynamically:
+
+```bash
+stow --dir stow --target "$HOME" --restow $(find stow -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | grep -v '^local.example$')
+```
+
 Remove package links:
 
 ```bash
