@@ -1,0 +1,16 @@
+#!/bin/bash
+# Wrapper that auto-detects session, window, pane and sends notification
+# Usage: tmux-notify <message>
+
+MESSAGE="$*"
+
+if [[ -z "$MESSAGE" ]]; then
+  echo "Usage: tmux-notify <message>"
+  exit 1
+fi
+
+SESSION=$(tmux display-message -p '#S' 2>/dev/null)
+WINDOW=$(tmux display-message -p '#I' 2>/dev/null)
+PANE=$(tmux display-message -p '#P' 2>/dev/null)
+
+~/.tmux/tmux-send-notification "$SESSION" "$WINDOW" "$PANE" "$MESSAGE"

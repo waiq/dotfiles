@@ -1,5 +1,5 @@
 #!/bin/bash
-# Read tmux notifications with fzf in popup, ESC to close, Enter to jump to session+pane
+# Read tmux notifications with fzf in popup, ESC to close, Enter to jump to session:window.pane
 
 LOGFILE="$HOME/.tmux/notifications.log"
 
@@ -8,22 +8,19 @@ if [[ ! -f "$LOGFILE" ]]; then
   exit 0
 fi
 
-SELECTION=$(cat "$LOGFILE" | tac | while IFS='|' read -r ts session pane msg; do
-  echo -e "${ts} | ${session}${pane:+ .${pane}} | ${msg}"
+SELECTION=$(cat "$LOGFILE" | tac | while IFS='|' read -r ts session window pane msg; do
+  TARGET="${session}:${window}${pane:+.${pane}}"
+  echo -e "${ts} | ${TARGET} | ${msg}"
 done | fzf --height=80% --reverse --bind="esc:execute(tmux display-message 'Cancelled')+abort,enter:execute-silent(
   LINE=\$(fzf-get-selected);
-  SESSION=\$(echo \$LINE | cut -d'|' -f2 | cut -d' ' -f2);
-  PANE=\$(echo \$LINE | grep -oP '\.\K\d+' || true);
-  tmux switch-client -t \"\$SESSION\" 2>/dev/null;
-  [[ -n \"\$PANE\" ]] && tmux select-pane -t \"\$SESSION:.\$PANE\" 2>/dev/null;
-  tmux display-message \"Jumped to \$SESSION\${PANE:+ pane \$PANE}\"
-)+abort" --header="ESC: close | Enter: jump to session+pane")
+  TARGET=\$(echo \$LINE | cut -d'|' -f2 | tr -d ' ');
+  tmux switch-client -t \"\$TARGET\" 2>/dev/null;
+  tmux display-message \"Jumped to \$TARGET\"
+)+abort" --header="ESC: close | Enter: jump to session:window.pane")
 
 if [[ -n "$SELECTION" ]]; then
-  SESSION=$(echo "$SELECTION" | cut -d'|' -f2 | tr -d ' ')
-  PANE=$(echo "$SELECTION" | grep -oP '\.\K\d+' || true)
+  TARGET=$(echo "$SELECTION" | cut -d'|' -f2 | tr -d ' ')
   
-  tmux switch-client -t "$SESSION"
-  [[ -n "$PANE" ]] && tmux select-pane -t "$SESSION:.$PANE"
-  tmux display-message "Jumped to $SESSION${PANE:+ pane $PANE}"
+  tmux switch-client -t "$TARGET"
+  tmux display-message "Jumped to $TARGET"
 fi
