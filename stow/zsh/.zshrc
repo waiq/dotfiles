@@ -52,3 +52,6 @@ setopt hist_find_no_dups
 bindkey -e
 bindkey '^p' history-serch-backward
 bindkey '^n' history-serch-forward
+
+# opencode
+export PATH=/home/waiq/.opencode/bin:$PATH

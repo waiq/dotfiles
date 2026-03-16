@@ -1,0 +1,27 @@
+#!/bin/bash
+# Read tmux notifications with fzf in popup, ESC to close, Enter to jump
+
+LOGFILE="$HOME/.tmux/notifications.log"
+
+if [[ ! -f "$LOGFILE" ]]; then
+  tmux display-message "No notifications"
+  exit 0
+fi
+
+SELECTION=$(cat "$LOGFILE" | tac | while IFS='|' read -r ts session plan msg; do
+  echo -e "${ts} | ${session}${plan:+ [$plan]} | ${msg}"
+done | fzf --height=80% --reverse --bind="esc:execute(tmux display-message 'Cancelled')+abort,enter:execute-silent(
+  LINE=\$(fzf-get-selected);
+  SESSION=\$(echo \$LINE | cut -d'|' -f2 | cut -d' ' -f2);
+  PLAN=\$(echo \$LINE | grep -oP '\[\K[^]]+');
+  tmux switch-client -t \"\$SESSION\"
+  tmux display-message \"Jumped to \$SESSION\${PLAN:+ with plan \$PLAN}\"
+)+abort" --header="ESC: close | Enter: jump to session")
+
+if [[ -n "$SELECTION" ]]; then
+  SESSION=$(echo "$SELECTION" | cut -d'|' -f2 | tr -d ' ')
+  PLAN=$(echo "$SELECTION" | grep -oP '\[\K[^]]+' || true)
+  
+  tmux switch-client -t "$SESSION"
+  tmux display-message "Jumped to $SESSION${PLAN:+ with plan $PLAN}"
+fi
