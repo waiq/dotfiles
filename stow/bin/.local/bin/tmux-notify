@@ -13,4 +13,4 @@ SESSION=$(tmux display-message -p '#S' 2>/dev/null)
 WINDOW=$(tmux display-message -p '#I' 2>/dev/null)
 PANE=$(tmux display-message -p '#P' 2>/dev/null)
 
-~/.tmux/tmux-send-notification "$SESSION" "$WINDOW" "$PANE" "$MESSAGE"
+~/.local/bin/tmux-send-notification "$SESSION" "$WINDOW" "$PANE" "$MESSAGE"

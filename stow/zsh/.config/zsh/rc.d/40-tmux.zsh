@@ -1,7 +1,8 @@
 # alias
-alias ts='tmux-switch'
+alias ts='tmux-switch-session'
 alias td='tmux-dev-layout'
 alias tk='tmux-kill'
+alias tn='tmux-read-notifications'
 
 tmux-reload() {
   tmux start-server
@@ -42,7 +43,7 @@ tmux-kill() {
   fi
 }
 
-tmux-switch() {
+tmux-switch-session() {
   local session="$1"
   if [[ -z "$session" ]]; then
     session=$(tmux list-sessions | fzf | sed 's/: .*//g') || return 0
@@ -59,6 +60,37 @@ tmux-switch() {
     echo "Session '$session' does not exist."
     return 1
   fi
+}
+
+tmux-read-notifications() {
+  local logfile="$HOME/.tmux/notifications.log"
+
+  if [[ ! -f "$logfile" ]]; then
+    tmux display-message "No notifications"
+    return 0
+  fi
+
+  local selection
+  selection=$(<"$logfile" | tac | while IFS='|' read -r ts session window pane msg; do
+    local target="${session}:${window}${pane:+.${pane}}"
+    echo -e "${ts} | ${target} | ${msg}"
+  done | fzf --height=80% --reverse --header="ESC: close | Enter: jump to session:window.pane")
+
+  if [[ -z "$selection" ]]; then
+    tmux display-message "Cancelled"
+    return 0
+  fi
+
+  local target
+  target=$(echo "$selection" | cut -d'|' -f2 | tr -d ' ')
+
+  if [[ -z "$target" ]]; then
+    tmux display-message "Error: no target"
+    return 1
+  fi
+
+  tmux switch-client -t "$target"
+  tmux display-message "Jumped to $target"
 }
 
 tmux-default-layout() {
