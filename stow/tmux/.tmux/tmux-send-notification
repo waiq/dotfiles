@@ -1,26 +1,26 @@
 #!/bin/bash
-# Usage: tmux-send-notification <session> [plan] <message>
+# Usage: tmux-send-notification <session> [pane] <message>
 
 SESSION="$1"
 shift
 
 if [[ "$1" == -* ]]; then
-  PLAN="$1"
+  PANE="$1"
   shift
 else
-  PLAN=""
+  PANE=""
 fi
 
 MESSAGE="$*"
 LOGFILE="$HOME/.tmux/notifications.log"
 
 if [[ -z "$SESSION" || -z "$MESSAGE" ]]; then
-  echo "Usage: tmux-send-notification <session> [plan] <message>"
+  echo "Usage: tmux-send-notification <session> [pane] <message>"
   exit 1
 fi
 
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-echo "$TIMESTAMP|$SESSION|$PLAN|$MESSAGE" >> "$LOGFILE"
+echo "$TIMESTAMP|$SESSION|$PANE|$MESSAGE" >> "$LOGFILE"
 
 tmux display-message -t "$SESSION" "Notification: $MESSAGE"
 
