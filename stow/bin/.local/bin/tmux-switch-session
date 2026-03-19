@@ -1,0 +1,21 @@
+#!/bin/bash
+# Switch tmux session with fzf popup
+# Usage: tmux-switch-session [session-name]
+
+SESSION="$1"
+
+if [[ -z "$SESSION" ]]; then
+    SESSION=$(tmux list-sessions 2>/dev/null | fzf | cut -d: -f1) || exit 0
+    [[ -z "$SESSION" ]] && exit 0
+fi
+
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$SESSION"
+    else
+        tmux attach -t "$SESSION"
+    fi
+else
+    echo "Session '$SESSION' does not exist."
+    exit 1
+fi

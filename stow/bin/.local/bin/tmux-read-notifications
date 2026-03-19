@@ -1,0 +1,27 @@
+#!/bin/bash
+# Read tmux notifications with fzf in popup
+# Usage: tmux-read-notifications
+
+LOGFILE="$HOME/.tmux/notifications.log"
+
+if [[ ! -f "$LOGFILE" ]]; then
+    tmux display-message "No notifications"
+    exit 0
+fi
+
+cat "$LOGFILE" | tac | while IFS='|' read -r ts session window pane msg; do
+    TARGET="${session}:${window}${pane:+.${pane}}"
+    echo -e "${ts} | ${TARGET} | ${msg}"
+done | fzf --height=80% --reverse --header="ESC: close | Enter: jump" | {
+    read -r SELECTION
+    if [[ -z "$SELECTION" ]]; then
+        exit 0
+    fi
+    
+    TARGET=$(echo "$SELECTION" | cut -d'|' -f2 | tr -d ' ')
+    
+    if [[ -n "$TARGET" ]]; then
+        tmux switch-client -t "$TARGET"
+        tmux display-message "Jumped to $TARGET"
+    fi
+}

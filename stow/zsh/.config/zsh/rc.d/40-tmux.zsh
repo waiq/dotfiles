@@ -43,76 +43,7 @@ tmux-kill() {
   fi
 }
 
-tmux-switch-session() {
-  local session="$1"
-  if [[ -z "$session" ]]; then
-    session=$(tmux list-sessions | fzf | sed 's/: .*//g') || return 0
-    [[ -z "$session" ]] && return 0
-  fi
 
-  if tmux has-session -t "$session" 2>/dev/null; then
-    if [[ -n "$TMUX" ]]; then
-      tmux switch-client -t "$session"
-    else
-      tmux attach -t "$session"
-    fi
-  else
-    echo "Session '$session' does not exist."
-    return 1
-  fi
-}
-
-tmux-read-notifications() {
-  local logfile="$HOME/.tmux/notifications.log"
-
-  if [[ ! -f "$logfile" ]]; then
-    tmux display-message "No notifications"
-    return 0
-  fi
-
-  local selection
-  selection=$(<"$logfile" | tac | while IFS='|' read -r ts session window pane msg; do
-    local target="${session}:${window}${pane:+.${pane}}"
-    echo -e "${ts} | ${target} | ${msg}"
-  done | fzf --height=80% --reverse --header="ESC: close | Enter: jump to session:window.pane")
-
-  if [[ -z "$selection" ]]; then
-    tmux display-message "Cancelled"
-    return 0
-  fi
-
-  local target
-  target=$(echo "$selection" | cut -d'|' -f2 | tr -d ' ')
-
-  if [[ -z "$target" ]]; then
-    tmux display-message "Error: no target"
-    return 1
-  fi
-
-  tmux switch-client -t "$target"
-  tmux display-message "Jumped to $target"
-}
-
-tmux-default-layout() {
-  local session="default"
-
-  if tmux has-session -t "$session" 2>/dev/null; then
-    echo "Session '$session' already exists."
-  else
-    echo "Creating tmux session: $session"
-    tmux new-session -d -s "$session" -n doc
-    tmux split-window -v -t "$session":1
-    tmux new-window -t "$session":2 -n commands
-    tmux select-window -t "$session":1
-    tmux select-pane -t "$session":1.1
-  fi
-
-  if [[ -n "$TMUX" ]]; then
-    tmux switch-client -t "$session"
-  else
-    tmux attach -t "$session"
-  fi
-}
 
 tmux-dev-layout() {
   local session="$1"
