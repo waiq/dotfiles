@@ -36,6 +36,7 @@ require('lazy').setup {
   require 'plugins.dap',
   require 'plugins.dap-ui',
   require 'plugins.dap-go',
+  require 'plugins.dap-python',
   require 'plugins.smart-split',
   require 'plugins.lsp-signature',
   require 'plugins.kulala',
