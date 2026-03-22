@@ -54,6 +54,8 @@
     rustc
     cargo
     rustfmt
+    clippy
+    lldb
     cargo-watch
     jira-cli-go
     whisper-cpp
