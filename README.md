@@ -1,21 +1,21 @@
 # dotfiles
 
-This repo has migrated away from legacy Ansible automation to:
 - Home Manager (`home-manager/`) for installs/runtime/services
 - GNU Stow (`stow/`) for dotfile/config symlinks
 
-Legacy Ansible paths are deprecated and must not be used.
-
 ## Repository Layout
+
 - `home-manager/`: Nix flake + Home Manager modules
 - `stow/`: source of truth for dotfile/config symlinks
 
 ## Prerequisites
+
 - Nix installed
 - Home Manager available (global install or `nix run`)
 - `stow` available (installed by Home Manager or system package manager)
 
 ## Home Manager Usage
+
 From repo root:
 
 ```bash
@@ -35,6 +35,7 @@ nix flake update --flake ./home-manager
 ```
 
 ## Stow Usage
+
 Stow is used to apply config packages to `$HOME`.
 
 Preview changes first:
@@ -68,6 +69,7 @@ stow --dir stow --target "$HOME" --delete zsh
 ```
 
 ## Recommended Apply Flow
+
 From repo root:
 
 1. Apply packages/services with Home Manager.
@@ -84,15 +86,24 @@ cp -a stow/local.example stow/local  # first time only
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin local
 ```
 
+Optional one-line setup for tmux `sudo htop` popup (passwordless for this command only):
+
+```bash
+printf '%s\n' 'waiq ALL=(root) NOPASSWD: /home/waiq/.nix-profile/bin/htop' | sudo tee /etc/sudoers.d/tmux-htop >/dev/null && sudo chmod 0440 /etc/sudoers.d/tmux-htop && sudo chown root:root /etc/sudoers.d/tmux-htop && sudo visudo -cf /etc/sudoers.d/tmux-htop
+```
+
 ## Work vs Home Profiles (Planned)
+
 The migration plan defines shared base + small overlays (`work` and `home`).
 Expected flake targets after rollout:
+
 - `#waiq-work`
 - `#waiq-home`
 
 Until those outputs are added, use `#waiq`.
 
 ## 1Password / op Workflows
+
 This setup is `op`-heavy by design.
 
 - Keep secrets out of repo; commit only references like `op://...`.
@@ -120,16 +131,20 @@ echo "$SSH_AUTH_SOCK"
 Expected value is usually `~/.1password/agent.sock`.
 
 ## Local Git Identity
+
 Git identity must be provided via local untracked config in `stow/local`.
 
 Target path:
+
 - `~/.gitconfig.local`
 
 Shared git config will include that file, and it should define:
+
 - `[user] name = ...`
 - `[user] email = ...`
 
 ## Git Workspace Helper
+
 Use `git-workspace` to create a new branch and a matching git worktree workspace from a name.
 
 Examples:
@@ -141,18 +156,14 @@ git-workspace --root "$HOME/dev/workspaces/dotfiles" feature-shell-cleanup
 ```
 
 Behavior:
+
 - slugifies the input name
 - creates branch as `<repo-name>/<slug>`
 - creates worktree under `../workspaces/<repo-name>/<repo-name>-<slug>` by default
 - creates new branch from `main` (falls back to `master` if `main` is missing)
 - use `--force` to reuse an existing branch with a new worktree path
 
-## Legacy Ansible (Deprecated)
-Ansible-based repo workflows are removed and no longer supported.
-
 ## Source Of Truth Policy
+
 - Package/runtime/service management: `home-manager/`
 - Config files and shell wrappers: `stow/`
-
-Migration control doc:
-- `AGENTS_MIGRATION.md`

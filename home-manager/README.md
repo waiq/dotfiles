@@ -5,9 +5,9 @@ Home Manager is authoritative for packages/services; `stow/` is authoritative fo
 
 ## Outputs
 Current Home Manager targets:
-- `waiq` (legacy/default stable target)
-- `waiq-nix` (migration target, currently same behavior as `waiq`)
-- `waiq-config` (migration target, currently same behavior as `waiq`)
+- `waiq` (default target)
+- `waiq-nix`
+- `waiq-config`
 - `waiq-work` (profile scaffold)
 - `waiq-home` (profile scaffold)
 
@@ -22,7 +22,7 @@ From repo root:
 home-manager switch --flake ./home-manager#waiq
 ```
 
-Migration targets:
+Additional targets:
 
 ```bash
 home-manager switch --flake ./home-manager#waiq-nix
@@ -37,7 +37,7 @@ Without global Home Manager installation:
 nix run github:nix-community/home-manager -- switch --flake ./home-manager#waiq
 ```
 
-## Recommended Migration Apply Flow
+## Recommended Apply Flow
 From repo root:
 
 ```bash
