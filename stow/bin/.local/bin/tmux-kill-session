@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+notify() {
+    local msg="$1"
+    if [[ -n "${TMUX:-}" ]]; then
+        tmux display-message "$msg"
+    else
+        printf '%s\n' "$msg" >&2
+    fi
+}
+
+list_sessions() {
+    tmux list-sessions -F '#{session_name}' 2>/dev/null
+}
+
+kill_session() {
+    local session="${1:-}"
+    local current
+
+    if [[ -z "$session" ]]; then
+        notify "No session selected."
+        return 1
+    fi
+
+    current="$(tmux display-message -p '#S' 2>/dev/null || true)"
+    if [[ -n "$current" && "$session" == "$current" ]]; then
+        notify "Cannot kill current session: $session"
+        return 1
+    fi
+
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        notify "Session not found: $session"
+        return 1
+    fi
+
+    tmux kill-session -t "$session"
+    notify "Killed session: $session"
+}
+
+if [[ "${1:-}" == "--kill" ]]; then
+    kill_session "${2:-}"
+    exit $?
+fi
+
+if [[ -n "${1:-}" ]]; then
+    kill_session "$1"
+    exit $?
+fi
+
+if ! tmux list-sessions >/dev/null 2>&1; then
+    notify "No tmux sessions found."
+    exit 0
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+    notify "fzf not found in PATH"
+    sleep 2
+    exit 1
+fi
+
+while true; do
+    selection="$(list_sessions | fzf \
+        --height=100% \
+        --reverse \
+        --prompt='tk > ' \
+        --header='Enter: select session | ESC: close')"
+    status=$?
+
+    if [[ $status -ne 0 ]]; then
+        if [[ $status -eq 130 || $status -eq 1 ]]; then
+            exit 0
+        fi
+        printf 'fzf failed (exit %s). Press any key.\n' "$status"
+        read -r -n 1 _ || true
+        exit 1
+    fi
+
+    session="$selection"
+    if [[ -z "$session" ]]; then
+        continue
+    fi
+
+    printf 'Selected: %s | press k to kill, any other key to continue, ESC to close\n' "$session"
+    read -r -s -n 1 key || true
+
+    if [[ "$key" == $'\e' ]]; then
+        exit 0
+    fi
+
+    if [[ "$key" == "k" ]]; then
+        kill_session "$session" || true
+    fi
+done

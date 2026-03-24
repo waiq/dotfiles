@@ -1,7 +1,7 @@
 # alias
 alias ts='tmux-switch-session'
 alias td='tmux-dev-layout'
-alias tk='tmux-kill'
+alias tk='tmux-kill-session'
 alias tn='tmux-read-notifications'
 
 tmux-reload() {
@@ -18,32 +18,6 @@ tmux-reload() {
         tmux send-keys -t "$target" 'source ~/.zshrc' C-m
       done
 }
-
-tmux-kill() {
-  local session="$1"
-  if [[ -z "$session" ]]; then
-    session=$(tmux list-sessions | fzf | sed 's/: .*//g')
-  fi
-  if tmux has-session -t "$session" 2>/dev/null; then
-    if [[ -n "$TMUX" ]]; then
-      # If the current session is the one being killed, switch to another session first
-      if [[ "$(tmux display-message -p '#S')" == "$session" ]]; then
-        local other_session=$(tmux list-sessions | grep -v "^$session:" | head -n 1 | sed 's/: .*//g')
-        if [[ -n "$other_session" ]]; then
-          tmux switch-client -t "$other_session"
-        else
-          tmux detach-client -s "$session"
-        fi
-      fi
-    fi
-    tmux kill-session -t "$session"
-  else
-    echo "Session '$session' does not exist."
-    return 1
-  fi
-}
-
-
 
 tmux-dev-layout() {
   local session="$1"
