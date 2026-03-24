@@ -65,7 +65,7 @@ while true; do
         --height=100% \
         --reverse \
         --prompt='tk > ' \
-        --header='Enter: select session | ESC: close')"
+        --header='Enter: kill selected session | ESC: close')"
     status=$?
 
     if [[ $status -ne 0 ]]; then
@@ -82,14 +82,5 @@ while true; do
         continue
     fi
 
-    printf 'Selected: %s | press k to kill, any other key to continue, ESC to close\n' "$session"
-    read -r -s -n 1 key || true
-
-    if [[ "$key" == $'\e' ]]; then
-        exit 0
-    fi
-
-    if [[ "$key" == "k" ]]; then
-        kill_session "$session" || true
-    fi
+    kill_session "$session" || true
 done
