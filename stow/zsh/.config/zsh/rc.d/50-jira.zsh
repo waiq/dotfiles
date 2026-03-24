@@ -51,6 +51,46 @@ create-issue-in-epic() {
   fi
 }
 
+jira-new-task() {
+  _require_op_account || return 1
+
+  local epic_key="${JIRA_DEFAULT_EPIC:-}"
+  local issue_type="Task"
+
+  while getopts ":e:t:" opt; do
+    case "$opt" in
+      e) epic_key="$OPTARG" ;;
+      t) issue_type="$OPTARG" ;;
+      :) echo "Option -$OPTARG requires a value." >&2; return 1 ;;
+      \?) echo "Usage: jira-new-task [-e EPIC_KEY] [-t ISSUE_TYPE] <SUMMARY> [DESCRIPTION]" >&2; return 1 ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  if [[ -z "$epic_key" ]]; then
+    echo "Epic key missing. Set JIRA_DEFAULT_EPIC in stow/local/.zshrc.local or pass -e <EPIC_KEY>." >&2
+    return 1
+  fi
+
+  if [[ -z "${1:-}" ]]; then
+    echo "Usage: jira-new-task [-e EPIC_KEY] [-t ISSUE_TYPE] <SUMMARY> [DESCRIPTION]" >&2
+    return 1
+  fi
+
+  local summary="$1"
+  local description="${2:-}"
+  local me
+  me="$(jira me)"
+
+  if [[ -n "$description" ]]; then
+    jira issue create -t "$issue_type" -P "$epic_key" -s "$summary" -b "$description" -a "$me" --no-input
+  else
+    jira issue create -t "$issue_type" -P "$epic_key" -s "$summary" -a "$me" --no-input
+  fi
+}
+
+alias jnt='jira-new-task'
+
 jimy-issues() {
   _require_op_account || return 1
   op run --account "$OP_ACCOUNT" -- jira issues list -a"$(jira me)" --order-by created "$@"
@@ -77,5 +117,5 @@ jimo() {
 }
 
 if command -v compdef >/dev/null 2>&1 && typeset -f _jira >/dev/null 2>&1; then
-  compdef _jira jira jimy-issues jimy-epics jiw jil jimo
+  compdef _jira jira jira-new-task jnt jimy-issues jimy-epics jiw jil jimo
 fi

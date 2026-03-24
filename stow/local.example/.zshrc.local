@@ -2,5 +2,7 @@
 # 1Password account selection
 # export OP_ACCOUNT="YOUR_ACCOUNT_ID"
 # export ONE_PASSWORD_ACCOUNT="$OP_ACCOUNT"
+# Default Jira epic for jira-new-task / jnt wrapper
+# export JIRA_DEFAULT_EPIC="JIRA-123"
 # Workspace root for git-workspace helper
 # export GIT_WORKSPACE_ROOT="$HOME/dev/workspaces"

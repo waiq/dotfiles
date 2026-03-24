@@ -109,6 +109,7 @@ This setup is `op`-heavy by design.
 - Keep secrets out of repo; commit only references like `op://...`.
 - Keep command wrappers (`jira`, etc.) in stow-managed shell config.
 - Set account IDs only in local untracked files under `stow/local`.
+- Set default Jira epic locally (untracked), e.g. `export JIRA_DEFAULT_EPIC="DISCO-53"` in `stow/local/.zshrc.local`.
 - Sign in before running wrappers:
 
 ```bash
@@ -120,6 +121,13 @@ op signin
 ```bash
 op whoami
 op account list
+```
+
+Create and assign a new Jira task in your default epic:
+
+```bash
+jnt "Fix tmux popup flicker" "Popup closes immediately when command path is missing"
+jnt -e DISCO-99 -t Bug "Fix popup flicker" "Repro: prefix+k"
 ```
 
 If SSH integration is used:

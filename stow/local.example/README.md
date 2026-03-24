@@ -20,3 +20,4 @@ stow --dir stow --target "$HOME" --restow zsh git tmux nvim bin local
 Files to customize locally:
 - `.gitconfig.local` for git identity (`user.name`, `user.email`)
 - `.zshrc.local` for `OP_ACCOUNT`
+- `.zshrc.local` for `JIRA_DEFAULT_EPIC` (used by `jira-new-task` / `jnt`)
