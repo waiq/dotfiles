@@ -116,6 +116,55 @@ jimo() {
   op run --account "$OP_ACCOUNT" -- jira issues move "$@"
 }
 
+jimy-move() {
+  _require_op_account || return 1
+
+  local me issue_line issue_key target_state custom_state
+  me="$(jira me)" || return 1
+
+  issue_line="$(
+    op run --account "$OP_ACCOUNT" -- jira issue list \
+      -a"$me" \
+      -s~Done \
+      --order-by updated \
+      --reverse \
+      --plain \
+      --no-headers \
+      --columns key,summary,status,priority \
+      | fzf --prompt="My Jira > " --height=70% --border --no-sort --tiebreak=index
+  )" || return 0
+
+  issue_key="${issue_line%%$'\t'*}"
+  if [[ -z "$issue_key" ]]; then
+    echo "No issue key selected." >&2
+    return 1
+  fi
+
+  target_state="$(printf '%s\n' \
+    "To Do" \
+    "In Progress" \
+    "Blocked" \
+    "Done" \
+    "Custom..." \
+    "Back" \
+    | fzf --prompt="Move $issue_key to > " --height=40% --border
+  )" || return 0
+
+  case "$target_state" in
+    "Back"|"")
+      return 0
+      ;;
+    "Custom...")
+      read -r "custom_state?Custom state: "
+      [[ -z "$custom_state" ]] && return 0
+      jimo "$issue_key" "$custom_state"
+      ;;
+    *)
+      jimo "$issue_key" "$target_state"
+      ;;
+  esac
+}
+
 if command -v compdef >/dev/null 2>&1 && typeset -f _jira >/dev/null 2>&1; then
-  compdef _jira jira jira-new-task jnt jimy-issues jimy-epics jiw jil jimo
+  compdef _jira jira jira-new-task jnt jimy-issues jimy-epics jiw jil jimo jimy-move
 fi
