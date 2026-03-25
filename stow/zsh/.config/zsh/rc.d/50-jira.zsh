@@ -116,10 +116,41 @@ jimo() {
   op run --account "$OP_ACCOUNT" -- jira issues move "$@"
 }
 
+_jimy_available_transitions() {
+  _require_op_account || return 1
+
+  local issue_key="$1"
+  local out line states part
+  local -a transitions
+
+  out="$(jimo "$issue_key" "__INVALID_TRANSITION__" 2>&1 || true)"
+  while IFS= read -r line; do
+    if [[ "$line" == *"Available states for issue"* ]]; then
+      states="${line#*: }"
+      break
+    fi
+  done <<< "$out"
+
+  [[ -z "$states" ]] && return 1
+
+  setopt localoptions extendedglob
+  for part in ${(s:,:)states}; do
+    part="${part##[[:space:]]#}"
+    part="${part%%[[:space:]]#}"
+    part="${part#\'}"
+    part="${part%\'}"
+    [[ -n "$part" ]] && transitions+=("$part")
+  done
+
+  ((${#transitions[@]} == 0)) && return 1
+  printf '%s\n' "${transitions[@]}"
+}
+
 jimy-move() {
   _require_op_account || return 1
 
-  local me issue_line issue_key target_state custom_state
+  local me issue_line issue_key target_state
+  local -a available_states
   me="$(jira me)" || return 1
 
   issue_line="$(
@@ -140,29 +171,16 @@ jimy-move() {
     return 1
   fi
 
-  target_state="$(printf '%s\n' \
-    "To Do" \
-    "In Progress" \
-    "Blocked" \
-    "Done" \
-    "Custom..." \
-    "Back" \
-    | fzf --prompt="Move $issue_key to > " --height=40% --border
-  )" || return 0
+  available_states=("${(@f)$(_jimy_available_transitions "$issue_key")}")
+  if ((${#available_states[@]} == 0)); then
+    echo "Could not discover available transitions for $issue_key." >&2
+    return 1
+  fi
 
-  case "$target_state" in
-    "Back"|"")
-      return 0
-      ;;
-    "Custom...")
-      read -r "custom_state?Custom state: "
-      [[ -z "$custom_state" ]] && return 0
-      jimo "$issue_key" "$custom_state"
-      ;;
-    *)
-      jimo "$issue_key" "$target_state"
-      ;;
-  esac
+  target_state="$(printf '%s\n' "${available_states[@]}" | fzf --prompt="Move $issue_key to > " --height=40% --border)" || return 0
+  [[ -z "$target_state" ]] && return 0
+
+  jimo "$issue_key" "$target_state"
 }
 
 if command -v compdef >/dev/null 2>&1 && typeset -f _jira >/dev/null 2>&1; then
