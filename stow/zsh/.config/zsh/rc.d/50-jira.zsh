@@ -176,8 +176,8 @@ jimy-move() {
     echo "Could not discover available transitions for $issue_key." >&2
     return 1
   fi
-
   target_state="$(printf '%s\n' "${available_states[@]}" | fzf --prompt="Move $issue_key to > " --height=40% --border)" || return 0
+
   [[ -z "$target_state" ]] && return 0
 
   jimo "$issue_key" "$target_state"

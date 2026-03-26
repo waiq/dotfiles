@@ -28,16 +28,23 @@ This produces **crap tests**:
 
 **Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat. Each test responds to what you learned from the previous cycle. Because you just wrote the code, you know exactly what behavior matters and how to verify it.
 
-```
-WRONG (horizontal):
-  RED:   test1, test2, test3, test4, test5
-  GREEN: impl1, impl2, impl3, impl4, impl5
+```go
+// WRONG: horizontal slicing (all tests, then all code)
+func TestCheckout_Success(t *testing.T)        { /* ... */ }
+func TestCheckout_DeclinedCard(t *testing.T)   { /* ... */ }
+func TestCheckout_EmptyCart(t *testing.T)      { /* ... */ }
+func TestCheckout_ExpiredCoupon(t *testing.T)  { /* ... */ }
 
-RIGHT (vertical):
-  RED→GREEN: test1→impl1
-  RED→GREEN: test2→impl2
-  RED→GREEN: test3→impl3
-  ...
+// ...later in one big jump...
+func (s *Service) Checkout(ctx context.Context, cartID string) (Receipt, error) {
+    // huge implementation written after all tests
+}
+
+// RIGHT: vertical slices (one behavior at a time)
+// 1) RED: TestCheckout_Success fails
+// 2) GREEN: minimal Checkout logic for success path
+// 3) RED: TestCheckout_DeclinedCard fails
+// 4) GREEN: minimal decline handling
 ```
 
 ## Workflow
@@ -61,9 +68,27 @@ Ask: "What should the public interface look like? Which behaviors are most impor
 
 Write ONE test that confirms ONE thing about the system:
 
-```
-RED:   Write test for first behavior → test fails
-GREEN: Write minimal code to pass → test passes
+```go
+// checkout/service_test.go
+package checkout_test
+
+func TestCheckout_WithValidCart_ReturnsPaidReceipt(t *testing.T) {
+    gateway := newStubGateway(func(totalCents int) (string, error) {
+        return "txn-123", nil
+    })
+    svc := checkout.NewService(gateway)
+
+    receipt, err := svc.Checkout(context.Background(), checkout.Cart{ID: "cart-1", TotalCents: 2500})
+    if err != nil {
+        t.Fatalf("Checkout() error = %v", err)
+    }
+    if receipt.Status != "paid" {
+        t.Fatalf("status = %q, want %q", receipt.Status, "paid")
+    }
+}
+
+// RED: this test fails first.
+// GREEN: add the smallest amount of real code to make it pass.
 ```
 
 This is your tracer bullet - proves the path works end-to-end.
@@ -72,9 +97,18 @@ This is your tracer bullet - proves the path works end-to-end.
 
 For each remaining behavior:
 
-```
-RED:   Write next test → fails
-GREEN: Minimal code to pass → passes
+```go
+// Cycle 1
+// RED:   TestCheckout_WithValidCart_ReturnsPaidReceipt
+// GREEN: implement happy path only
+
+// Cycle 2
+// RED:   TestCheckout_WithDeclinedCard_ReturnsPaymentFailed
+// GREEN: map gateway decline to public error/result
+
+// Cycle 3
+// RED:   TestCheckout_WithEmptyCart_ReturnsValidationError
+// GREEN: add minimal cart validation
 ```
 
 Rules:

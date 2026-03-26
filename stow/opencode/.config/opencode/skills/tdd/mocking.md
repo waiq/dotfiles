@@ -21,16 +21,20 @@ At system boundaries, design interfaces that are easy to mock:
 
 Pass external dependencies in rather than creating them internally:
 
-```typescript
-// Easy to mock
-function processPayment(order, paymentClient) {
-  return paymentClient.charge(order.total);
+```go
+// Easy to mock: dependency injected at boundary
+type PaymentClient interface {
+    Charge(ctx context.Context, amountCents int) (string, error)
 }
 
-// Hard to mock
-function processPayment(order) {
-  const client = new StripeClient(process.env.STRIPE_KEY);
-  return client.charge(order.total);
+func ProcessPayment(ctx context.Context, order Order, client PaymentClient) (string, error) {
+    return client.Charge(ctx, order.TotalCents)
+}
+
+// Hard to mock: boundary client created internally
+func ProcessPaymentHard(ctx context.Context, order Order) (string, error) {
+    client := stripe.NewClient(os.Getenv("STRIPE_KEY"))
+    return client.Charge(ctx, order.TotalCents)
 }
 ```
 
@@ -38,18 +42,18 @@ function processPayment(order) {
 
 Create specific functions for each external operation instead of one generic function with conditional logic:
 
-```typescript
-// GOOD: Each function is independently mockable
-const api = {
-  getUser: (id) => fetch(`/users/${id}`),
-  getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch('/orders', { method: 'POST', body: data }),
-};
+```go
+// GOOD: Specific SDK-style boundary methods
+type API interface {
+    GetUser(ctx context.Context, id string) (User, error)
+    GetOrders(ctx context.Context, userID string) ([]Order, error)
+    CreateOrder(ctx context.Context, in CreateOrderInput) (Order, error)
+}
 
-// BAD: Mocking requires conditional logic inside the mock
-const api = {
-  fetch: (endpoint, options) => fetch(endpoint, options),
-};
+// BAD: Generic method forces conditional branching in test doubles
+type GenericAPI interface {
+    Do(ctx context.Context, endpoint string, method string, body any) (any, error)
+}
 ```
 
 The SDK approach means:

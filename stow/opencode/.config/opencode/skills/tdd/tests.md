@@ -4,14 +4,22 @@
 
 **Integration-style**: Test through real interfaces, not mocks of internal parts.
 
-```typescript
-// GOOD: Tests observable behavior
-test("user can checkout with valid cart", async () => {
-  const cart = createCart();
-  cart.add(product);
-  const result = await checkout(cart, paymentMethod);
-  expect(result.status).toBe("confirmed");
-});
+```go
+// GOOD: Tests observable behavior through public API
+func TestCheckout_WithValidCart_ReturnsConfirmed(t *testing.T) {
+    svc := checkout.NewService(newStubGateway(func(totalCents int) (string, error) {
+        return "txn-123", nil
+    }))
+
+    cart := checkout.Cart{ID: "cart-1", TotalCents: 4200}
+    result, err := svc.Checkout(context.Background(), cart)
+    if err != nil {
+        t.Fatalf("Checkout() error = %v", err)
+    }
+    if result.Status != "confirmed" {
+        t.Fatalf("status = %q, want %q", result.Status, "confirmed")
+    }
+}
 ```
 
 Characteristics:
@@ -26,13 +34,18 @@ Characteristics:
 
 **Implementation-detail tests**: Coupled to internal structure.
 
-```typescript
+```go
 // BAD: Tests implementation details
-test("checkout calls paymentService.process", async () => {
-  const mockPayment = jest.mock(paymentService);
-  await checkout(cart, payment);
-  expect(mockPayment.process).toHaveBeenCalledWith(cart.total);
-});
+func TestCheckout_CallsGatewayChargeWithCartTotal(t *testing.T) {
+    gateway := &spyGateway{}
+    svc := checkout.NewService(gateway)
+
+    _, _ = svc.Checkout(context.Background(), checkout.Cart{ID: "cart-1", TotalCents: 4200})
+
+    if gateway.lastChargeAmount != 4200 {
+        t.Fatalf("charge amount = %d, want %d", gateway.lastChargeAmount, 4200)
+    }
+}
 ```
 
 Red flags:
@@ -44,18 +57,36 @@ Red flags:
 - Test name describes HOW not WHAT
 - Verifying through external means instead of interface
 
-```typescript
+```go
 // BAD: Bypasses interface to verify
-test("createUser saves to database", async () => {
-  await createUser({ name: "Alice" });
-  const row = await db.query("SELECT * FROM users WHERE name = ?", ["Alice"]);
-  expect(row).toBeDefined();
-});
+func TestCreateUser_SavesToDatabase(t *testing.T) {
+    repo := newTestRepo(t)
+    svc := users.NewService(repo)
+
+    _, _ = svc.CreateUser(context.Background(), users.CreateInput{Name: "Alice"})
+
+    row := repo.RawQueryOne(t, "SELECT name FROM users WHERE name = ?", "Alice")
+    if row == nil {
+        t.Fatal("expected row")
+    }
+}
 
 // GOOD: Verifies through interface
-test("createUser makes user retrievable", async () => {
-  const user = await createUser({ name: "Alice" });
-  const retrieved = await getUser(user.id);
-  expect(retrieved.name).toBe("Alice");
-});
+func TestCreateUser_MakesUserRetrievable(t *testing.T) {
+    repo := newTestRepo(t)
+    svc := users.NewService(repo)
+
+    user, err := svc.CreateUser(context.Background(), users.CreateInput{Name: "Alice"})
+    if err != nil {
+        t.Fatalf("CreateUser() error = %v", err)
+    }
+
+    retrieved, err := svc.GetUser(context.Background(), user.ID)
+    if err != nil {
+        t.Fatalf("GetUser() error = %v", err)
+    }
+    if retrieved.Name != "Alice" {
+        t.Fatalf("name = %q, want %q", retrieved.Name, "Alice")
+    }
+}
 ```
