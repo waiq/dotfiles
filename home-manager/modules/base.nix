@@ -71,6 +71,7 @@
     wezterm
     zoom-us
     nodejs
+    yazi
   ];
 
   home.stateVersion = "25.05";
