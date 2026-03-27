@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# ---
+# menu-name: Home FZF Open
+# menu-group: files
+# ---
+
+set -u
+
+if ! command -v tmux >/dev/null 2>&1; then
+    printf 'tmux not found in PATH\n' >&2
+    exit 1
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+    tmux display-message 'fzf not found in PATH'
+    exit 1
+fi
+
+list_paths() {
+    if command -v fd >/dev/null 2>&1; then
+        fd --hidden --follow --exclude .git . "$HOME"
+        return
+    fi
+
+    find "$HOME" \
+        \( -path '*/.git/*' -o -path '*/node_modules/*' \) -prune \
+        -o -mindepth 1 -print
+}
+
+selection="$({ list_paths; } | fzf --height=100% --reverse --prompt='home > ' --header='Enter: open in new tmux window | Esc: cancel')"
+status=$?
+
+if [[ $status -ne 0 || -z "$selection" ]]; then
+    exit 0
+fi
+
+if [[ -d "$selection" ]]; then
+    tmux new-window -c "$selection"
+    exit 0
+fi
+
+if [[ -f "$selection" ]]; then
+    dir="$(dirname "$selection")"
+    editor="$(tmux show-option -gv @editor 2>/dev/null || true)"
+    if [[ -z "$editor" ]]; then
+        editor="${EDITOR:-vi}"
+    fi
+    editor_q="$(printf '%q' "$editor")"
+    file_q="$(printf '%q' "$selection")"
+    tmux new-window -c "$dir" "${SHELL:-/bin/bash} -lc 'exec ${editor_q} ${file_q}'"
+    exit 0
+fi
+
+tmux display-message 'Selection is not a file or directory'

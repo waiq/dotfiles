@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# ---
+# menu-name: Kill Session
+# menu-group: sessions
+# ---
 
 set -uo pipefail
 

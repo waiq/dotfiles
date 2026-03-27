@@ -1,4 +1,8 @@
 #!/bin/bash
+# ---
+# menu-name: Quick Notify
+# menu-group: notifications
+# ---
 # Wrapper that auto-detects session, window, pane and sends notification
 # Usage: tmux-notify <message>
 

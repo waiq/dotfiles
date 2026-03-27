@@ -1,4 +1,8 @@
 #!/bin/bash
+# ---
+# menu-name: Send Notification
+# menu-group: notifications
+# ---
 # Usage: tmux-send-notification <session> <window> [pane] <message>
 
 SESSION="$1"

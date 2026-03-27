@@ -1,0 +1,244 @@
+#!/usr/bin/env bash
+
+# Metadata format in command scripts (optional):
+# # ---
+# # menu-name: Friendly Label
+# # menu-group: subgroup-name
+# # ---
+
+set -euo pipefail
+
+BIN_DIR="${TMUX_MENU_BIN_DIR:-$HOME/.local/bin}"
+POPUP_W="${TMUX_MENU_POPUP_W:-80%}"
+POPUP_H="${TMUX_MENU_POPUP_H:-80%}"
+
+meta_name=""
+meta_group=""
+
+trim() {
+    local s="$1"
+    s="${s#${s%%[![:space:]]*}}"
+    s="${s%${s##*[![:space:]]}}"
+    printf '%s' "$s"
+}
+
+parse_metadata() {
+    local file="$1"
+    local line=""
+    local in_block=0
+    local seen_block=0
+    local max_lines=60
+    local n=0
+
+    meta_name=""
+    meta_group=""
+
+    while IFS= read -r line; do
+        n=$((n + 1))
+        if (( n > max_lines )); then
+            break
+        fi
+
+        if [[ "$line" == '# ---' ]]; then
+            if (( in_block == 0 )); then
+                in_block=1
+                seen_block=1
+                continue
+            fi
+            break
+        fi
+
+        if (( in_block == 1 )); then
+            line="${line#\#}"
+            line="$(trim "$line")"
+            case "$line" in
+                menu-name:*)
+                    meta_name="${line#menu-name:}"
+                    meta_name="$(trim "$meta_name")"
+                    ;;
+                menu-group:*)
+                    meta_group="${line#menu-group:}"
+                    meta_group="$(trim "$meta_group")"
+                    ;;
+            esac
+        elif (( seen_block == 1 )); then
+            break
+        fi
+    done < "$file"
+}
+
+default_group_from_name() {
+    local base="$1"
+    local after_first=""
+
+    if [[ "$base" == *-* ]]; then
+        after_first="${base#*-}"
+        if [[ "$after_first" == *-* ]]; then
+            printf '%s' "${after_first%%-*}"
+            return
+        fi
+        printf '%s' "$after_first"
+        return
+    fi
+
+    printf '%s' "$base"
+}
+
+first_letter() {
+    local base="$1"
+    local c="${base:0:1}"
+    c="${c,,}"
+    if [[ "$c" =~ [a-z] ]]; then
+        printf '%s' "$c"
+    else
+        printf '#'
+    fi
+}
+
+collect_entries() {
+    local path=""
+    local base=""
+    local letter=""
+    local group=""
+    local label=""
+
+    while IFS= read -r path; do
+        [[ -f "$path" ]] || continue
+        [[ -x "$path" ]] || continue
+
+        base="$(basename "$path")"
+        [[ "$base" == "tmux-alpha-menu" ]] && continue
+        parse_metadata "$path"
+
+        label="$meta_name"
+        if [[ -z "$label" ]]; then
+            label="$base"
+        fi
+
+        group="$meta_group"
+        if [[ -z "$group" ]]; then
+            group="$(default_group_from_name "$base")"
+        fi
+
+        letter="$(first_letter "$base")"
+        printf '%s\t%s\t%s\t%s\n' "$letter" "$group" "$label" "$path"
+    done < <(find "$BIN_DIR" -mindepth 1 -maxdepth 1 \( -type f -o -type l \) 2>/dev/null | sort)
+}
+
+show_letters_menu() {
+    local entries
+    local letter
+    local count
+    local cmd
+    local title="Command Menu"
+
+    entries="$(collect_entries)"
+    if [[ -z "$entries" ]]; then
+        tmux display-message "No executable commands found in $BIN_DIR"
+        exit 0
+    fi
+
+    cmd=(tmux display-menu -T "$title" -x C -y C)
+
+    for letter in {a..z}; do
+        count="$(printf '%s\n' "$entries" | awk -F '\t' -v l="$letter" '$1 == l { c++ } END { print c + 0 }')"
+        if [[ "$count" -gt 0 ]]; then
+            cmd+=("${letter^^} (${count})" "$letter" "run-shell '$HOME/.local/bin/tmux-alpha-menu groups $letter'")
+        fi
+    done
+
+    "${cmd[@]}"
+}
+
+show_groups_menu() {
+    local letter="$1"
+    local entries
+    local groups
+    local group
+    local count
+    local cmd
+
+    entries="$(collect_entries | awk -F '\t' -v l="$letter" '$1 == l')"
+    if [[ -z "$entries" ]]; then
+        tmux display-message "No commands found for letter $letter"
+        exit 0
+    fi
+
+    groups="$(printf '%s\n' "$entries" | awk -F '\t' '{print $2}' | sort -u)"
+    cmd=(tmux display-menu -T "${letter^^} groups" -x C -y C)
+
+    while IFS= read -r group; do
+        [[ -n "$group" ]] || continue
+        count="$(printf '%s\n' "$entries" | awk -F '\t' -v g="$group" '$2 == g { c++ } END { print c + 0 }')"
+        cmd+=("$group (${count})" "" "run-shell '$HOME/.local/bin/tmux-alpha-menu commands $letter $(printf '%q' "$group")'")
+    done <<< "$groups"
+
+    "${cmd[@]}"
+}
+
+show_commands_menu() {
+    local letter="$1"
+    local group="$2"
+    local cmd
+    local line
+    local label
+    local path
+
+    cmd=(tmux display-menu -T "${letter^^} / $group" -x C -y C)
+
+    while IFS= read -r line; do
+        [[ -n "$line" ]] || continue
+        label="$(printf '%s\n' "$line" | awk -F '\t' '{print $3}')"
+        path="$(printf '%s\n' "$line" | awk -F '\t' '{print $4}')"
+        cmd+=("$label" "" "run-shell '$HOME/.local/bin/tmux-alpha-menu run $(printf '%q' "$path")'")
+    done < <(collect_entries | awk -F '\t' -v l="$letter" -v g="$group" '$1 == l && $2 == g' | sort -t $'\t' -k3,3)
+
+    if [[ ${#cmd[@]} -eq 8 ]]; then
+        tmux display-message "No commands in ${letter^^}/$group"
+        exit 0
+    fi
+
+    "${cmd[@]}"
+}
+
+run_command_popup() {
+    local path="$1"
+
+    if [[ ! -x "$path" ]]; then
+        tmux display-message "Not executable: $path"
+        exit 1
+    fi
+
+    tmux display-popup -x C -y C -w "$POPUP_W" -h "$POPUP_H" -E "$path"
+}
+
+usage() {
+    printf 'Usage: tmux-alpha-menu {letters|groups <letter>|commands <letter> <group>|run <path>}\n'
+}
+
+main() {
+    local action="${1:-letters}"
+    case "$action" in
+        letters)
+            show_letters_menu
+            ;;
+        groups)
+            [[ -n "${2:-}" ]] || { usage; exit 1; }
+            show_groups_menu "$2"
+            ;;
+        commands)
+            [[ -n "${2:-}" && -n "${3:-}" ]] || { usage; exit 1; }
+            show_commands_menu "$2" "$3"
+            ;;
+        run)
+            [[ -n "${2:-}" ]] || { usage; exit 1; }
+            run_command_popup "$2"
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
