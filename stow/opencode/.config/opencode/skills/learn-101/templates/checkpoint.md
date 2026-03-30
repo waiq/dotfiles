@@ -1,0 +1,5 @@
+- Step: {{STEP_ID}}
+- Done: {{DONE}}
+- Verified: {{VERIFY_COMMAND}} + {{VERIFY_RESULT}}
+- Concept: {{CONCEPT}}
+- Next: {{NEXT_STEP}}
