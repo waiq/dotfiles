@@ -66,6 +66,19 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - Before first execution step, echo the accepted token and timestamp in chat.
 - If scope changes after approval, stop and request a new explicit approval token.
 
+## Obsidian Plan-and-Go Mode (Active)
+- Applies when using `obsidian-notesmith` skill or commands:
+  - `obsidian start`
+  - `obsidian research`
+  - `obsidian summarize`
+  - `obsidian distill`
+  - `obsidian export`
+  - `obsidian recap`
+- Always create/update a concrete plan and checklist first.
+- Explicit approval token is not required for this mode.
+- After plan/checklist creation, execute immediately end-to-end.
+- Only ask user when blocked by missing credentials, destructive risk, or ambiguity that materially changes output.
+
 ## Plan Progress Summary Rule (Active)
 - Every `AGENTS_<PLAN_NAME>.md` plan must start with a top section named `## Progress Summary`.
 - `## Progress Summary` must include a checklist of all major plan steps and current state.

@@ -1,1 +1,3 @@
-!AGENT*
+node_modules/
+pending-feedback-queue.md
+AGENTS.md.pre-stow-backup-*

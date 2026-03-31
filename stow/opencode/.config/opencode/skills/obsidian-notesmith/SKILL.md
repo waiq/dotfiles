@@ -50,11 +50,39 @@ Required output per researched topic:
 5. `DIGEST - <Topic>.md` (optional quick read)
 6. `CONSUME - <Topic>.md` (mandatory reading and action protocol)
 
+## Template Source Order (mandatory)
+
+- Prefer vault-native PARA templates first:
+  - `99 - Templates/TPL - MOC.md`
+  - `99 - Templates/TPL - Source Note.md`
+  - `99 - Templates/TPL - Research Consumption.md`
+  - `99 - Templates/TPL - Evergreen Note.md`
+  - topic-specific templates in `99 - Templates/` when present
+- Only use skill-bundled templates as fallback when a vault template for that note type does not exist.
+- If both exist and differ, vault template is authoritative.
+
 ## File Naming Rules
 
 - Use prefixes: `MOC`, `SRC`, `LIT`, `EVR-SEEDS`, `EVR`, `DIGEST`, `CONSUME`.
 - Use title case words separated by spaces.
 - Include year in source note names where possible.
+
+## Properties Contract (mandatory)
+
+- Every generated note must start with YAML frontmatter (`---` block).
+- Never create or update notes without properties.
+- Common required properties (all note types):
+  - `title`
+  - `aliases`
+  - `tags`
+  - `created`
+  - `updated`
+- Type-required properties:
+  - `SRC`: `source_type`, `source_url`, `author`, `published`, `confidence`
+  - `LIT`: `sources`, `confidence`
+  - `EVR-SEEDS`: `sources`, `confidence`
+  - `DIGEST`: `confidence`
+- Hard rule: if any generated note is missing required properties, fix properties first, then proceed.
 
 ## Pipelines
 
@@ -91,8 +119,10 @@ Required output per researched topic:
 ### `obsidian export <topic>`
 
 1. Verify all required files exist.
-2. Run quality gates (below).
-3. Return output tree and quick reading order.
+2. Run strict properties check first:
+   - `python3 .config/opencode/skills/obsidian-notesmith/scripts/validate_frontmatter.py --vault <vault_path> --topic "<Topic>"`
+3. Run quality gates (below), including strict properties/frontmatter validation.
+4. Return output tree and quick reading order.
 
 ### `obsidian recap <topic>`
 
@@ -133,12 +163,13 @@ Diagram constraints:
 ## Quality Gates (must pass)
 
 1. **Structure**: required files exist and are linked from MOC.
-2. **Readability**: each note has clear headings and short paragraphs.
-3. **Citations**: all factual claims trace to sources.
-4. **Synthesis**: at least one `LIT` and one `EVR-SEEDS` note for deep dives.
-5. **Linking**: every `EVR-SEEDS` candidate links to at least two related notes.
-6. **Diagrams**: at least one useful diagram for non-trivial topics.
-7. **Consumption**: a `CONSUME` note exists with fixed start order and a 30-minute study loop.
+2. **Properties**: every generated note has YAML frontmatter and all required properties for its type.
+3. **Readability**: each note has clear headings and short paragraphs.
+4. **Citations**: all factual claims trace to sources.
+5. **Synthesis**: at least one `LIT` and one `EVR-SEEDS` note for deep dives.
+6. **Linking**: every `EVR-SEEDS` candidate links to at least two related notes.
+7. **Diagrams**: at least one useful diagram for non-trivial topics.
+8. **Consumption**: a `CONSUME` note exists with fixed start order and a 30-minute study loop.
 
 ## Consumption Contract (always)
 
@@ -190,6 +221,8 @@ Expected files:
 - `20 - Sources/SRC - Zettelkasten Introduction - 2020.md`
 - `20 - Sources/LIT - Second Brain - Synthesis.md`
 - `30 - Evergreen/EVR-SEEDS - Second Brain.md`
+- `03 - Resources/Second Brain/DIGEST - Second Brain.md`
+- `03 - Resources/Second Brain/CONSUME - Second Brain.md`
 
 ## Success Criteria
 

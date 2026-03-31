@@ -14,6 +14,11 @@ Expected structure:
 - `20 - Sources/LIT - Second Brain - Synthesis.md`
 - `30 - Evergreen/EVR-SEEDS - Second Brain.md`
 - `03 - Resources/Second Brain/DIGEST - Second Brain.md`
+- `03 - Resources/Second Brain/CONSUME - Second Brain.md`
+
+Validation:
+
+`python3 .config/opencode/skills/obsidian-notesmith/scripts/validate_frontmatter.py --vault "$HOME/vaults/Brains" --topic "Second Brain"`
 
 ## Example 2 - Summarize one source
 
