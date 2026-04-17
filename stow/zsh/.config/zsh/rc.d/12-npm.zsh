@@ -5,3 +5,5 @@ typeset -U path PATH
 path=("$NPM_CONFIG_PREFIX/bin" ${path:#$NPM_CONFIG_PREFIX/bin})
 export PATH
 hash -r
+# prefix not working, pending rewrite
+export PATH="$HOME/node_modules/.bin/:$PATH"

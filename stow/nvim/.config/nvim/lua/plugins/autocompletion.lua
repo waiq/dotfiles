@@ -25,26 +25,6 @@ return { -- Autocompletion
         },
       },
     },
-    {
-      'zbirenbaum/copilot.lua',
-      cmd = 'Copilot',
-      event = 'InsertEnter',
-      config = function()
-        require('copilot').setup {}
-      end,
-    },
-
-    {
-      'zbirenbaum/copilot-cmp',
-      config = function()
-        require('copilot').setup {
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-        }
-        require('copilot_cmp').setup()
-      end,
-    },
-
     'saadparwaiz1/cmp_luasnip',
 
     -- Adds other completion capabilities.
@@ -86,7 +66,6 @@ return { -- Autocompletion
       Event = '',
       Operator = '󰆕',
       TypeParameter = '󰊄',
-      Copilot = '',
     }
     cmp.setup {
       snippet = {
@@ -174,7 +153,6 @@ return { -- Autocompletion
           group_index = 0,
         },
         { name = 'nvim_lsp', group_index = 2 },
-        { name = 'copilot', group_index = 2 },
         { name = 'luasnip', group_index = 2 },
         { name = 'buffer', group_index = 2 },
         { name = 'path', group_index = 2 },
@@ -185,7 +163,6 @@ return { -- Autocompletion
           vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
           vim_item.menu = ({
             nvim_lsp = '[LSP]',
-            copilot = '[Copilot]',
             luasnip = '[Snippet]',
             buffer = '[Buffer]',
             path = '[Path]',

@@ -21,6 +21,7 @@ return {
         'ruff', -- Python linter and formatter
         'goimports', -- golang formatter
         'vacuum', -- openapi linter
+        'rubocop', -- Ruby linter/formatter
       },
       automatic_installation = true,
     }
@@ -37,6 +38,8 @@ return {
       formatting.goimports,
       require('none-ls.formatting.ruff').with { extra_args = { '--extend-select', 'I' } },
       require 'none-ls.formatting.ruff_format',
+      diagnostics.rubocop,
+      formatting.rubocop,
     }
 
     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})

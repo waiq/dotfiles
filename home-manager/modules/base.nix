@@ -13,6 +13,7 @@
       "spotify"
       "zoom"
       "zoom-us"
+      "discord"
     ];
 
   home.username = "waiq";
@@ -67,11 +68,13 @@
     obsidian
     mongodb-compass
     slack
+    discord
     spotify
     wezterm
     zoom-us
     nodejs
     yazi
+    pv
   ];
 
   home.stateVersion = "25.05";

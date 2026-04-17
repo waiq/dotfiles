@@ -186,7 +186,11 @@ return {
       terraformls = {},
       jsonls = {},
       yamlls = {},
-      -- ruby_lsp = {},
+      ruby_lsp = {
+        init_options = {
+          formatter = 'auto',
+        },
+      },
       buf_ls = {},
 
       vacuum = {},

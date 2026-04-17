@@ -32,6 +32,7 @@ return { -- Highlight, edit, and navigate code
       'css',
       'html',
       'ruby',
+      'embedded_template',
       'rust',
     },
     -- Autoinstall languages that are not installed
