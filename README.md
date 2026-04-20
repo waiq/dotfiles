@@ -151,6 +151,30 @@ Shared git config will include that file, and it should define:
 - `[user] name = ...`
 - `[user] email = ...`
 
+## Global Git Hooks (Jira Prefix)
+
+This dotfiles setup includes a global `prepare-commit-msg` hook at:
+
+- `~/.config/git/hooks/prepare-commit-msg`
+
+It auto-prefixes commit messages with a Jira key extracted from the current branch name.
+
+Examples:
+
+- Branch `DISCO-1488-add-categories` + message `refactor categories path`
+  becomes `DISCO-1488: refactor categories path`
+- Branch `ABC-42` works the same way.
+
+Key pattern is generic:
+
+- `[A-Z][A-Z0-9]+-[0-9]+`
+
+Behavior notes:
+
+- No prefix is added if message already starts with a Jira key.
+- Merge/squash/commit-source auto messages are skipped.
+- `fixup!`, `squash!`, and `revert ` messages are skipped.
+
 ## Git Workspace Helper
 
 Use `git-workspace` to create a new branch and a matching git worktree workspace from a name.

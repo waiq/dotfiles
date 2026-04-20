@@ -11,6 +11,7 @@
 
 [core]
   excludesFile = "~/.gitignore"
+  hooksPath = ~/.config/git/hooks
 
 [diff]
   tool = meld
