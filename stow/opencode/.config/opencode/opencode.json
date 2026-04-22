@@ -5,7 +5,8 @@
     "external_directory": {
       "~/.config/opencode/**": "allow",
       "~/.opencode/**": "allow",
-      "~/vaults/Brains/**": "allow"
+      "~/vaults/Brains/**": "allow",
+      "~/dev/**": "allow"
     },
     "read": {
       "*.env": "deny",
