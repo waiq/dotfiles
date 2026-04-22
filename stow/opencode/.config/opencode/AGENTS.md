@@ -56,6 +56,8 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
   2. Present the plan and wait for explicit user acceptance.
   3. After acceptance, execute the accepted plan end-to-end without asking for additional approval between planned steps unless scope changes or a blocker appears.
 - Do not apply code/config edits before step 2 is satisfied.
+- Plan approval token is required for mutating implementation tasks.
+- For read-only analysis/report tasks (for example code-health reviews), agent may execute immediately after posting a brief plan and must not modify files.
 - If work began before acceptance, record a retro plan in the ticket file and continue only after user confirmation.
 - Explicit approval token is required before execution: `APPROVE: <PLAN_NAME>`.
 - Step-scoped approval is supported and preferred for incremental execution:
