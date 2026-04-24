@@ -5,7 +5,7 @@ description: Review a project, branch, or change-set with CodeScene-aligned code
 
 # Skill: codescene-codehealth-review
 
-Purpose: run a maintainability-first review aligned to CodeScene PR quality gates and return a practical report with prioritized code-health improvements.
+Purpose: run a Code Health-first review aligned to CodeScene concepts. First locate maintainability risk hotspots, then deep-dive only in top hotspots with actionable refactor paths.
 
 ## When to use
 
@@ -20,47 +20,67 @@ Purpose: run a maintainability-first review aligned to CodeScene PR quality gate
 - `risk_profile`: `bare_minimum`, `clean_code_collective`, `pay_down_tech_debt`, or `custom`.
 - `context`: architecture constraints, deadlines, ownership, legacy zones.
 - `output_depth`: `quick`, `standard`, `deep`.
+- `deep_dive_hotspots`: optional number of hotspots to deep-dive after scan (default: 3).
 
-## Core gates (CodeScene-aligned)
+## Code Health-first model (required)
 
-For each changed hotspot/function/file, evaluate these gates:
+Prioritize findings using Code Health semantics before subjective review comments:
 
-1. `critical_health_rules`
-   - Look for severe understandability risks: low cohesion, deeply nested logic, brain/god functions, long parameter lists, mixed abstraction levels.
-2. `new_code_health`
-   - Ensure new/modified code does not introduce obvious maintainability debt.
-3. `hotspot_decline`
-   - In high-churn areas, reject complexity growth without compensating simplification.
-4. `advisory_health_rules`
-   - Flag softer maintainability problems: naming ambiguity, poor boundaries, weak encapsulation, avoidable duplication.
-5. `refactoring_goals`
-   - Check if intended simplifications/refactoring targets are advanced or blocked.
-6. `supervise_goals`
-   - Track risky areas intentionally under supervision; call out drift.
-7. `codeowners_for_critical_code`
-   - Note ownership/knowledge risk when critical code changed without clear steward context.
-
-## Behavioral lens (required)
-
-Do not do snapshot-only critique. Combine code shape + change context:
-
-- change size and concentration,
-- churn/hotspot likelihood,
-- cross-module coupling impact,
-- knowledge concentration/ownership risk.
-
-If commit history is available, use it to prioritize findings in frequently changed areas first.
+1. Build a hotspot risk map from change context and history:
+   - churn/hotspot likelihood,
+   - file size / concentration,
+   - smell density,
+   - cross-module coupling impact,
+   - knowledge concentration/ownership risk.
+2. Classify findings with Code Health smell families:
+   - `module_smells`: low cohesion, brain class/god class, size, congestion,
+   - `function_smells`: brain method, complex method, large method, DRY,
+   - `implementation_smells`: nested complexity, bumpy road, complex conditionals.
+3. Track decline signal with explicit threshold semantics:
+   - `predicted_decline`: early negative trend,
+   - `declining`: meaningful decline (use ~0.1 health-equivalent threshold proxy).
+4. Use weighted prioritization:
+   - prioritize by `severity * churn_weight * loc_weight * decline_weight`.
 
 ## Review protocol
 
-1. Identify scope (`project`/`branch`/`changes`) and collect diffs.
-2. Prioritize hotspots and large/complex deltas.
-3. Score each finding with:
-   - `severity`: `critical`, `high`, `medium`, `low`
-   - `confidence`: `high`, `medium`, `low`
-   - `gate`: one of the seven gates above
-4. For each finding, propose a fix with smallest safe refactor first.
-5. End with a practical 1-2 sprint improvement plan.
+Always run in two phases:
+
+1. **Scan phase (project-wide or target-wide)**
+   - Exclude test-only code from analytics by default (scan ranking, hotspot weights, and deep-dive selection).
+   - Apply language-agnostic test-code exclusion heuristics:
+     - common test directories: `test/`, `tests/`, `__tests__/`, `spec/`, `specs/`, `e2e/`, `integration-tests/`, `testdata/`;
+     - common test/spec file naming: `*_test.*`, `test_*.*`, `*.test.*`, `*.spec.*`, `*Spec.*`;
+     - common test-only docs/config around test harnesses when they are not runtime code.
+   - If patterns are ambiguous, state assumptions explicitly and keep exclusion conservative.
+   - Rank hotspots first.
+   - Output top hotspots with risk drivers and provisional status (`green|yellow|red` proxy).
+2. **Deep-dive phase (top hotspots only)**
+   - Default top 3 hotspots unless user specifies otherwise.
+   - For each hotspot, produce a Code Health dossier with smallest safe refactor sequence.
+   - Do not deep-dive low-priority files unless user asks.
+   - Do not deep-dive test-only files unless user explicitly requests test-code review.
+3. **Gate decision phase**
+   - Provide merge decision and explicit conditions tied to critical rules.
+
+## Core gates (CodeScene-aligned)
+
+For each deep-dived hotspot/function/file, evaluate these gates:
+
+1. `critical_health_rules`
+   - severe understandability risks (low cohesion, nested complexity, brain/god functions, mixed abstraction levels).
+2. `new_code_health`
+   - new/modified code must not add maintainability debt.
+3. `hotspot_decline`
+   - in high-churn code, complexity growth requires compensating simplification.
+4. `advisory_health_rules`
+   - naming ambiguity, weak boundaries, avoidable duplication, weak encapsulation.
+5. `refactoring_goals`
+   - expected simplification goals advanced or blocked.
+6. `supervise_goals`
+   - supervised risk areas drifting or improving.
+7. `codeowners_for_critical_code`
+   - stewardship and knowledge-spread risk.
 
 ## Suggestion quality bar
 
@@ -71,7 +91,19 @@ Every suggestion must include:
 - `expected_health_gain`: what becomes easier to read/change/test,
 - `verification`: one concrete command/check.
 
+Every deep-dive hotspot must also include:
+
+- `decline_status`: `stable|predicted_decline|declining`,
+- `hotspot_weight`: `high|medium|low` with rationale,
+- `refactor_roi`: `high|medium|low`.
+
 Avoid vague advice like "improve readability" without a specific edit path.
+
+## CodeScene rule customizations (required)
+
+- If `.codescene/code-health-rules.json` exists, reflect custom rule weights/scopes in the report.
+- Detect and report `@codescene(disable...)` directives where visible.
+- Never recommend disabling critical rules as a default strategy.
 
 ## Output contract
 
@@ -80,6 +112,7 @@ Use the template in `report-template.md`.
 Always include:
 
 - overall health verdict by selected profile,
+- scan map + deep-dive dossiers for top hotspots,
 - top 3-7 findings (ordered by impact),
 - quick wins vs structural refactors,
 - explicit "safe to merge?" with conditions.

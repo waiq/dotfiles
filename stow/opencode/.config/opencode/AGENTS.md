@@ -10,7 +10,8 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
   - `${GLOBAL_AGENTS_PATH}`
 - Canonical repo/ticket AGENTS docs live in Obsidian vault paths:
   - `${VAULT_AGENTS_ROOT}/<repo-name>/AGENTS.md`
-  - `${VAULT_AGENTS_ROOT}/<repo-name>/AGENTS_<PLAN_NAME>.md`
+  - `${VAULT_AGENTS_ROOT}/<time>_<project-name>_AGENTS_<PLAN_NAME>.md`
+  - `${VAULT_AGENTS_ROOT}/<time>_<project-name>_AGENTS-<NNNN>.md` (numeric fallback)
 - Vault global file is a compatibility mirror and should symlink to canonical:
   - `${VAULT_AGENTS_ROOT}/global/AGENTS_GLOBAL.md`
 - Repo-local `AGENTS*.md` files may exist as pointer files for discovery compatibility.
@@ -30,23 +31,26 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - If rules conflict, global guidance is default baseline and repo guidance may only extend/tighten unless user explicitly approves an override.
 
 ## Plan File Naming (Active)
-- Ticket/task plan files must use format: `AGENTS_<PLAN_NAME>.md`.
+- Ticket/task plan files must use format: `<time>_<project-name>_AGENTS_<PLAN_NAME>.md`.
+- `<time>` must use `YYYYMMDD-HHMMSS`.
+- `<project-name>` should match repository name for discoverability.
 - `<PLAN_NAME>` should be uppercase, hyphenated, and match the chosen task/plan name.
-- Default behavior: agent picks one strong plan name and uses it directly as filename.
-- If user explicitly requests numeric fallback, use numeric format `AGENTS-<NNNN>.md`.
+- Default behavior: agent picks one strong plan name and uses it directly as filename suffix after the prefix.
+- If user explicitly requests numeric fallback, use numeric format `<time>_<project-name>_AGENTS-<NNNN>.md`.
 - In numeric fallback mode, resolve `<NNNN>` from both:
   - repo-local `AGENTS-*.md` files, and
-  - canonical vault project plan files (including pointer target if present).
+  - canonical vault root plan files matching `<any-time>_<project-name>_AGENTS-<NNNN>.md` (including pointer target if present).
+  - legacy canonical vault project-folder plan files for backward compatibility.
 - Select the next available number (`max(existing)+1`), not a hardcoded `0001`.
 - Example filenames:
-  - `AGENTS_RAGNAROK-JIRA-WRAPPER-OF-DOOM.md`
-  - `AGENTS_SOUL-FORGE-PERSONALITY-CORE.md`
-  - `AGENTS-0006.md` (numeric fallback mode)
+  - `20260424-090600_dotfiles_AGENTS_RAGNAROK-JIRA-WRAPPER-OF-DOOM.md`
+  - `20260424-090600_dotfiles_AGENTS_SOUL-FORGE-PERSONALITY-CORE.md`
+  - `20260424-090600_dotfiles_AGENTS-0006.md` (numeric fallback mode)
 
 ## Plan Storage Location Rule (Active)
-- Plan files must always be created and updated in the canonical vault project path first:
-  - `${VAULT_AGENTS_ROOT}/<repo-name>/AGENTS_<PLAN_NAME>.md`
-  - `${VAULT_AGENTS_ROOT}/<repo-name>/AGENTS-<NNNN>.md` (local-number mode)
+- Plan files must always be created and updated in the canonical vault root path first:
+  - `${VAULT_AGENTS_ROOT}/<time>_<project-name>_AGENTS_<PLAN_NAME>.md`
+  - `${VAULT_AGENTS_ROOT}/<time>_<project-name>_AGENTS-<NNNN>.md` (numeric fallback mode)
 - Repo-local `AGENTS*.md` files are optional compatibility copies/pointers only.
 - If both exist, vault content is authoritative and must be kept in sync first.
 
@@ -82,7 +86,7 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - Only ask user when blocked by missing credentials, destructive risk, or ambiguity that materially changes output.
 
 ## Plan Progress Summary Rule (Active)
-- Every `AGENTS_<PLAN_NAME>.md` plan must start with a top section named `## Progress Summary`.
+- Every plan file (for example `<time>_<project-name>_AGENTS_<PLAN_NAME>.md`) must start with a top section named `## Progress Summary`.
 - `## Progress Summary` must include a checklist of all major plan steps and current state.
 - Exactly one step may be marked `in progress` at a time.
 - The summary must be kept updated as work progresses.
