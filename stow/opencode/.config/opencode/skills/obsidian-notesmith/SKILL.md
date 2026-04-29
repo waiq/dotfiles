@@ -6,7 +6,7 @@ compatibility: opencode
 metadata:
   audience: learners, researchers, builders
   mode: research-to-notes
-  depends_on: lesson, learn-101
+  depends_on: lesson, learn-101, documentation
 ---
 
 ## Purpose
@@ -31,6 +31,14 @@ metadata:
 3. Evergreen notes are user-authored only; assistant must never write evergreen bodies.
 4. Key links must include link context (`because ...`).
 5. Add at least one diagram-ready section for complex topics.
+
+## Documentation Delegation Contract (mandatory)
+
+- For all generated note prose and Markdown presentation, invoke `documentation` skill.
+- Treat `documentation` as the single authority for readability, structure, style, and doc quality scoring.
+- Do not duplicate Markdown best-practice rules in this skill.
+- This dependency is intentionally loose: always use the currently installed `documentation` skill behavior.
+- This skill owns Obsidian-specific structure only (vault layout, note types, naming, links, citations, frontmatter, and study flow).
 
 ## Output Layout Contract
 
@@ -91,6 +99,7 @@ Required output per researched topic:
 1. Create topic scaffold from templates.
 2. Generate a starter MOC with sections for sources, concepts, and open questions.
 3. Create a research queue with source placeholders.
+4. Route generated note writing through `documentation` skill while preserving Obsidian templates and properties.
 
 ### `obsidian research <topic>`
 
@@ -102,12 +111,14 @@ Required output per researched topic:
    - extracted quotes
    - links to related notes
 3. Update MOC source index.
+4. Route generated note writing through `documentation` skill while preserving Obsidian templates and properties.
 
 ### `obsidian summarize <source|topic>`
 
 1. Produce concise summary in plain language.
 2. Separate source claims from interpretation.
 3. Add "what to remember in 30 seconds" section.
+4. Route generated note writing through `documentation` skill while preserving Obsidian templates and properties.
 
 ### `obsidian distill <topic>`
 
@@ -115,6 +126,7 @@ Required output per researched topic:
 2. Generate `EVR-SEEDS` prompts (one claim candidate each) for user writing.
 3. Add explicit links and rationale (`because ...`).
 4. Add Mermaid-ready diagrams where they reduce complexity.
+5. Route generated note writing through `documentation` skill while preserving Obsidian templates and properties.
 
 ### `obsidian export <topic>`
 
@@ -122,12 +134,14 @@ Required output per researched topic:
 2. Run strict properties check first:
    - `python3 .config/opencode/skills/obsidian-notesmith/scripts/validate_frontmatter.py --vault <vault_path> --topic "<Topic>"`
 3. Run quality gates (below), including strict properties/frontmatter validation.
-4. Return output tree and quick reading order.
+4. Run `documentation` skill quality pass against generated docs (latest checklist + rubric behavior).
+5. Return output tree and quick reading order.
 
 ### `obsidian recap <topic>`
 
 1. Build short recap from MOC + LIT + user evergreen notes (or EVR seeds if evergreen not written yet).
 2. Output key takeaways, open questions, next study path.
+3. Route generated note writing through `documentation` skill while preserving Obsidian templates and properties.
 
 ## Summarization Rules
 
@@ -164,7 +178,7 @@ Diagram constraints:
 
 1. **Structure**: required files exist and are linked from MOC.
 2. **Properties**: every generated note has YAML frontmatter and all required properties for its type.
-3. **Readability**: each note has clear headings and short paragraphs.
+3. **Documentation Quality**: generated note docs pass current `documentation` skill checklist and rubric expectations.
 4. **Citations**: all factual claims trace to sources.
 5. **Synthesis**: at least one `LIT` and one `EVR-SEEDS` note for deep dives.
 6. **Linking**: every `EVR-SEEDS` candidate links to at least two related notes.

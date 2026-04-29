@@ -5,6 +5,7 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - Path variables for portability (use env if already defined):
   - `GLOBAL_AGENTS_PATH=${OPENCODE_GLOBAL_AGENTS_PATH:-${XDG_CONFIG_HOME:-$HOME/.config}/opencode/AGENTS.md}`
   - `VAULT_AGENTS_ROOT=${VAULT_AGENTS_ROOT:-${VAULT_PATH:-$HOME/vaults/Brains}/agents}`
+  - `VAULT_INBOX_PATH=${VAULT_INBOX_PATH:-${VAULT_PATH:-$HOME/vaults/Brains}/00 - Inbox}`
   - `DOTFILES_ROOT=${DOTFILES_ROOT:-${MY_DOTFILES:-$HOME/.my/dotfiles}}`
 - Canonical global guidance file is:
   - `${GLOBAL_AGENTS_PATH}`
@@ -16,6 +17,12 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
   - `${VAULT_AGENTS_ROOT}/global/AGENTS_GLOBAL.md`
 - Repo-local `AGENTS*.md` files may exist as pointer files for discovery compatibility.
 - If pointer content conflicts with canonical files, canonical files are authoritative.
+
+## Vault Shortcut Alias Rule (Active)
+- Keyword alias `inbox` must resolve to vault inbox path:
+  - `${VAULT_INBOX_PATH}`
+- Default concrete path when env vars are unset:
+  - `/home/waiq/vaults/Brains/00 - Inbox`
 
 ## Startup Discovery Rule (Active)
 - At task start, resolve repository name and load canonical instructions from:
@@ -84,6 +91,24 @@ In all interactions, be extremely concise and sacrifice grammar for the sake of 
 - Explicit approval token is not required for this mode.
 - After plan/checklist creation, execute immediately end-to-end.
 - Only ask user when blocked by missing credentials, destructive risk, or ambiguity that materially changes output.
+
+## Documentation Output Quality Rule (Active)
+- For documentation-producing tasks, default to using the `documentation` skill.
+- Enforce Diataxis-first classification: each output must be exactly one of `tutorial`, `how-to`, `reference`, or `explanation`.
+- Enforce Markdown style baseline from:
+  - Google Markdown style guide (`google.github.io/styleguide/docguide/style.html`)
+  - Practical Markdown hygiene (metadata, descriptive links/images, consistent formatting)
+- Require these minimum sections for substantial docs:
+  - audience
+  - outcome
+  - structured headings
+  - examples (for task-oriented docs)
+  - see-also links
+- Before finalizing substantial docs, run checklist + rubric from the `documentation` skill and return:
+  - checklist status
+  - rubric score
+  - top improvements if score < 85
+- Project guidance may tighten these standards but must not weaken this baseline.
 
 ## Plan Progress Summary Rule (Active)
 - Every plan file (for example `<time>_<project-name>_AGENTS_<PLAN_NAME>.md`) must start with a top section named `## Progress Summary`.
