@@ -92,7 +92,7 @@ tmux-dev-layout() {
     if [[ -n "$target_path" ]]; then
       local quoted_path
       quoted_path="${(q)target_path}"
-      tmux list-panes -t "$session" -a -F '#{session_name}:#{window_index}.#{pane_index}' \
+      tmux list-panes -t "$session" -F '#{session_name}:#{window_index}.#{pane_index}' \
         | while read -r pane; do
             tmux send-keys -t "$pane" "cd -- $quoted_path" C-m
           done
