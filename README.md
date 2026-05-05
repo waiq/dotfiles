@@ -185,15 +185,27 @@ Examples:
 git-workspace feature-auth
 git-workspace -b main DOT-1008
 git-workspace --root "$HOME/dev/workspaces/dotfiles" feature-shell-cleanup
+git-workspace -p DOT-2001
+git-workspace -B DOT-2001
 ```
 
 Behavior:
 
 - slugifies the input name
-- creates branch as `<repo-name>/<slug>`
+- creates branch as `<slug>`
 - creates worktree under `../workspaces/<repo-name>/<repo-name>-<slug>` by default
 - creates new branch from `main` (falls back to `master` if `main` is missing)
 - use `--force` to reuse an existing branch with a new worktree path
+- `-p/--print-path` prints only the workspace path (for piping)
+- `-B/--print-branch` prints only the branch name
+
+Chaining example:
+
+```bash
+gw -p DOT-2001 | td --create-only
+```
+
+`td --create-only` (or `td -d`) creates the tmux session detached and does not switch/attach.
 
 ## Source Of Truth Policy
 

@@ -20,7 +20,51 @@ tmux-reload() {
 }
 
 tmux-dev-layout() {
-  local session="$1"
+  local create_only=0
+  local target_path=""
+  local session=""
+  local positional=""
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --create-only|-d)
+        create_only=1
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        echo "td: unknown option: $1" >&2
+        return 1
+        ;;
+      *)
+        positional="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -n "$positional" ]]; then
+    if [[ -d "$positional" ]]; then
+      target_path="$positional"
+    else
+      session="$positional"
+    fi
+  elif [[ ! -t 0 ]]; then
+    target_path="$(cat)"
+  fi
+
+  target_path="${target_path//$'\n'/}"
+
+  if [[ -n "$target_path" ]]; then
+    if [[ ! -d "$target_path" ]]; then
+      echo "td: path does not exist: $target_path" >&2
+      return 1
+    fi
+    session="$(basename "$target_path")"
+  fi
 
   if [[ -z "$session" ]]; then
     session="$(basename "$PWD")"
@@ -30,11 +74,19 @@ tmux-dev-layout() {
     echo "Session '$session' already exists."
   else
     echo "Creating tmux session: $session"
-    tmux new-session -d -s "$session" -n edit
+    if [[ -n "$target_path" ]]; then
+      tmux new-session -d -s "$session" -n edit -c "$target_path"
+    else
+      tmux new-session -d -s "$session" -n edit
+    fi
     tmux split-window -v -t "$session":1
     tmux new-window -t "$session":2 -n commands
     tmux select-window -t "$session":1
     tmux select-pane -t "$session":1.1
+  fi
+
+  if [[ "$create_only" -eq 1 ]]; then
+    return 0
   fi
 
   if [[ -n "$TMUX" ]]; then
