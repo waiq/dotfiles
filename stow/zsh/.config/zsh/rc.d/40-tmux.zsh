@@ -79,10 +79,24 @@ tmux-dev-layout() {
     else
       tmux new-session -d -s "$session" -n edit
     fi
-    tmux split-window -v -t "$session":1
-    tmux new-window -t "$session":2 -n commands
+    if [[ -n "$target_path" ]]; then
+      tmux split-window -v -t "$session":1 -c "$target_path"
+      tmux new-window -t "$session":2 -n commands -c "$target_path"
+    else
+      tmux split-window -v -t "$session":1
+      tmux new-window -t "$session":2 -n commands
+    fi
     tmux select-window -t "$session":1
     tmux select-pane -t "$session":1.1
+
+    if [[ -n "$target_path" ]]; then
+      local quoted_path
+      quoted_path="${(q)target_path}"
+      tmux list-panes -t "$session" -a -F '#{session_name}:#{window_index}.#{pane_index}' \
+        | while read -r pane; do
+            tmux send-keys -t "$pane" "cd -- $quoted_path" C-m
+          done
+    fi
   fi
 
   if [[ "$create_only" -eq 1 ]]; then
