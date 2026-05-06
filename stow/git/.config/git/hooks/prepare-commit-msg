@@ -16,10 +16,12 @@ if [ -z "$branch" ]; then
   exit 0
 fi
 
-ticket_key="$(printf '%s\n' "$branch" | grep -oE '[A-Z][A-Z0-9]+-[0-9]+' | head -n 1 || true)"
+ticket_key="$(printf '%s\n' "$branch" | grep -oiE '[A-Za-z][A-Za-z0-9]+-[0-9]+' | head -n 1 || true)"
 if [ -z "$ticket_key" ]; then
   exit 0
 fi
+
+ticket_key="$(printf '%s' "$ticket_key" | tr '[:lower:]' '[:upper:]')"
 
 first_line="$(sed -n '1p' "$msg_file")"
 

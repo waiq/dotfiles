@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# ---
+# menu-name: Dev Layout
+# menu-group: sessions
+# ---
+# Create/switch tmux dev layout session
+# Usage: tmux-dev-layout [--create-only|-d] [session-name|path]
+
+set -uo pipefail
+
+create_only=0
+target_path=""
+session=""
+positional=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --create-only|-d)
+            create_only=1
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            printf 'td: unknown option: %s\n' "$1" >&2
+            exit 1
+            ;;
+        *)
+            positional="$1"
+            shift
+            ;;
+    esac
+done
+
+if [[ -n "$positional" ]]; then
+    if [[ -d "$positional" ]]; then
+        target_path="$positional"
+    else
+        session="$positional"
+    fi
+elif [[ ! -t 0 ]]; then
+    target_path="$(cat)"
+fi
+
+target_path="${target_path//$'\n'/}"
+
+if [[ -n "$target_path" ]]; then
+    if [[ ! -d "$target_path" ]]; then
+        printf 'td: path does not exist: %s\n' "$target_path" >&2
+        exit 1
+    fi
+    session="$(basename "$target_path")"
+fi
+
+if [[ -z "$session" ]]; then
+    session="$(basename "$PWD")"
+fi
+
+if tmux has-session -t "$session" 2>/dev/null; then
+    printf "Session '%s' already exists.\n" "$session"
+else
+    printf 'Creating tmux session: %s\n' "$session"
+    if [[ -n "$target_path" ]]; then
+        tmux new-session -d -s "$session" -n edit -c "$target_path"
+    else
+        tmux new-session -d -s "$session" -n edit
+    fi
+
+    if [[ -n "$target_path" ]]; then
+        tmux split-window -v -t "$session":1 -c "$target_path"
+        tmux new-window -t "$session":2 -n commands -c "$target_path"
+    else
+        tmux split-window -v -t "$session":1
+        tmux new-window -t "$session":2 -n commands
+    fi
+
+    tmux select-window -t "$session":1
+    tmux select-pane -t "$session":1.1
+
+    if [[ -n "$target_path" ]]; then
+        quoted_path="$(printf '%q' "$target_path")"
+        while IFS= read -r pane; do
+            tmux send-keys -t "$pane" "cd -- $quoted_path" C-m
+        done < <(tmux list-panes -t "$session" -F '#{session_name}:#{window_index}.#{pane_index}')
+    fi
+fi
+
+if [[ "$create_only" -eq 1 ]]; then
+    exit 0
+fi
+
+if [[ -n "${TMUX:-}" ]]; then
+    tmux switch-client -t "$session"
+else
+    tmux attach -t "$session"
+fi
