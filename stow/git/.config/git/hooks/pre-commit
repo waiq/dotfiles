@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+[ -n "$repo_root" ] || exit 0
+
+if [ "$(basename "$repo_root")" != "dotfiles" ]; then
+  exit 0
+fi
+
+name="$(git config --get user.name || true)"
+email="$(git config --get user.email || true)"
+
+if [ "$name" != "dotfiles" ] || [ -n "$email" ]; then
+  printf '%s\n' "dotfiles repo requires anonymous identity: user.name=dotfiles and empty user.email" >&2
+  printf '%s\n' "Fix: git config user.name dotfiles && git config user.email \"\"" >&2
+  exit 1
+fi

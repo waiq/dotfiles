@@ -16,6 +16,7 @@ Current starter packages:
 Use from repo root:
 
 ```bash
+./bootstrap.sh
 stow --dir stow --target "$HOME" --simulate zsh git tmux nvim wezterm bin opencode
 stow --dir stow --target "$HOME" --restow zsh git tmux nvim wezterm bin opencode
 ```

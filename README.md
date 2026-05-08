@@ -38,6 +38,12 @@ nix flake update --flake ./home-manager
 
 Stow is used to apply config packages to `$HOME`.
 
+Bootstrap host structure first (creates `~/.my`, `~/.local/bin`, `~/.config`, `~/.gitconfig.local`):
+
+```bash
+./bootstrap.sh
+```
+
 Preview changes first:
 
 ```bash
@@ -174,6 +180,25 @@ Behavior notes:
 - No prefix is added if message already starts with a Jira key.
 - Merge/squash/commit-source auto messages are skipped.
 - `fixup!`, `squash!`, and `revert ` messages are skipped.
+
+## Dotfiles Repo Anonymous Identity Policy
+
+This repository is intentionally anonymized in commit metadata.
+
+- Required in this repo: `user.name=dotfiles`
+- Required in this repo: empty `user.email`
+
+Enforcement:
+
+- `bootstrap.sh` sets repo-local git identity when run from this repo.
+- Global hook `~/.config/git/hooks/pre-commit` blocks commits in `dotfiles` when identity is not anonymized.
+
+Manual fix if needed:
+
+```bash
+git config user.name dotfiles
+git config user.email ""
+```
 
 ## Git Workspace Helper
 
