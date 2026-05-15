@@ -1,25 +1,25 @@
 ---
 name: lesson
-description: Run domain-agnostic micro-step learning sessions with learner-first pacing and one-checkpoint-per-step flow.
+description: Run spec-driven Rust lessons with user-first iterative steps, checklist tracking, and level-based prompt examples.
 license: MIT
 compatibility: opencode
 metadata:
   audience: learners
-  mode: learner-first
-  pacing: micro-step
+  mode: user-first
+  pacing: iterative
 ---
 
 ## Purpose
-- Prioritize understanding over speed.
-- Keep momentum with tiny, verifiable steps.
-- Work across coding and non-coding domains.
+- Build from a well-defined spec.
+- Teach through focused, iterative coding tasks.
+- Keep progress visible via lesson markdown artifacts.
 
 ## Core Contract
-1. Learner does the step first; coach reviews.
-2. One concept focus per step.
-3. One verification check per step.
-4. Explain deeply once; then use short reminders.
-5. Always leave a resume-ready checkpoint.
+1. User writes code first; assistant teaches/reviews.
+2. One active step at a time.
+3. Every step includes a code example and explanation of why.
+4. Validate with tests/tooling and code review before marking done.
+5. Keep lesson state accurate in markdown artifacts.
 
 ## Commands
 - `lesson start <topic>`
@@ -28,87 +28,100 @@ metadata:
 - `lesson resume`
 - `lesson recap`
 
-## Step Output Template
-For each step, output exactly:
-1. Goal (one sentence)
-2. You do (exact target)
-3. Run (one command/check)
-4. Review checklist (3-5 bullets)
-5. Concept note (short)
+## Phase 1 - Spec Definition
+- Finalize spec first (can use `qna`).
+- Assume answers are in spec by default.
+- Ask a question only if required detail is truly missing/conflicting in spec.
+- If asking, make it targeted and specific.
 
-## Delivery Levels (Universal)
-- `example`: minimal assignment artifact showing core pattern.
-- `guided`: partial assignment artifact with clear integration path.
-- `full`: complete assignment artifact for the current micro-step scope.
-- `none`: explicitly no artifact (planning/setup-only step).
+## Phase 2 - Bootstrap Lesson Artifacts
+- Create lesson folder with:
+  - `spec.md` (agreed spec snapshot)
+  - `lesson-plan.md` (master checklist + links)
+  - `progress.md` (state log)
+  - `step-<N>-<slug>.md` (all steps scaffolded at bootstrap)
+- Bootstrap is complete only when all step files exist.
 
-## Delivery Level Scope Rule
-- Delivery level controls only the learner task artifact in **You do**.
-- Context and explanation quality are always full-depth.
-- The selected level must not reduce conceptual completeness.
+## Storage Location (Vault-First)
+- Store lesson artifacts in vault project space, not repo by default.
+- Canonical path template:
+  - `${VAULT_PATH:-$HOME/vaults/Brains}/01 - Projects/<repo-name>/lesson/<lesson-name>/`
+- If `<repo-name>` is unknown, infer from current git repo folder name.
+- If user explicitly requests repo-local storage, honor it and note divergence.
 
-## Domain Applicability
-- Delivery levels apply across all domains.
-- Treat a task as coding-capable when artifacts include source/config/code-like assets (for example Rust, Terraform, YAML, SQL, CI configs), unless user overrides.
-- For coding-capable tasks, artifact examples are code/config snippets/files.
-- For non-coding tasks, artifact examples are domain-equivalent outputs (sentences, proofs, solution outlines, and similar).
+## lesson-plan.md Rules
+- Must use an easy-to-read checklist.
+- Each checklist item links directly to its step file via markdown link.
+- Status markers:
+  - `[x]` done
+  - `[~]` in progress (max one)
+  - `[ ]` not started
+- Include `delivery_level_default` (default: `guided`).
 
-## Step Output Extension
-- Add this line to every step output: `Delivery level: <example|guided|full|none>`.
+## step-<N>-<slug>.md Required Structure
+Each step file must include:
+- `## Goal`
+- `## Task`
+- `## Example`
+- `## Why`
+- `## Run`
+- `## Done`
+- `## Spec refs`
 
-## Defaults and Progression
-- Default delivery level: `guided`.
-- User request can set level directly.
-- Auto-escalation after 2 failed verifications on same step/concept: escalate one level only (`example -> guided -> full`).
-- No auto-deescalation; lower level only on explicit user request.
+Optional for blocked steps:
+- `## Open Question`
+- `## Proposed Default`
 
-## Verification Invariance Rule
-- Verification strictness is identical across levels.
-- Pass/fail criteria do not change with delivery level.
-- Only artifact size/scaffolding changes by level.
+Optional guidance field:
+- `expected_change_scope` (qualitative text only)
 
-## State To Track
-- topic
-- mode (`beginner`|`intermediate`|`advanced`)
-- current_step
-- current_concept
-- user_action
-- verify_command
-- success_criteria
-- blockers
-- next_step
-- notes_path
+## Lesson Loop (Per Step)
+- Assistant provides prompt package for current step only.
+- User writes code.
+- Assistant validates using:
+  - command results
+  - direct code review of changed files
+- If pass: mark done, update plan/progress, move next.
+- If fail: keep step active, no scope jump.
 
-## Recovery Rules
-- If verification fails: identify one root cause, apply one tiny fix, rerun one check.
-- Do not jump scope while failing.
-- Keep one concept focus until green.
-- Do not widen scope to future steps during failure recovery.
+## Delivery Levels (Prompt Code Depth)
+- `example`: smallest code sample.
+- `guided`: partial/expressive implementation guidance.
+- `full`: near/full step implementation scaffold.
+- Every step starts with what to do + example + why.
+- Levels affect prompt depth only.
 
-## Domain Adapters
-### Coding
-- Action: small code edit.
-- Verify: one test/build/run command.
-- Review: correctness, boundaries, readability.
+## Level Controls
+- Default: `guided`.
+- User can override globally or per step in prompt.
+- Per-step override takes precedence.
 
-### Language Learning
-- Action: one sentence/dialog pattern.
-- Verify: one correction/comprehension check.
-- Review: grammar target + pronunciation cue.
+## Rust Validation Standards
+- Always strive for test coverage.
+- Prefer narrow checks first:
+  1. targeted test
+  2. broader module test
+  3. full suite when needed
+- Per coding step validation chain (when applicable):
+  1. test command
+  2. `cargo fmt --check`
+  3. `cargo clippy -- -D warnings`
 
-### Math / Problem Solving
-- Action: solve one small sub-problem.
-- Verify: one numeric/proof check.
-- Review: method choice + error pattern.
+## Failure Recovery (User-First)
+1. Assistant identifies one root cause and explains it.
+2. User applies fix.
+3. Rerun same narrow validation chain.
+4. Repeat until green; no scope jump.
 
-## Checkpoint Format
-- Step: identifier
-- Done: what changed
-- Verified: command/check + result
-- Concept: what was learned
-- Next: exact next micro-step
+## Editing Mode
+- Default: user-first; assistant does not auto-edit code.
+- Assistant may auto-edit only when user explicitly asks.
 
-## Success Criteria
-- Learner can explain current concept in 1-2 lines.
-- Verification passes.
-- Next micro-step is clear.
+## Step Completion Gate
+A step is complete only when all are true:
+- Spec refs satisfied.
+- Code implemented.
+- Validation chain passes.
+- Assistant code review passes.
+- `lesson-plan.md` updated.
+- `progress.md` log appended.
