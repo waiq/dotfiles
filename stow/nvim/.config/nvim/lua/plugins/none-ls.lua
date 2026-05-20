@@ -54,7 +54,12 @@ return {
             group = augroup,
             buffer = bufnr,
             callback = function()
-              vim.lsp.buf.format { async = false }
+              vim.lsp.buf.format {
+                async = false,
+                filter = function(lsp_client)
+                  return lsp_client.name == 'null-ls' or lsp_client.name == 'none-ls'
+                end,
+              }
             end,
           })
         end
