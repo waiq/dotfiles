@@ -24,6 +24,7 @@
   ];
 
   home.packages = with pkgs; [
+    oh-my-posh
     stow
     awscli2
     dbeaver-bin
