@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, system, tuicr, ... }:
 
 
 {
@@ -76,6 +76,7 @@
     nodejs
     yazi
     pv
+    tuicr.packages.${system}.default
   ];
 
   home.stateVersion = "25.05";

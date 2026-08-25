@@ -1,6 +1,9 @@
 # Global Agent Guidance
 In all interactions, be extremely concise and sacrifice grammar for the sake of concision.
 
+## Readability First Rule (Active)
+- When behavior and performance are effectively equivalent, prefer the more pedagogical and readable implementation over compact or clever idioms.
+
 ## Canonical AGENTS Location
 - Path variables for portability (use env if already defined):
   - `GLOBAL_AGENTS_PATH=${OPENCODE_GLOBAL_AGENTS_PATH:-${XDG_CONFIG_HOME:-$HOME/.config}/opencode/AGENTS.md}`

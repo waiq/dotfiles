@@ -37,6 +37,8 @@ Without global Home Manager installation:
 nix run github:nix-community/home-manager -- switch --flake ./home-manager#waiq
 ```
 
+`tuicr` is managed through this flake and installed via `modules/base.nix`.
+
 ## Recommended Apply Flow
 From repo root:
 
