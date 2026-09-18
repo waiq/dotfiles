@@ -31,7 +31,7 @@ At task start, load global guidance first, then repo guidance. If they conflict,
 - Approval token format: `APPROVE: <PLAN_NAME>`; step-scoped approval may use `APPROVE: <PLAN_NAME>, Step: <N>`.
 - Plan files should start with `## Progress Summary`, include `## Activity Log`, and keep status truthful until verified.
 - Prefer descriptive plan filenames: `<YYYYMMDD-HHMMSS>_<project-name>_AGENTS_<PLAN_NAME>.md`.
-- Detailed planning, notification, and queue mechanics should move to a dedicated planning/notification skill; keep this file as the always-on baseline.
+- Detailed planning mechanics should move to a dedicated planning skill; notification and feedback-queue mechanics live in the `notification` skill.
 
 ## Specialized Work
 - Documentation tasks: use the `documentation` skill and its Diataxis/checklist/rubric rules.
@@ -39,12 +39,12 @@ At task start, load global guidance first, then repo guidance. If they conflict,
 - Learning-first work: use `lesson`, `learn-101`, or pair-learning mode. User writes code first unless they explicitly delegate editing.
 - TDD work: use the `tdd` skill and run one red-green-refactor slice at a time.
 - Code-health reviews: use `codescene-codehealth-review`; prioritize findings over summaries.
+- User notifications: use the `notification` skill for feedback-needed, completion, tmux navigation, and pending-feedback queue mechanics.
 - Opencode config/agents/skills/plugins/MCP work: use `customize-opencode`.
 
 ## Feedback And Completion
-- When user feedback is required, use both desktop and tmux notifications when available, and include `Action required`, project, plan name, summary, and exact request.
-- When a run completes, send desktop and tmux completion notifications when available.
-- Keep `/home/waiq/.config/opencode/pending-feedback-queue.md` accurate when waiting for user feedback.
+- When user feedback is required or a run completes, use the `notification` skill.
+- Keep `/home/waiq/.config/opencode/pending-feedback-queue.md` accurate when waiting for user feedback, following the `notification` skill.
 
 ## Reusable Guidance
 - If a project-local behavior should become global, say so explicitly.
