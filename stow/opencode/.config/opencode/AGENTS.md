@@ -15,7 +15,7 @@ Be concise, direct, and practical. Prefer readable, pedagogical implementation o
 - Vault inbox alias `inbox`: `${VAULT_INBOX_PATH:-${VAULT_PATH:-$HOME/vaults/Brains}/00 - Inbox}`.
 - Dotfiles root: `${DOTFILES_ROOT:-${MY_DOTFILES:-$HOME/.my/dotfiles}}`.
 - Repo guidance: `${VAULT_AGENTS_ROOT}/<repo-name>/AGENTS.md`, falling back to repo-local `AGENTS.md` only when canonical guidance is missing.
-- Vault global mirror: `${VAULT_AGENTS_ROOT}/global/AGENTS_GLOBAL.md` should point to the canonical global file.
+- Legacy vault global mirrors are retired; use the canonical global guidance path above.
 
 At task start, load global guidance first, then repo guidance. If they conflict, global guidance is baseline and repo guidance may only tighten or extend unless user approves an override.
 
