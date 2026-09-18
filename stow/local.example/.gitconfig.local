@@ -1,4 +1,8 @@
 # Local git identity (template)
 [user]
-  name = "YOUR_NAME"
+  name = "WORK_YOUR_NAME"
   email = "you@example.com"
+
+[includeIf "gitdir/i:~/dev/private/"]
+  path = ~/.gitconfig.private.local
+
