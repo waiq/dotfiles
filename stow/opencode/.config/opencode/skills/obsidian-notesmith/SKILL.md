@@ -6,7 +6,7 @@ compatibility: opencode
 metadata:
   audience: learners, researchers, builders
   mode: research-to-notes
-  depends_on: lesson, learn-101, documentation
+  depends_on: documentation
 ---
 
 ## Purpose
@@ -209,18 +209,6 @@ This flow is mandatory to keep research reusable and consistent across topics.
 - confidence
 - next_action
 - notes_path
-
-## Integration with `learn-101` and `lesson`
-
-- During `101` runs, trigger `obsidian summarize` at each lesson checkpoint.
-- After each `lesson` concept, create/update one evergreen seed; user writes the evergreen note.
-- End-of-lesson handoff format:
-  - Concept learned
-  - Verification result
-  - Source refs
-  - Evergreen seed created/updated
-  - Evergreen note written by user (yes/no)
-  - Next link target in MOC
 
 ## Dry-Run Spec (example)
 
