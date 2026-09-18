@@ -17,6 +17,7 @@ grill-with-docs -> to-spec -> to-tickets -> implement -> code-review
 
 ## Operating Rules
 
+- Use the `grilling` skill for the interview loop: design tree, frontier questions, recommended answers, and one round at a time.
 - Ask pointed questions until the plan is coherent enough to hand to a fresh agent.
 - Prefer one strong default and make the tradeoff explicit.
 - Do not write implementation code from this skill.
@@ -38,6 +39,8 @@ Update or propose these artifacts as appropriate:
 Promote project knowledge to global only when it clearly applies across repos.
 
 ## Interview Shape
+
+Call the Skill tool with `grilling` to run the questioning method. Keep this skill responsible for durable capture: glossary entries, ADRs, plan updates, and handoff notes.
 
 Start by identifying the work type:
 
