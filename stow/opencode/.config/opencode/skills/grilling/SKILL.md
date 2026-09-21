@@ -9,7 +9,7 @@ Interview the user until you reach shared understanding. Map the topic as a **de
 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: questions you can ask now without guessing at answers you have not heard yet.
 
-Ask the whole frontier in one round. Number each question and include your recommended answer. Then wait for the user's answers before asking the next round.
+Ask the whole frontier in one round. Number each question and include your recommended answer. State explicitly that unanswered questions will use the recommended answer unless the user overrides them. Then wait for the user's answers before asking the next round.
 
 ## Round Format
 
@@ -20,6 +20,8 @@ Ask the whole frontier in one round. Number each question and include your recom
 
 Recommended answer: <your recommendation>
 
+Default rule: If you do not answer this question, I will use the recommended answer.
+
 ---
 
 **Q2 - <question title>**
@@ -27,6 +29,8 @@ Recommended answer: <your recommendation>
 <Question body, options, and trade-offs.>
 
 Recommended answer: <your recommendation>
+
+Default rule: If you do not answer this question, I will use the recommended answer.
 ```
 
 Each answered round reshapes the tree. Settled decisions push the frontier outward and unblock later questions. A question whose answer depends on another open question belongs to a later round, not the current one.
