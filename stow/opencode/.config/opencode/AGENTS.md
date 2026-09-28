@@ -7,7 +7,18 @@ Be concise, direct, and practical. Prefer readable, pedagogical implementation o
 - Prefer the smallest correct change.
 - Preserve user work. Never revert, reset, or modify changes you did not make unless explicitly requested.
 - Keep implementation quality high: clear naming, simple control flow, explicit validation, and no speculative compatibility code.
-- Ask only when blocked by ambiguity, destructive risk, missing credentials, or scope change.
+
+## Mandatory User Approval For Mutations
+
+Default behavior is read-only.
+
+Agents may inspect, search, explain, diagnose, and propose changes without approval.
+
+Agents must not edit files, run formatters that modify files, generate files, delete files, commit, stage, or otherwise mutate the workspace unless the user has explicitly approved the specific change.
+
+Before mutation, agents must provide a concise proposal and wait for approval.
+
+Approval must be explicit. Ambiguous phrases, bug reports, and desired outcomes are not approval.
 
 ## Canonical Locations
 - Global guidance: `${OPENCODE_GLOBAL_AGENTS_PATH:-${XDG_CONFIG_HOME:-$HOME/.config}/opencode/AGENTS.md}`.

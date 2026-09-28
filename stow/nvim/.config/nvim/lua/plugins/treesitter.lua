@@ -34,6 +34,8 @@ return { -- Highlight, edit, and navigate code
       'ruby',
       'embedded_template',
       'rust',
+      'ocaml',
+      'ocaml_interface',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,

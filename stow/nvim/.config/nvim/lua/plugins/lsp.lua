@@ -257,6 +257,12 @@ return {
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+    -- OCaml tooling is provided by project flakes, not Mason.
+    vim.lsp.config('ocamllsp', {
+      capabilities = capabilities,
+    })
+    vim.lsp.enable 'ocamllsp'
+
     require('mason-lspconfig').setup {
       automatic_enable = {
         exclude = { 'rust_analyzer' },
